@@ -3,9 +3,12 @@ library(dplyr)
 library(xts)
 library(tidyr)
 library(stringr)
+library(data.table)
 
-data <- arrow::read_csv_arrow("data/GRateDB.csv")
-calcs_revisions <- function(data, vintage, VintageList, country, variable){
+data <- arrow::read_csv_arrow("data/GRateDB.csv")%>%
+  as.data.table(data)
+
+calcs_revisions <- function(dt, vintage, VintageList, country, variable){
   
   case <- substr(vintage, 1, 1)
   
@@ -13,13 +16,12 @@ calcs_revisions <- function(data, vintage, VintageList, country, variable){
   
   switch(case,
          G={
-           revs <- data%>%filter((Country == country) &
-                                   (Variable == variable) &
-                                   (ECBVintage %in% VintageList[i:(i+2)]) & 
-                                   (Index == vintage_to_date[[VintageList[i]]]))%>%
-             pull(Value)
+           revs <- dt[ (Country == country) &
+                         (Variable == variable) &
+                         (ECBVintage %in% VintageList[i:(i+2)]) & 
+                         (Index == vintage_to_date[[VintageList[i]]]) , Value]
            
-           if (length(revs)==0) {
+           if (length(revs)!=length(i:(i+2))) {
              revs <- setNames(rep(NA,length(i:(i+2))), VintageList[i:(i+2)])
            }else{
              revs <- setNames(revs - tail(revs, 1), VintageList[i:(i+2)])
@@ -29,13 +31,12 @@ calcs_revisions <- function(data, vintage, VintageList, country, variable){
          
          W={
            
-           revs <- data%>%filter((Country == country) &
-                                   (Variable == variable) &
-                                   (ECBVintage %in% VintageList[i:(i+3)]) & 
-                                   (Index == vintage_to_date[[VintageList[i]]]))%>%
-             pull(Value)
+           revs <- dt[ (Country == country) &
+                         (Variable == variable) &
+                         (ECBVintage %in% VintageList[i:(i+3)]) & 
+                         (Index == vintage_to_date[[VintageList[i]]]) , Value]
            
-           if (length(revs)==0) {
+           if (length(revs)!=length(i:(i+3))) {
              revs <- setNames(rep(NA,length(i:(i+3))), VintageList[i:(i+3)])
            }else{
              revs <- setNames(revs - tail(revs, 1), VintageList[i:(i+3)])
@@ -44,13 +45,12 @@ calcs_revisions <- function(data, vintage, VintageList, country, variable){
          },
          
          A={
-           revs <- data%>%filter((Country == country) &
-                                   (Variable == variable) &
-                                   (ECBVintage %in% VintageList[i:(i+4)]) & 
-                                   (Index == vintage_to_date[[VintageList[i]]]))%>%
-             pull(Value)
+           revs <- dt[ (Country == country) &
+                         (Variable == variable) &
+                         (ECBVintage %in% VintageList[i:(i+4)]) & 
+                         (Index == vintage_to_date[[VintageList[i]]]) , Value]
            
-           if (length(revs)==0) {
+           if (length(revs)!=length(i:(i+4))) {
              revs <- setNames(rep(NA,length(i:(i+4))), VintageList[i:(i+4)])
            }else{
              revs <- setNames(revs - tail(revs, 1), VintageList[i:(i+4)])
@@ -59,13 +59,12 @@ calcs_revisions <- function(data, vintage, VintageList, country, variable){
          },
          
          S={
-           revs <- data%>%filter((Country == country) &
-                                   (Variable == variable) &
-                                   (ECBVintage %in% VintageList[i:(i+5)]) & 
-                                   (Index == vintage_to_date[[VintageList[i]]]))%>%
-             pull(Value)
+           revs <- dt[ (Country == country) &
+                         (Variable == variable) &
+                         (ECBVintage %in% VintageList[i:(i+5)]) & 
+                         (Index == vintage_to_date[[VintageList[i]]]) , Value]
            
-           if (length(revs)==0) {
+           if (length(revs)!=length(i:(i+5))) {
              revs <- setNames(rep(NA,length(i:(i+5))), VintageList[i:(i+5)])
            }else{
              revs <- setNames(revs - tail(revs, 1), VintageList[i:(i+5)])
@@ -85,14 +84,14 @@ Variables <- unique(data$Variable)
 
 vintage_to_date <- setNames(as.list(DateRange), VintageList[1:length(as.list(DateRange))])
 
-RevisionDB <- tibble(Date = as.Date(NA),
-                     VintageBase = character(),
-                     VintageComp = character(),
-                     Country = character(),
-                     Variable = character(),
-                     TypeRevision = character(),
-                     RevisionNb = numeric(),
-                     Value = numeric()
+RevisionDB <- data.table(Date = as.Date(NA),
+                         VintageBase = character(),
+                         VintageComp = character(),
+                         Country = character(),
+                         Variable = character(),
+                         TypeRevision = character(),
+                         RevisionNb = numeric(),
+                         Value = numeric()
 )
 
 for (vintage in names(vintage_to_date)) {
@@ -111,29 +110,26 @@ for (vintage in names(vintage_to_date)) {
       
       # Add final revisions
       RevisionDB <- bind_rows(RevisionDB, 
-                              revs%>%
-                                tibble::enframe(name = "VintageBase", value = "Value")%>%
-                                mutate(TypeRevision = "Final",
-                                       VintageComp = tail(names(revs),1),
-                                       Date = vintage_to_date[[VintageList[i]]],
-                                       Country = country, 
-                                       Variable = variable,
-                                       RevisionNb = 1:length(revs)
-                                )
-                              )
+                              data.table(VintageBase = names(revs), Value= revs)[ , TypeRevision := "Final",
+                              ][ , VintageComp := tail(names(revs),1),
+                              ][ , Date := vintage_to_date[[VintageList[i]]],
+                              ][ , Country := country,
+                              ][ , Variable := variable,
+                              ][ , RevisionNb := 1:length(revs),
+                              ]
+      )
+      
       
       # Add intermediate revisions
       RevisionDB <- bind_rows(RevisionDB, 
-                              diff(revs)%>%
-                                tibble::enframe(name = "VintageComp", value = "Value")%>%
-                                mutate(TypeRevision = "Intermediate",
-                                       VintageBase = names(revs)[1:(length(revs)-1)],
-                                       Date = vintage_to_date[[VintageList[i]]],
-                                       Country = country, 
-                                       Variable = variable,
-                                       RevisionNb = 1:(length(revs)-1)
-                                )
-                              )
+                              data.table(VintageComp = names(diff(revs)), Value= diff(revs))[ , TypeRevision := "Intermediate",
+                              ][ , VintageBase := names(revs)[1:(length(revs)-1)],
+                              ][ , Date := vintage_to_date[[VintageList[i]]],
+                              ][ , Country := country,
+                              ][ , Variable := variable,
+                              ][ , RevisionNb := 1:(length(revs)-1),
+                              ]
+      )
       
     }
   }
