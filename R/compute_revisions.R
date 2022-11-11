@@ -21,8 +21,10 @@ calcs_revisions <- function(dt, vintage, VintageList, country, variable){
                          (Date == as.POSIXlt.Date(vintage_to_date[[VintageList[i]]])) , Value]
            
            if (length(revs)!=length(i:(i+2))) {
+             # Removing intermediate revisions when final revision doesn't exist
              revs <- setNames(rep(NA,length(i:(i+2))), VintageList[i:(i+2)])
            }else{
+             # Compute the revisions by substracting the last value
              revs <- setNames(revs - tail(revs, 1), VintageList[i:(i+2)])
            }
            
@@ -36,8 +38,10 @@ calcs_revisions <- function(dt, vintage, VintageList, country, variable){
                          (Date == as.POSIXlt.Date(vintage_to_date[[VintageList[i]]])) , Value]
            
            if (length(revs)!=length(i:(i+3))) {
+             # Removing intermediate revisions when final revision doesn't exist
              revs <- setNames(rep(NA,length(i:(i+3))), VintageList[i:(i+3)])
            }else{
+             # Compute the revisions by substracting the last value
              revs <- setNames(revs - tail(revs, 1), VintageList[i:(i+3)])
            }
            
@@ -50,8 +54,10 @@ calcs_revisions <- function(dt, vintage, VintageList, country, variable){
                          (Date == as.POSIXlt.Date(vintage_to_date[[VintageList[i]]])) , Value]
            
            if (length(revs)!=length(i:(i+4))) {
+             # Removing intermediate revisions when final revision doesn't exist
              revs <- setNames(rep(NA,length(i:(i+4))), VintageList[i:(i+4)])
            }else{
+             # Compute the revisions by substracting the last value
              revs <- setNames(revs - tail(revs, 1), VintageList[i:(i+4)])
            }
            
@@ -64,8 +70,10 @@ calcs_revisions <- function(dt, vintage, VintageList, country, variable){
                          (Date == as.POSIXlt.Date(vintage_to_date[[VintageList[i]]])) , Value]
            
            if (length(revs)!=length(i:(i+5))) {
+             # Removing intermediate revisions when final revision doesn't exist
              revs <- setNames(rep(NA,length(i:(i+5))), VintageList[i:(i+5)])
            }else{
+             # Compute the revisions by substracting the last value
              revs <- setNames(revs - tail(revs, 1), VintageList[i:(i+5)])
            }
            
