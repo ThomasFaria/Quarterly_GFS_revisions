@@ -35,4 +35,4 @@ for (vintage in VintageList) {
 }
 
 setnames(GRateDB, "index", "Date")
-arrow::write_csv_arrow(x = GRateDB, "data/GRateDB.csv")
+arrow::write_parquet(x = GRateDB, "data/GRateDB.parquet")
