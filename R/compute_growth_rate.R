@@ -6,7 +6,7 @@ library(stringr)
 library(data.table)
 source("R/functions.R")
 #data <- arrow::read_csv_arrow("https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv")
-data <- arrow::read_csv_arrow("~/Documents/2021_4A_ENS_CESURE/ECB/qgfs_revisions/data/RealTimeDatabase.csv")
+data <- arrow::read_csv_arrow("data/RealTimeDatabase.csv")
 setDT(data)
 
 VintageList <- unique(data[,ECB_vintage])
@@ -44,3 +44,4 @@ FinalValues <- rbindlist(list(GRateDB[(Is_final_value)][, Measure := "GRate"],
                               data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Value", "Country_code", "Variable_code", "ECB_vintage", "Is_final_value", "Measure")]))
 
 arrow::write_parquet(x = GRateDB, "data/GRateDB.parquet")
+arrow::write_parquet(x = FinalValues, "data/FinalValues.parquet")
