@@ -326,6 +326,17 @@
         "rlang"
       ]
     },
+    "lubridate": {
+      "Package": "lubridate",
+      "Version": "1.9.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2af4550c2f0f7fbe7cbbf3dbf4ea3902",
+      "Requirements": [
+        "generics",
+        "timechange"
+      ]
+    },
     "magrittr": {
       "Package": "magrittr",
       "Version": "2.0.3",
@@ -528,6 +539,16 @@
         "rlang",
         "vctrs",
         "withr"
+      ]
+    },
+    "timechange": {
+      "Package": "timechange",
+      "Version": "0.1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4657195cc632097bb8d140d626b519fb",
+      "Requirements": [
+        "cpp11"
       ]
     },
     "utf8": {
