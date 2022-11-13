@@ -15,14 +15,14 @@ GRateDB <- data.table()
 
 reference_years <- sapply(Final_vintages, get_reference_year, simplify = FALSE, USE.NAMES = TRUE)
 for (final_vintage in c(Final_vintages)) {
-  data[(ECB_vintage %in% final_vintage) & (Date %between% reference_years[[final_vintage]]), IsFinalValue := T]
+  data[(ECB_vintage %in% final_vintage) & (Date %between% reference_years[[final_vintage]]), Is_final_value := T]
 } 
 
 for (vintage in VintageList) {
   cat(vintage, "\n")
 
   xts_data <- data[ECB_vintage %in% vintage, c("Date", "Variable_code", "Country_code", "Value")] %>%
-    dcast(Date ~ paste0(CountryCode, "_", VariableCode), value.var = "Value") %>%
+    dcast(Date ~ paste0(Country_code, "_", Variable_code), value.var = "Value") %>%
     as.xts.data.table()
 
   xts_growth_rate <- (log(xts_data / stats::lag(xts_data, 4)) * 100)["1999-01-01/"] %>%
@@ -37,10 +37,10 @@ for (vintage in VintageList) {
 
 setnames(GRateDB, "index", "Date")
 for (final_vintage in c(Final_vintages)) {
-  GRateDB[(ECB_vintage %in% final_vintage) & (Date %between% reference_years[[final_vintage]]), IsFinalValue := T]
+  GRateDB[(ECB_vintage %in% final_vintage) & (Date %between% reference_years[[final_vintage]]), Is_final_value := T]
 } 
 
-FinalValues <- rbindlist(list(GRateDB[(IsFinalValue)][, Measure := "GRate"],
-                              data[(IsFinalValue)][, Measure := "Raw"][, c("Date", "Variable_code", "Country_code", "Value", "Measure")]))
+FinalValues <- rbindlist(list(GRateDB[(Is_final_value)][, Measure := "GRate"],
+                              data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Variable_code", "Country_code", "Value", "Measure")]))
 
 arrow::write_parquet(x = GRateDB, "data/GRateDB.parquet")
