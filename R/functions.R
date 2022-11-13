@@ -1,9 +1,9 @@
 get_reference_year <- function(vintage){
   past_year <- 2000 + as.double(substr(vintage, start = 2, stop = 3)) - 1
   if (past_year == 2006) {
-    reference_year <- c(as.POSIXlt(paste0(past_year, "-07-01"), tz="UTC"), as.POSIXlt(paste0(past_year, "-12-31"), tz="UTC"))
+    reference_year <- c(paste0(past_year, "-07-01"), paste0(past_year, "-12-31"))
   }else{
-    reference_year <- c(as.POSIXlt(paste0(past_year, "-01-01"), tz="UTC"), as.POSIXlt(paste0(past_year, "-12-31"), tz="UTC"))
+    reference_year <- c(paste0(past_year, "-01-01"), paste0(past_year, "-12-31"))
   }
   return(reference_year)
 }
