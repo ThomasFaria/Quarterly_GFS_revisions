@@ -41,6 +41,6 @@ for (final_vintage in c(Final_vintages)) {
 } 
 
 FinalValues <- rbindlist(list(GRateDB[(Is_final_value)][, Measure := "GRate"],
-                              data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Variable_code", "Country_code", "Value", "Measure")]))
+                              data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Value", "Country_code", "Variable_code", "ECB_vintage", "Is_final_value", "Measure")]))
 
 arrow::write_parquet(x = GRateDB, "data/GRateDB.parquet")
