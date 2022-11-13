@@ -4,6 +4,7 @@ library(xts)
 library(tidyr)
 library(stringr)
 library(data.table)
+source("R/functions.R")
 
 data <- arrow::read_csv_arrow("https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv")%>%
   as.data.table()
