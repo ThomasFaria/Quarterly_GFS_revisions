@@ -15,10 +15,10 @@ calcs_revisions <- function(dt, vintage, VintageList, country, variable) {
   
   switch(case,
          G = {
-           revs <- dt[(Country == country) &
-                        (Variable == variable) &
+           revs <- dt[(Country_code == country) &
+                        (Variable_code == variable) &
                         (ECB_vintage %in% VintageList[i:(i + 2)]) &
-                        (Date == as.POSIXlt.Date(vintage_to_date[[VintageList[i]]])), Value]
+                        (Date == vintage_to_date[[VintageList[i]]]), Value]
            
            if (length(revs) != length(i:(i + 2))) {
              # Removing intermediate revisions when final revision doesn't exist
@@ -29,10 +29,10 @@ calcs_revisions <- function(dt, vintage, VintageList, country, variable) {
            }
          },
          W = {
-           revs <- dt[(Country == country) &
-                        (Variable == variable) &
+           revs <- dt[(Country_code == country) &
+                        (Variable_code == variable) &
                         (ECB_vintage %in% VintageList[i:(i + 3)]) &
-                        (Date == as.POSIXlt.Date(vintage_to_date[[VintageList[i]]])), Value]
+                        (Date == vintage_to_date[[VintageList[i]]]), Value]
            
            if (length(revs) != length(i:(i + 3))) {
              # Removing intermediate revisions when final revision doesn't exist
@@ -43,10 +43,10 @@ calcs_revisions <- function(dt, vintage, VintageList, country, variable) {
            }
          },
          A = {
-           revs <- dt[(Country == country) &
-                        (Variable == variable) &
+           revs <- dt[(Country_code == country) &
+                        (Variable_code == variable) &
                         (ECB_vintage %in% VintageList[i:(i + 4)]) &
-                        (Date == as.POSIXlt.Date(vintage_to_date[[VintageList[i]]])), Value]
+                        (Date == vintage_to_date[[VintageList[i]]]), Value]
            
            if (length(revs) != length(i:(i + 4))) {
              # Removing intermediate revisions when final revision doesn't exist
@@ -57,10 +57,10 @@ calcs_revisions <- function(dt, vintage, VintageList, country, variable) {
            }
          },
          S = {
-           revs <- dt[(Country == country) &
-                        (Variable == variable) &
+           revs <- dt[(Country_code == country) &
+                        (Variable_code == variable) &
                         (ECB_vintage %in% VintageList[i:(i + 5)]) &
-                        (Date == as.POSIXlt.Date(vintage_to_date[[VintageList[i]]])), Value]
+                        (Date == vintage_to_date[[VintageList[i]]]), Value]
            
            if (length(revs) != length(i:(i + 5))) {
              # Removing intermediate revisions when final revision doesn't exist
