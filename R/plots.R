@@ -178,7 +178,7 @@ Plot_STATISTICS(data, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditu
 
 Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate){
   
-  Final_values <- Finalvalues[(Country_code == Countries) & 
+  Final_values <- Finalvalues[(Country_code %in% Countries) & 
                 (Variable_code %in% Items) & 
                 (Measure == MeasureUsed) & 
                 (Date %between% c(LowDate, UpDate)), 
@@ -188,8 +188,8 @@ Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
   sample <- sample[(Country_code %in% Countries) & 
            (Variable_code %in% Items) & 
            (Measure == MeasureUsed) & 
-           (Revision_nb == RevisionNumber) & 
-           (Type_revision == TypeOfRevision) & 
+           (Revision_nb %in% RevisionNumber) & 
+           (Type_revision %in% TypeOfRevision) & 
            (Date %between% c(LowDate, UpDate)), 
          .(SD = sd(Value, na.rm = TRUE),
            MR = mean(Value, na.rm = TRUE),
@@ -328,6 +328,9 @@ scales_Big9 <- list("Scale" =
                         "N2S" = expand_limits(y = 1.2)
                       )
 )
+Plot_STATISTICS(data, FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_Big9)
+Plot_STATISTICS(data, FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2013-12-31"), as.Date("2006-01-01"), scales_Big9)
+Plot_STATISTICS(data, FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2013-12-31"), scales_Big9)
 
 scales_Big9_Inter <- list("Scale" = 
                             list(
@@ -349,6 +352,8 @@ scales_Big9_Inter <- list("Scale" =
                             )
 )
 
+Plot_STATISTICS(data, FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Intermediate", "GRate", 1:5, as.Date("2013-12-31"), as.Date("2006-01-01"), scales_Big9_Inter)
+Plot_STATISTICS(data, FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Intermediate", "GRate", 1:5, as.Date("2020-01-01"), as.Date("2013-12-31"), scales_Big9_Inter)
 
 # Total_Rev #####
 Data_TOTAL_REV <- function(sampleRev,sampleData, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber){
