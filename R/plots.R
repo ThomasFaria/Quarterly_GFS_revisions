@@ -2,7 +2,11 @@ source('R/utils/theme_ECB.R')
 library(dplyr)
 library(tidyr)
 library(stringr)
-
+library(lubridate)
+library(data.table)
+library(rlang)
+library(forcats)
+library(cowplot)
 
 library(ggplot2)
 library(readr)
@@ -24,6 +28,7 @@ data <- arrow::read_parquet("data/RevisionDB.parquet")
 data <-  data %>%
   mutate(ObsQ=  as.integer(substr(quarters(Date), 2, 2) ),
          ObsY= year(Date),
+         Measure= "GRate",
          Revision_nb = as.double(Revision_nb),
          ReleaseDate = as.Date(case_when(
            startsWith(Vintage_base, "W") ~ paste0(str_replace(Vintage_base, "W", "20"),"-01-01"),
@@ -75,14 +80,14 @@ data <-  data %>%
   )%>% 
   filter_all(all_vars(!is.infinite(.)))
 
-DatasetRaw <- arrow::read_parquet("data/RealTimeDatabase.parquet")
+DatasetRaw <- arrow::read_csv_arrow("data/RealTimeDatabase.csv")
 DatasetRaw <- DatasetRaw%>%
   mutate(ObsQ=  as.integer(substr(quarters(Date), 2, 2) ),
          ObsY= year(Date),
-         ReleaseDate = as.Date(ifelse(startsWith(Vintage, "W") , paste0(str_replace(Vintage, "W", "20"),"-01-01"), 
-                                      ifelse(startsWith(Vintage, "G") , paste0(str_replace(Vintage, "G", "20"),"-04-01"),
-                                             ifelse(startsWith(Vintage, "S"), paste0(str_replace(Vintage, "S", "20"),"-07-01"),
-                                                    paste0(str_replace(Vintage, "A", "20"),"-07-01"))))),
+         ReleaseDate = as.Date(ifelse(startsWith(ECB_vintage, "W") , paste0(str_replace(ECB_vintage, "W", "20"),"-01-01"), 
+                                      ifelse(startsWith(ECB_vintage, "G") , paste0(str_replace(ECB_vintage, "G", "20"),"-04-01"),
+                                             ifelse(startsWith(ECB_vintage, "S"), paste0(str_replace(ECB_vintage, "S", "20"),"-07-01"),
+                                                    paste0(str_replace(ECB_vintage, "A", "20"),"-07-01"))))),
          Group = case_when(Variable_code %in% c("TOR", "DTX", "TIN", "SCT") ~ "Revenue",
                            Variable_code %in% c("TOE","THN","PUR", "COE", "GIN") ~ "Expenditure",
                            Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS") ~ "Macro",
@@ -121,9 +126,30 @@ DatasetRaw <- DatasetRaw%>%
   )%>% 
   filter_all(all_vars(!is.infinite(.)))
 
-FinalValues <- read_csv('data/FinalValues.parquet')
-
-
+FinalValues <- arrow::read_parquet("data/FinalValues.parquet")
+FinalValues <- FinalValues%>%
+  mutate(Variable_long = case_when(Variable_code %in% c("TOR") ~ "Total revenue",
+                                   Variable_code %in% c("DTX") ~ "Direct taxes",
+                                   Variable_code %in% c("TIN") ~ "Indirect taxes",
+                                   Variable_code %in% c("SCT") ~ "Social contributions",
+                                   Variable_code %in% c("TOE") ~ "Total expenditure",
+                                   Variable_code %in% c("THN") ~ "Social transfers",
+                                   Variable_code %in% c("PUR") ~ "Purchases",
+                                   Variable_code %in% c("COE") ~ "Gov. compensation",
+                                   Variable_code %in% c("GIN") ~ "Gov. investment",
+                                   Variable_code %in% c("YEN") ~ "GDP",
+                                   Variable_code %in% c("PCN") ~ "Private consumption",
+                                   Variable_code %in% c("ITN") ~ "Total investment",
+                                   Variable_code %in% c("EXN") ~ "Exports",
+                                   Variable_code %in% c("GCN") ~ "Gov. consumption",
+                                   Variable_code %in% c("WGS") ~ "Wages and salaries",
+                                   Variable_code %in% c("OCR") ~ "Other current revenue",
+                                   Variable_code %in% c("KTR") ~ "Capital revenue",
+                                   Variable_code %in% c("INP") ~ "Interest payments",
+                                   Variable_code %in% c("OCE") ~ "Other current expenditure",
+                                   Variable_code %in% c("OKE") ~ "Other capital expenditure",
+                                   TRUE ~ "Others"
+  ))
 
 # Lists #####
 VintageList <- c(outer(c("W", "G", "S", "A"), str_pad(7:20, 2, pad = "0"), FUN=paste0))
@@ -146,55 +172,56 @@ LevelItem2 <- c("Total revenue","Direct taxes","Indirect taxes","Social contribu
 
 
 # STATISTICS ITEM #####
-Data_STATISTICS <- function(sample,Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate){
+Data_STATISTICS(data, FinalValues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate)
+SubPlot_STATISTICS(Data_STATISTICS(data, FinalValues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate), "MR", F, T, scales_EA)
+Plot_STATISTICS(data, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_EA)
+
+Countries<-"EA"
+Items <- c(Var_Revenue, Var_Macro, Var_Expenditure)
+TypeOfRevision<-"Final"
+MeasureUsed <-"GRate"
+RevisionNumber <- c(1)
+UpDate<- as.Date("2020-01-01")
+LowDate<-as.Date("2006-01-01")
+
+
+
+Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate){
   
-  Finalvalues[(Country_code %in% Countries) & 
+  Final_values <- Finalvalues[(Country_code == Countries) & 
                 (Variable_code %in% Items) & 
                 (Measure == MeasureUsed) & 
                 (Date %between% c(LowDate, UpDate)), 
-              SDF = sd(Value, na.rm = T) , 
+              .(SDF = sd(Value, na.rm = TRUE)), 
               by = Variable_long]
   
-  sample[(Country_code %in% Countries) & 
+  sample <- sample[(Country_code %in% Countries) & 
            (Variable_code %in% Items) & 
            (Measure == MeasureUsed) & 
            (Revision_nb == RevisionNumber) & 
            (Type_revision == TypeOfRevision) & 
            (Date %between% c(LowDate, UpDate)), 
-         .(SDF = sd(Value, na.rm = TRUE),,
-           NB_BOULANG_TOT = sum(NB_EQUIP * (TYPEQU == "B203"), na.rm = TRUE)),
-
-         by = c(Variable_long, Group)]
+         .(SD = sd(Value, na.rm = TRUE),
+           MR = mean(Value, na.rm = TRUE),
+           N = sum(!is.na(Value)),
+           MAR = mean(abs(Value), na.rm = TRUE),
+           RMSR = sqrt(mean(Value^2, na.rm = TRUE)),
+           MIN = min(Value, na.rm = TRUE),
+           MAX = max(Value, na.rm = TRUE)
+           ),
+         by = .(Variable_long, Group)] %>%
+    merge.data.table(Final_values)
   
-  sample <- subset(sample, Ctry %in% Countries & 
-                     Item %in% Items & 
-                     TypeRevision == TypeOfRevision & 
-                     Measure == MeasureUsed & 
-                     Revision_nb %in% RevisionNumber &
-                     ObsDate < UpDate &
-                     ObsDate > LowDate) %>%
-    group_by(Item2, Group)%>%
-    summarise(
-      N = sum(!is.na(Value)),
-      MR = mean(Value*-1, na.rm = T),
-      MAR = mean(abs(Value), na.rm = T),
-      RMSR = sqrt(mean(Value^2, na.rm = T)),
-      MIN = min(Value*-1, na.rm = T),
-      MAX = max(Value*-1, na.rm = T),
-      SD = sd(Value*-1, na.rm = T))%>%
-    merge(Finalvalues)%>%
-    mutate(N2S = SD/SDF)%>%
-    melt(id.vars = c("Item2", "Group"), value.name = "Value", variable.name = "Statistic")%>%
-    subset(!(Statistic %in% c("SD", "SDF")))
-  
-  return(sample)
+  sample[, N2S := SD/SDF]
+  sample <- melt(sample, id.vars = c("Variable_long", "Group"), value.name = "Value", variable.name = "Statistic")
+  return(sample[!(Statistic %in% c("SD", "SDF"))])
 }
 SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y){
   
   
   sample <- sample %>%
-    mutate(Item2 = factor(Item2, levels = LevelItem2),
-           Item2 = fct_rev(Item2),
+    mutate(Variable_long = factor(Variable_long, levels = LevelItem2),
+           Variable_long = forcats::fct_rev(Variable_long),
            Group = factor(Group, levels = c("Revenue",
                                             "Expenditure",
                                             "Macro")),
@@ -208,40 +235,40 @@ SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y){
   
   temp <- sample %>% 
     subset(Statistic == "N")%>% 
-    arrange(Item2)
+    arrange(Variable_long)
   
   
-  NewTitle <- paste0(temp$Item2, "\n\\tiny(", temp$Value, ")")
-  names(NewTitle) <- temp$Item2  
+  NewTitle <- paste0(temp$Variable_long, "\n(", temp$Value, ")")
+  names(NewTitle) <- temp$Variable_long  
   sample <- sample %>%
     subset(Statistic != "N") %>%
-    mutate(Item2 = recode(Item2, !!!NewTitle), 
-           Item2 = factor(Item2, levels = NewTitle))
+    mutate(Variable_long = recode(Variable_long, !!!NewTitle), 
+           Variable_long = factor(Variable_long, levels = NewTitle))
   
   plot <- ggplot(data=subset(sample, Statistic == Statistics)) +
     ggtitle(Statistics) +
     
     #makes the bar and format 
-    geom_bar(aes(x=Item2 ,y= Value, fill=Group),stat="identity",position="dodge",width=0.8)+
+    geom_bar(aes(x=Variable_long ,y= Value, fill=Group),stat="identity",position="dodge",width=0.8)+
     geom_hline(yintercept = 0) +
     coord_flip()+
     
     #Add labels
-    geom_text(aes(x=Item2,y=Value, hjust =  ifelse(Value > 0, -0.2, 1.15), label = round(Value,2)), size = 3)+
+    geom_text(aes(x=Variable_long,y=Value, hjust =  ifelse(Value > 0, -0.2, 1.15), label = round(Value,2)), size = 3)+
     
     #set general theme
     theme_ECB()+
     theme(plot.title=element_text(size= 9, face = "plain", colour = "black"))+
     
-    {if (is_empty(scales_y))
+    {if (rlang::is_empty(scales_y))
       scale_y_continuous(expand=c(1,0))
     }+
     
-    {if (!is_empty(scales_y$Scale))
+    {if (!rlang::is_empty(scales_y$Scale))
       scales_y$Scale[[Statistics]]
     }+
     
-    {if (!is_empty(scales_y$Expand))
+    {if (!rlang::is_empty(scales_y$Expand))
       scales_y$Expand[[Statistics]]
     }+
     
@@ -267,7 +294,7 @@ Plot_STATISTICS <- function(sample,Finalvalues, Countries, Items, TypeOfRevision
   Plot6 <- SubPlot_STATISTICS(Data_STATISTICS(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate), "N2S", F, F, scales_y)
   
   
-  legend <- get_legend(
+  legend <- cowplot::get_legend(
     # create some space to the left of the legend
     SubPlot_STATISTICS(Data_STATISTICS(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate), "MR", T, F, scales_y)
     + theme(legend.box.margin = margin(-15, 0, 0, 0))
@@ -310,9 +337,8 @@ scales_EA <- list("Scale" =
                       "N2S" = expand_limits(y = 0.89)
                     )
 )
-tikz(file = paste0(Desti,'Statistics_GR_Final_EA','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_EA)
-dev.off()
+
+Plot_STATISTICS(data, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_EA)
 
 tikz(file = paste0(Desti,'Statistics_GR_Final_EA_1Part','.tex'), width = 6.299, height = 4.75)
 Plot_STATISTICS(Dataset, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2014-03-01"), as.Date("2006-01-01"), scales_EA)
