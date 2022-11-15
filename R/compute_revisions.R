@@ -31,7 +31,7 @@ for (vintage in names(vintage_to_date)) {
       }
 
       # Add final revisions
-      final_rev <- data.table(Vintage_base = names(revs), Value= revs)[ , Type_revision := "Final",
+      final_rev <- data.table(Vintage_base = names(revs), Value = revs)[ , Type_revision := "Final",
                               ][ , Vintage_comp := tail(names(revs),1),
                               ][ , Date := vintage_to_date[[VintageList[i]]],
                               ][ , Country_code := country,
@@ -40,7 +40,7 @@ for (vintage in names(vintage_to_date)) {
                               ]
       
       # Add intermediate revisions
-      interm_rev <- data.table(Vintage_comp = names(diff(revs)), Value= diff(revs))[ , Type_revision := "Intermediate",
+      interm_rev <- data.table(Vintage_comp = names(diff(revs)), Value = diff(revs))[ , Type_revision := "Intermediate",
                               ][ , Vintage_base := names(revs)[1:(length(revs)-1)],
                               ][ , Date := vintage_to_date[[VintageList[i]]],
                               ][ , Country_code := country,
