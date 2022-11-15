@@ -172,19 +172,9 @@ LevelItem2 <- c("Total revenue","Direct taxes","Indirect taxes","Social contribu
 
 
 # STATISTICS ITEM #####
-Data_STATISTICS(data, FinalValues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate)
+Data_STATISTICS(data, FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"))
 SubPlot_STATISTICS(Data_STATISTICS(data, FinalValues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate), "MR", F, T, scales_EA)
 Plot_STATISTICS(data, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_EA)
-
-Countries<-"EA"
-Items <- c(Var_Revenue, Var_Macro, Var_Expenditure)
-TypeOfRevision<-"Final"
-MeasureUsed <-"GRate"
-RevisionNumber <- c(1)
-UpDate<- as.Date("2020-01-01")
-LowDate<-as.Date("2006-01-01")
-
-
 
 Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate){
   
@@ -317,36 +307,6 @@ Plot_STATISTICS <- function(sample,Finalvalues, Countries, Items, TypeOfRevision
   return(plot)
 }
 
-# Only EA 
-scales_EA <- list("Scale" = 
-                    list(
-                      "MR" = scale_y_continuous(breaks = seq(-0.6, 0.6, 0.6)),
-                      "MIN" = scale_y_continuous(limits = c(NA,0),breaks = seq(-8, 0, 4)),
-                      "MAX" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 8, 4)),
-                      "MAR" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 4, 2)),
-                      "RMSR" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 4, 2)),
-                      "N2S" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 0.8, 0.4))
-                    ),
-                  "Expand" = 
-                    list(
-                      "MR" = expand_limits(y = c(-0.79,0.65)),
-                      "MIN" = expand_limits(y = -9),
-                      "MAX" = expand_limits(y = 9),
-                      "MAR" = expand_limits(y = 4),
-                      "RMSR" = expand_limits(y = 4),
-                      "N2S" = expand_limits(y = 0.89)
-                    )
-)
-
-Plot_STATISTICS(data, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_EA)
-
-tikz(file = paste0(Desti,'Statistics_GR_Final_EA_1Part','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2014-03-01"), as.Date("2006-01-01"), scales_EA)
-dev.off()
-
-tikz(file = paste0(Desti,'Statistics_GR_Final_EA_2Part','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2014-03-01"), scales_EA)
-dev.off()
 
 # Big 9
 scales_Big9 <- list("Scale" = 
@@ -368,17 +328,6 @@ scales_Big9 <- list("Scale" =
                         "N2S" = expand_limits(y = 1.2)
                       )
 )
-tikz(file = paste0(Desti,'Statistics_GR_Final_BIG6','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_Big9)
-dev.off()
-
-tikz(file = paste0(Desti,'Statistics_GR_Final_BIG6_1Part','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2014-03-01"), as.Date("2006-01-01"), scales_Big9)
-dev.off()
-
-tikz(file = paste0(Desti,'Statistics_GR_Final_BIG6_2Part','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2014-03-01"), scales_Big9)
-dev.off()
 
 scales_Big9_Inter <- list("Scale" = 
                             list(
@@ -400,89 +349,6 @@ scales_Big9_Inter <- list("Scale" =
                             )
 )
 
-tikz(file = paste0(Desti,'Statistics_GR_Inter_BIG6','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Single", "GRate", 1:5, as.Date("2020-01-01"), as.Date("2006-01-01"), scales_Big9_Inter)
-dev.off()
-
-tikz(file = paste0(Desti,'Statistics_GR_Inter_BIG6_1Part','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Single", "GRate", 1:5, as.Date("2014-03-01"), as.Date("2006-01-01"), scales_Big9_Inter)
-dev.off()
-
-tikz(file = paste0(Desti,'Statistics_GR_Inter_BIG6_2Part','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Single", "GRate", 1:5, as.Date("2020-01-01"), as.Date("2014-03-01"), scales_Big9_Inter)
-dev.off()
-
-# EA19
-scales_EA19 <- list("Scale" = 
-                      list(
-                        "MR" = scale_y_continuous(breaks = seq(-1.5, 1.5, 1.5)),
-                        "MIN" = scale_y_continuous(limits = c(NA,0),breaks = seq(-300, 0, 150)),
-                        "MAX" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 300, 150)),
-                        "MAR" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 10, 5)),
-                        "RMSR" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 20, 10)),
-                        "N2S" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 1.2, 0.6))
-                      ),
-                    "Expand" = 
-                      list(
-                        "MR" = expand_limits(y = c(-2,2)),
-                        "MIN" = expand_limits(y = -400),
-                        "MAX" = expand_limits(y = 350),
-                        "MAR" = expand_limits(y = 12),
-                        "RMSR" = expand_limits(y = 25),
-                        "N2S" = expand_limits(y = 1.3)
-                      )
-)
-tikz(file = paste0(Desti,'Statistics_GR_Final_EA19','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_EA19)
-dev.off()
-
-tikz(file = paste0(Desti,'Statistics_GR_Final_EA19_1Part','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2014-03-01"), as.Date("2006-01-01"), scales_EA19)
-dev.off()
-
-tikz(file = paste0(Desti,'Statistics_GR_Final_EA19_2Part','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2014-03-01"), scales_EA19)
-dev.off()
-
-# Levels
-scales_Big9_LVL <- list("Scale" = 
-                          list(
-                            "MR" = scale_y_continuous(breaks = seq(0, 0.6, 0.3)),
-                            "MIN" = scale_y_continuous(limits = c(NA,0),breaks = seq(-8, 0, 4)),
-                            "MAX" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 16, 8)),
-                            "MAR" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 0.8, 0.4)),
-                            "RMSR" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 1.6, 0.8)),
-                            "N2S" = scale_y_continuous(limits = c(0,NA),breaks = seq(0, 0.5, 0.25))
-                          ),
-                        "Expand" = 
-                          list(
-                            "MR" = expand_limits(y = c(0,0.7)),
-                            "MIN" = expand_limits(y = -10),
-                            "MAX" = expand_limits(y = 20),
-                            "MAR" = expand_limits(y = 1),
-                            "RMSR" = expand_limits(y = 2),
-                            "N2S" = expand_limits(y = 0.6)
-                          )
-)
-tikz(file = paste0(Desti,'Statistics_LVL_Final_BIG6','.tex'), width = 6.299, height = 4.75)
-Plot_STATISTICS(Dataset,FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Expenditure, "GCN"), "Final", "PotGDP", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_Big9_LVL)
-dev.off()
-
-
-# STATISTICS COUNTRY #####
-
-sample <- subset(Dataset, Ctry %in% c(Ctry_Agg, "EA") & 
-                   Item %in% setdiff(c(Var_Revenue, Var_Expenditure), c("TOE", "TOR")) & 
-                   TypeRevision == "Final" & 
-                   Measure == "GRate" & 
-                   Revision_nb == 1)
-
-sample %>% group_by(Ctry)%>% 
-  summarise(
-    MR = mean(Value*-1, na.rm = T),
-    MAR = mean(abs(Value), na.rm = T),
-    RMSR = sqrt(mean(Value^2, na.rm = T))
-  )
 
 # Total_Rev #####
 Data_TOTAL_REV <- function(sampleRev,sampleData, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber){
