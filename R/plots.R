@@ -11,18 +11,6 @@ library(gridExtra)
 library(gtable)
 library(grid)
 
-library(ggplot2)
-library(readr)
-library(reshape2)
-library(tidyverse)
-library(forcats)
-library(broom)
-library(stringr)
-library(cowplot)
-library(tikzDevice)
-library(lubridate)
-library(facetscales)
-
 # 1) comprendre comment gérer les bases de données pour le projet et pour les plots
 # 2) rendre le code plus beau
 # 3) faire du data.table et le rendre plus rapide
@@ -84,6 +72,7 @@ data <-  data %>%
   filter_all(all_vars(!is.infinite(.)))
 
 DatasetRaw <- arrow::read_csv_arrow("data/RealTimeDatabase.csv")
+setDT(DatasetRaw)
 DatasetRaw <- DatasetRaw%>%
   mutate(ObsQ=  as.integer(substr(quarters(Date), 2, 2) ),
          ObsY= year(Date),
@@ -174,9 +163,6 @@ LevelItem2 <- c("Total revenue","Direct taxes","Indirect taxes","Social contribu
                 "GDP","Private consumption","Total investment","Exports","Gov. consumption", "Wages and salaries")
 
 # STATISTICS ITEM #####
-Data_STATISTICS(data, FinalValues, c(Ctry_Agg, "REA"), c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"))
-SubPlot_STATISTICS(Data_STATISTICS(data, FinalValues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate), "MR", F, T, scales_EA)
-Plot_STATISTICS(data, FinalValues, "EA", c(Var_Revenue, Var_Macro, Var_Expenditure), "Final", "GRate", c(1), as.Date("2020-01-01"), as.Date("2006-01-01"), scales_EA)
 
 Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate){
   
@@ -716,30 +702,22 @@ Plot_PATHS(Data_PATHS(data, Ctry_Agg, c(Var_Expenditure,Var_Revenue, Var_Macro),
 Plot_PATHS(Data_PATHS(data, Ctry_Agg, c(Var_Expenditure,Var_Revenue, Var_Macro), "Final", "GRate", as.Date("2020-01-01"), as.Date("2014-03-01")))
 
 # Shares GDP ####
-Data_Share_GDP <- function(sample,Countries, Items, Vintages, MeasureUsed){
-  
-  sample <- subset(sample,
-                   Ctry %in% Countries &
-                     Item %in% Items & 
-                     Vintage == Vintages & 
-                     Measure == MeasureUsed) %>%
-    group_by(Item2, Group2, ToShade)%>%
-    summarise(
-      Value = mean(Value, rm.na = T)
-    ) %>%
-    ungroup()%>%
-    mutate("YEN" = max(Value), "Share" = Value/YEN *100) %>%
-    select(Item2, Group2, ToShade, Share)%>%
-    rename("Group"= "Group2", "Value" = "Share")
-  
+Data_Share_GDP <- function(data, Countries, Items, Vintages){
+  sample <- data[(Variable_code %in% Items) & 
+               (Country_code %in% Countries) &
+               (ECB_vintage %in% Vintages),
+             .(Value = mean(Value, na.rm = TRUE)),
+             by = .(Variable_long, Group2, ToShade)][
+               , Share := Value/max(Value) * 100
+             ]
   return(sample)
 }
 Plot_Share_GDP <- function(sample){
   
   
   sample <- sample %>%
-    mutate(Item2 = factor(Item2, levels = LevelItem2),
-           Group = factor(Group, levels = c("Revenue",
+    mutate(Variable_long = factor(Variable_long, levels = LevelItem2),
+           Group2 = factor(Group2, levels = c("Revenue",
                                             "Expenditure",
                                             "Macro",
                                             "Others")))
@@ -749,15 +727,15 @@ Plot_Share_GDP <- function(sample){
     ggtitle('') +
     
     #makes the bar and format 
-    geom_bar(aes(x=Item2 ,y= Value/100, fill=Group, alpha = ToShade),stat="identity",position="dodge",width=0.8)+
+    geom_bar(aes(x=Variable_long ,y= Share/100, fill=Group2, alpha = ToShade),stat="identity",position="dodge",width=0.8)+
     
     #Add labels
-    geom_text(aes(x=Item2,y=Value/100, vjust =  ifelse(Value > 0, -0.2, 1.15), label = round(Value,2)), size = 3, color = rgb(83, 83, 83, maxColorValue = 255))+
+    geom_text(aes(x=Variable_long,y=Share/100, vjust =  ifelse(Share > 0, -0.2, 1.15), label = round(Share,2)), size = 3, color = rgb(83, 83, 83, maxColorValue = 255))+
     
     #set general theme
     theme_ECB()+
     theme(axis.text.x =element_text(size = 10, angle = 90))+
-    scale_y_continuous(labels=latex_percent)+
+    scale_y_continuous(labels=scales::percent)+
     expand_limits(y = 1.02)+
     #set colors and name of data
     scale_fill_manual("",values=c(ECB_col))+
@@ -765,35 +743,27 @@ Plot_Share_GDP <- function(sample){
   
   return(plot)
 }
-Plot_Share_GDP(Data_Share_GDP(DatasetRaw,setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_Expenditure, "KTR","OCR", "OCE", "OKE", "INP"), "S21", "MainDb"))
+Plot_Share_GDP(Data_Share_GDP(DatasetRaw, setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_Expenditure, "KTR","OCR", "OCE", "OKE", "INP"), "S21"))
 
 # Mean and volatility ####
-Data_Mean_SD <- function(sample,Countries, Items, Vintages, MeasureUsed, UpDate, LowDate){
-  
-  sample <- subset(sample,
-                   Ctry %in% Countries &
-                     Item %in% Items & 
-                     Vintage == Vintages & 
-                     Measure == MeasureUsed &
-                     ObsDate < UpDate &
-                     ObsDate > LowDate) %>%
-    group_by(Item2,Group2, ToShade)%>%
-    summarise(
-      Mean = mean(Value, na.rm = T),
-      SD = sd(Value, na.rm = T)
-    ) %>%
-    rename("Group"= "Group2") %>%
-    melt(id.vars = c("Item2", "Group", "ToShade"), value.name = "Value", variable.name = "Statistic")%>%
-    
+Data_Mean_SD <- function(data,Countries, Items, Vintages, MeasureUsed, UpDate, LowDate){
+  sample <- data[(Variable_code %in% Items) & 
+                   (Country_code %in% Countries) &
+                   (ECB_vintage %in% Vintages) &
+                   (Date %between% c(LowDate, UpDate)),
+                 .(Mean = mean(Value, na.rm = TRUE),
+                   SD = sd(Value, na.rm = TRUE)),
+                 by = .(Variable_long, Group2, ToShade)]%>%
+    melt(id.vars = c("Variable_long", "Group2", "ToShade"), value.name = "Value", variable.name = "Statistic")
     return(sample)
 }
 SubPlot_Mean_SD <- function(sample, Statistics, Legend, Ylabs, scales_y){
   
   
   sample <- sample %>%
-    mutate(Item2 = factor(Item2, levels = LevelItem2),
-           Item2 = fct_rev(Item2),
-           Group = factor(Group, levels = c("Revenue",
+    mutate(Item2 = factor(Variable_long, levels = LevelItem2),
+           Item2 = fct_rev(Variable_long),
+           Group = factor(Group2, levels = c("Revenue",
                                             "Expenditure",
                                             "Macro",
                                             "Others")),
@@ -806,17 +776,17 @@ SubPlot_Mean_SD <- function(sample, Statistics, Legend, Ylabs, scales_y){
     ggtitle(ifelse(Statistics== "SD", "Standard deviation", Statistics)) +
     
     #makes the bar and format 
-    geom_bar(aes(x=Item2 ,y= Value, fill=Group, alpha=ToShade),stat="identity",position="dodge",width=0.8)+
+    geom_bar(aes(x=Variable_long ,y= Value, fill=Group2, alpha=ToShade),stat="identity",position="dodge",width=0.8)+
     geom_hline(yintercept = 0) +
     coord_flip()+
     
     #Add labels
     {if (Statistics == "Share")
-      geom_text(aes(x=Item2,y=Value, hjust =  ifelse(Value > 0, -0.2, 1.15), label = round(Value*100,2)), size = 3)
+      geom_text(aes(x=Variable_long,y=Value, hjust =  ifelse(Value > 0, -0.2, 1.15), label = round(Value*100,2)), size = 3)
     }+
     
     {if (Statistics != "Share")
-      geom_text(aes(x=Item2,y=Value, hjust =  ifelse(Value > 0, -0.2, 1.15), label = round(Value,2)), size = 3)
+      geom_text(aes(x=Variable_long,y=Value, hjust =  ifelse(Value > 0, -0.2, 1.15), label = round(Value,2)), size = 3)
     }+
     
     #set general theme
@@ -887,35 +857,24 @@ Plot_Mean_SD(DatasetRaw,setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_
 
 
 # Ranking TOE ####
-Data_Ranking <- function(sample, Items, Vintages, MeasureUsed, ObsYear){
-  
-  sample <- subset(sample,
-                   Item %in% Items & 
-                     Vintage == Vintages & 
-                     Measure == MeasureUsed & 
-                     ObsY == ObsYear) %>%
-    group_by(Ctry)%>%
-    summarise(
-      Value = sum(Value)
-    )%>% 
-    mutate("EA" = max(Value), 
-           "Share" = Value/EA)%>% 
-    select(Ctry, Share)%>% 
-    rename("Value" = "Share")
-  
-  
+Data_Ranking <- function(data, Items, Vintages, ObsYear){
+  sample <- data[(Variable_code %in% Items) & 
+                   (ECB_vintage %in% Vintages) &
+                   (year(Date) %in% ObsYear),
+                   .(Value = sum(Value, na.rm = TRUE)),
+                 by = .(Country_code)][
+                   , Share := Value / max(Value)
+                 ]
   return(sample)
 }
 Plot_Ranking <- function(sample){
-  
-  
   sample <- sample %>%
-    subset(!(Ctry %in% c("EA", "I8")))%>%
-    mutate(Ctry = factor(Ctry, levels = c("DE", "FR", "IT", "ES","NL", "BE",
+    subset(!(Country_code %in% c("EA", "I8")))%>%
+    mutate(Country_code = factor(Country_code, levels = c("DE", "FR", "IT", "ES","NL", "BE",
                                           "AT","FI", "PT","REA", "GR", "IE","SK",
                                           "LU","SI","LT","LV", "EE", "CY", "MT")),
-           Group = case_when(Ctry %in% c("GR","IE", "SK", "LU","SI","LT", "LV","EE", "CY","MT") ~ "Others",
-                             Ctry == "REA" ~ "Rest of EA",
+           Group = case_when(Country_code %in% c("GR","IE", "SK", "LU","SI","LT", "LV","EE", "CY","MT") ~ "Others",
+                             Country_code == "REA" ~ "Rest of EA",
                              TRUE ~ "Big 9")
     )
   
@@ -923,18 +882,18 @@ Plot_Ranking <- function(sample){
     ggtitle('') +
     
     #makes the bar and format 
-    geom_bar(aes(x=Ctry ,y= Value, fill=Group),stat="identity",position="dodge",width=0.8)+
+    geom_bar(aes(x=Country_code ,y= Share, fill=Group),stat="identity",position="dodge",width=0.8)+
     
     #Add labels
-    geom_text(aes(x=Ctry,y=Value, vjust =  ifelse(Value > 0, -0.2, 1.15), label = round(Value*100,2)), size = 3, color = rgb(83, 83, 83, maxColorValue = 255))+
+    geom_text(aes(x=Country_code,y=Share, vjust =  ifelse(Share > 0, -0.2, 1.15), label = round(Share*100,2)), size = 3, color = rgb(83, 83, 83, maxColorValue = 255))+
     
     #set general theme
     theme_ECB()+
-    scale_y_continuous(labels=latex_percent)+
+    scale_y_continuous(labels=scales::percent)+
     expand_limits(y = 0.3)+
     #set colors and name of data
     scale_fill_manual("",values=c(ECB_col[1],ECB_col[9],ECB_col[3]))
   
   return(plot)
 }
-Plot_Ranking(Data_Ranking(DatasetRaw,"TOE", "S21", "MainDb", 2019))
+Plot_Ranking(Data_Ranking(DatasetRaw,"TOE", "S21", 2019))
