@@ -220,39 +220,18 @@ Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
   return(sample[!(Statistic %in% c("SD", "SDF"))])
 }
 SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y) {
-  sample <- sample %>%
-    mutate(
-      Variable_long = factor(Variable_long, levels = LevelItem2),
-      Variable_long = forcats::fct_rev(Variable_long),
-      Group = factor(Group, levels = c(
-        "Revenue",
-        "Expenditure",
-        "Macro"
-      )),
-      Statistic = factor(Statistic, levels = c(
-        "N",
-        "MR",
-        "MIN",
-        "MAX",
-        "MAR",
-        "RMSR",
-        "N2S"
-      ))
-    )
+  sample <- sample[, c("Variable_long", "Group", "Statistic") := list(
+    factor(Variable_long, levels = LevelItem2),
+    factor(Group, levels = c("Revenue", "Expenditure", "Macro")),
+    factor(Statistic, levels = c("N", "MR", "MIN", "MAX", "MAR", "RMSR", "N2S"))
+  )][, Variable_long := forcats::fct_rev(Variable_long)]
 
-  temp <- sample %>%
-    subset(Statistic == "N") %>%
-    arrange(Variable_long)
-
+  temp <- sample[(Statistic == "N")][order(Variable_long)]
 
   NewTitle <- paste0(temp$Variable_long, "\n(", temp$Value, ")")
   names(NewTitle) <- temp$Variable_long
-  sample <- sample %>%
-    subset(Statistic != "N") %>%
-    mutate(
-      Variable_long = recode(Variable_long, !!!NewTitle),
-      Variable_long = factor(Variable_long, levels = NewTitle)
-    )
+
+  sample <- sample[(Statistic != "N")][, Variable_long := factor(dplyr::recode(Variable_long, !!!NewTitle), levels = NewTitle)]
 
   plot <- ggplot(data = subset(sample, Statistic == Statistics)) +
     ggtitle(Statistics) +
@@ -324,8 +303,6 @@ Plot_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
     Plot6 + theme(plot.margin = unit(c(0, 0, 0, 0.5), "cm")),
     align = "h", ncol = 6, vjust = -0.8
   )
-
-
 
   plot <- plot_grid(legend,
     prow + theme(plot.margin = unit(c(-0.5, 0, 0, 0), "cm")),
@@ -403,8 +380,8 @@ Plot_TOTAL_REV <- function(sample, Legend) {
   plot <- ggplot() +
     ggtitle("") +
     # makes the bar and format
-    geom_bar(data = subset(sample, Type == "Revision"), aes(x = Date, y = Value, fill = "#003299"), stat = "identity") +
-    geom_line(data = subset(sample, Type == "Data"), aes(x = Date, y = Value, color = "black")) +
+    geom_bar(data = sample[Type == "Revision"], aes(x = Date, y = Value, fill = "#003299"), stat = "identity") +
+    geom_line(data = sample[Type == "Data"], aes(x = Date, y = Value, color = "black")) +
     scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
     # set general theme
     theme_ECB() +
@@ -435,14 +412,7 @@ Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOf
 }
 Plot_TOTAL_REV_DECOMP <- function(sample, Legend) {
   ###### Defining factors
-
-  sample$Revision_nb <- factor(sample$Revision_nb, levels = c(
-    "1",
-    "2",
-    "3",
-    "4",
-    "5"
-  ))
+sample[, Revision_nb := factor(Revision_nb, levels = paste0(1:5))]
 
   SumData <- sample %>%
     subset(Type == "Revision") %>%
