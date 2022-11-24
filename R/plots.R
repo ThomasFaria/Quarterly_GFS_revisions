@@ -412,7 +412,7 @@ Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOf
 }
 Plot_TOTAL_REV_DECOMP <- function(sample, Legend) {
   ###### Defining factors
-sample[, Revision_nb := factor(Revision_nb, levels = paste0(1:5))]
+  sample[, Revision_nb := factor(Revision_nb, levels = paste0(1:5))]
 
   SumData <- sample %>%
     subset(Type == "Revision") %>%
@@ -747,7 +747,6 @@ Data_Share_GDP <- function(data, Countries, Items, Vintages) {
   return(sample)
 }
 Plot_Share_GDP <- function(sample) {
-  
   sample[, c("Variable_long", "Group2") := list(factor(Variable_long, levels = LevelItem2), Group2 = factor(Group2, levels = c(
     "Revenue",
     "Expenditure",
@@ -792,17 +791,17 @@ Data_Mean_SD <- function(data, Countries, Items, Vintages, MeasureUsed, UpDate, 
     by = .(Variable_long, Group2, ToShade)
   ] %>%
     melt(id.vars = c("Variable_long", "Group2", "ToShade"), value.name = "Value", variable.name = "Statistic")
-  
-  
+
+
   return(sample)
 }
 SubPlot_Mean_SD <- function(sample, Statistics, Legend, Ylabs, scales_y) {
-  
   sample[, c("Variable_long", "Group2", "Statistic") := list(factor(Variable_long, levels = LevelItem2),
-                                                            factor(Group2, levels = c("Revenue", "Expenditure", "Macro", "Others")),
-                                                            Statistic = factor(Statistic, levels = c("Mean", "SD","Share")))][
-                                                              , Variable_long := forcats::fct_rev(Variable_long)
-                                                            ]
+    factor(Group2, levels = c("Revenue", "Expenditure", "Macro", "Others")),
+    Statistic = factor(Statistic, levels = c("Mean", "SD", "Share"))
+  )][
+    , Variable_long := forcats::fct_rev(Variable_long)
+  ]
 
   plot <- ggplot(data = sample[Statistic == Statistics]) +
     ggtitle(ifelse(Statistics == "SD", "Standard deviation", Statistics)) +
@@ -897,8 +896,55 @@ scales_ <- list(
       "SD" = expand_limits(y = 120)
     )
 )
+# Remettre que data dans les arguments
+# refaire les premiers appels des tables
+# faire les outliers
 
-Plot_Mean_SD(DatasetRaw, setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_Expenditure, "KTR", "OCR", "OCE", "OKE", "INP"), "S21", "GRate", as.Date("2020-01-01"), as.Date("2006-01-01"), scales_)
+Plot_Mean_SD(GRateDB, setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_Expenditure, "KTR", "OCR", "OCE", "OKE", "INP"), "S21", "GRate", as.Date("2019-12-31"), as.Date("2006-01-01"), scales_)
+GRateDB <- arrow::read_parquet("data/GRateDB.parquet")
+GRateDB <- GRateDB %>%
+  mutate(
+    Group = case_when(
+      Variable_code %in% c("TOR", "DTX", "TIN", "SCT") ~ "Revenue",
+      Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN") ~ "Expenditure",
+      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS") ~ "Macro",
+      TRUE ~ "Others"
+    ),
+    Group2 = case_when(
+      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR") ~ "Revenue",
+      Variable_code %in% c("TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE") ~ "Expenditure",
+      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS") ~ "Macro",
+      TRUE ~ "Others"
+    ),
+    ToShade = case_when(
+      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP") ~ "TRUE",
+      TRUE ~ "FALSE"
+    ),
+    Variable_long = case_when(
+      Variable_code %in% c("TOR") ~ "Total revenue",
+      Variable_code %in% c("DTX") ~ "Direct taxes",
+      Variable_code %in% c("TIN") ~ "Indirect taxes",
+      Variable_code %in% c("SCT") ~ "Social contributions",
+      Variable_code %in% c("TOE") ~ "Total expenditure",
+      Variable_code %in% c("THN") ~ "Social transfers",
+      Variable_code %in% c("PUR") ~ "Purchases",
+      Variable_code %in% c("COE") ~ "Gov. compensation",
+      Variable_code %in% c("GIN") ~ "Gov. investment",
+      Variable_code %in% c("YEN") ~ "GDP",
+      Variable_code %in% c("PCN") ~ "Private consumption",
+      Variable_code %in% c("ITN") ~ "Total investment",
+      Variable_code %in% c("EXN") ~ "Exports",
+      Variable_code %in% c("GCN") ~ "Gov. consumption",
+      Variable_code %in% c("WGS") ~ "Wages and salaries",
+      Variable_code %in% c("OCR") ~ "Other current revenue",
+      Variable_code %in% c("KTR") ~ "Capital revenue",
+      Variable_code %in% c("INP") ~ "Interest payments",
+      Variable_code %in% c("OCE") ~ "Other current expenditure",
+      Variable_code %in% c("OKE") ~ "Other capital expenditure",
+      TRUE ~ "Others"
+    )
+  )
+
 
 # Ranking TOE ####
 Data_Ranking <- function(data, Items, Vintages, ObsYear) {
@@ -914,14 +960,13 @@ Data_Ranking <- function(data, Items, Vintages, ObsYear) {
   return(sample)
 }
 Plot_Ranking <- function(sample) {
-  
   sample <- sample[!(Country_code %in% c("EA", "I8"))][
     , Country_code := factor(Country_code, levels = c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"))
   ][, Group := .(fcase(
     Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), "Others",
     Country_code %in% c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT"), "Big 9",
-    Country_code %in% ("REA"), "Rest of EA")
-    )]
+    Country_code %in% ("REA"), "Rest of EA"
+  ))]
 
   plot <- ggplot(data = sample) +
     ggtitle("") +
