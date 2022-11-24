@@ -205,7 +205,7 @@ Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
     .(
       SD = sd(Value, na.rm = TRUE),
       MR = mean(Value, na.rm = TRUE),
-      N = sum(!is.na(Value)),
+      N = as.double(sum(!is.na(Value))),
       MAR = mean(abs(Value), na.rm = TRUE),
       RMSR = sqrt(mean(Value^2, na.rm = TRUE)),
       MIN = min(Value, na.rm = TRUE),
@@ -405,7 +405,7 @@ Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOf
       (Measure == MeasureUsed)][, c("Type", "Revision_nb") := list("Revision", as.character(Revision_nb))][, .(Date, Value, Revision_nb, Type)],
     data_final[(Country_code %in% Countries) &
       (Variable_code %in% Items) &
-      (Measure == MeasureUsed)][, Type := "Data"][, .(Date, Value, Revision_nb, Type)]
+      (Measure == MeasureUsed)][, c("Type", "Revision_nb") := list("Data", NA)][, .(Date, Value, Revision_nb, Type)]
   ))
 
   return(sample)
@@ -518,18 +518,18 @@ Data_SingleVSTotal <- function(data, Countries, Items, MeasureUsed, TypeOfRevisi
     ]
   ), use.names = TRUE)
 
+  sample[, c("Country_code", "RevisionPlace_renamed") := list(factor(Country_code, levels = c("AT", "FR", "FI")), factor(RevisionPlace_renamed, levels = c("January 2017", "April 2017", "July 2017", "October 2017")))]
+
   return(sample)
 }
 Plot_SingleVSTotal <- function(data) {
-  table <- le[(Type == "Table")][, Value := round(Value, 2)] %>%
+  table <- data[(Type == "Table")][, Value := round(Value, 2)] %>%
     dcast(Type_revision ~ Country_code, value.var = "Value")
 
-  sample <- le[(Type == "Plot")][, .(RevisionPlace_renamed, Country_code, Value)][
+  sample <- data[(Type == "Plot")][, .(RevisionPlace_renamed, Country_code, Value)][
     , Date := RevisionPlace_renamed
   ]
 
-  #   Ctry = factor(Ctry, levels = c("AT", "FR", "FI")
-  #  Date = factor(Date, levels = c("January 2017", "April 2017", "July 2017", "October 2017")
 
   ##### Creating the table #####
   cols <- matrix("black", nrow(table), ncol(table))
@@ -737,6 +737,7 @@ Data_Share_GDP <- function(data, Countries, Items, Vintages) {
   sample <- data[
     (Variable_code %in% Items) &
       (Country_code %in% Countries) &
+      (Date > as.Date("1998-12-31")) &
       (ECB_vintage %in% Vintages),
     .(Value = mean(Value, na.rm = TRUE)),
     by = .(Variable_long, Group2, ToShade)
@@ -746,16 +747,13 @@ Data_Share_GDP <- function(data, Countries, Items, Vintages) {
   return(sample)
 }
 Plot_Share_GDP <- function(sample) {
-  sample <- sample %>%
-    mutate(
-      Variable_long = factor(Variable_long, levels = LevelItem2),
-      Group2 = factor(Group2, levels = c(
-        "Revenue",
-        "Expenditure",
-        "Macro",
-        "Others"
-      ))
-    )
+  
+  sample[, c("Variable_long", "Group2") := list(factor(Variable_long, levels = LevelItem2), Group2 = factor(Group2, levels = c(
+    "Revenue",
+    "Expenditure",
+    "Macro",
+    "Others"
+  )))]
 
 
   plot <- ggplot(data = sample) +
@@ -794,28 +792,19 @@ Data_Mean_SD <- function(data, Countries, Items, Vintages, MeasureUsed, UpDate, 
     by = .(Variable_long, Group2, ToShade)
   ] %>%
     melt(id.vars = c("Variable_long", "Group2", "ToShade"), value.name = "Value", variable.name = "Statistic")
+  
+  
   return(sample)
 }
 SubPlot_Mean_SD <- function(sample, Statistics, Legend, Ylabs, scales_y) {
-  sample <- sample %>%
-    mutate(
-      Item2 = factor(Variable_long, levels = LevelItem2),
-      Item2 = fct_rev(Variable_long),
-      Group = factor(Group2, levels = c(
-        "Revenue",
-        "Expenditure",
-        "Macro",
-        "Others"
-      )),
-      Statistic = factor(Statistic, levels = c(
-        "Mean",
-        "SD",
-        "Share"
-      ))
-    )
+  
+  sample[, c("Variable_long", "Group2", "Statistic") := list(factor(Variable_long, levels = LevelItem2),
+                                                            factor(Group2, levels = c("Revenue", "Expenditure", "Macro", "Others")),
+                                                            Statistic = factor(Statistic, levels = c("Mean", "SD","Share")))][
+                                                              , Variable_long := forcats::fct_rev(Variable_long)
+                                                            ]
 
-
-  plot <- ggplot(data = subset(sample, Statistic == Statistics)) +
+  plot <- ggplot(data = sample[Statistic == Statistics]) +
     ggtitle(ifelse(Statistics == "SD", "Standard deviation", Statistics)) +
 
     # makes the bar and format
@@ -925,20 +914,14 @@ Data_Ranking <- function(data, Items, Vintages, ObsYear) {
   return(sample)
 }
 Plot_Ranking <- function(sample) {
-  sample <- sample %>%
-    subset(!(Country_code %in% c("EA", "I8"))) %>%
-    mutate(
-      Country_code = factor(Country_code, levels = c(
-        "DE", "FR", "IT", "ES", "NL", "BE",
-        "AT", "FI", "PT", "REA", "GR", "IE", "SK",
-        "LU", "SI", "LT", "LV", "EE", "CY", "MT"
-      )),
-      Group = case_when(
-        Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT") ~ "Others",
-        Country_code == "REA" ~ "Rest of EA",
-        TRUE ~ "Big 9"
-      )
-    )
+  
+  sample <- sample[!(Country_code %in% c("EA", "I8"))][
+    , Country_code := factor(Country_code, levels = c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"))
+  ][, Group := .(fcase(
+    Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), "Others",
+    Country_code %in% c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT"), "Big 9",
+    Country_code %in% ("REA"), "Rest of EA")
+    )]
 
   plot <- ggplot(data = sample) +
     ggtitle("") +
