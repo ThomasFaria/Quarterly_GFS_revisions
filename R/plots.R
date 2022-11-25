@@ -778,17 +778,16 @@ Data_Ranking <- function(data, Items, Vintages, ObsYear) {
     by = .(Country_code)
   ][
     , Share := Value / max(Value)
-  ]
-  return(sample)
-}
-Plot_Ranking <- function(sample) {
-  sample <- sample[!(Country_code %in% c("EA", "I8"))][
+  ][!(Country_code %in% c("EA", "I8"))][
     , Country_code := factor(Country_code, levels = c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"))
   ][, Group := .(fcase(
     Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), "Others",
     Country_code %in% c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT"), "Big 9",
     Country_code %in% ("REA"), "Rest of EA"
   ))]
+  return(sample)
+}
+Plot_Ranking <- function(sample) {
 
   plot <- ggplot(data = sample) +
     ggtitle("") +
@@ -811,3 +810,266 @@ Plot_Ranking <- function(sample) {
 Plot_Ranking(Data_Ranking(DatasetRaw, "TOE", "S21", 2019))
 
 # faire les outliers
+data[, Group3 := .(fcase(
+  Group %in% c("Revenue", "Expenditure"),  "Fiscal",
+  Group %in% c("Macro") , "Macro",
+  !(Group %in% c("Macro", "Revenue", "Expenditure")), "Others"
+))][, IsREA := .(fcase(
+  Country_code %in% c("GR","IE", "SK", "LU","SI","LT", "LV","EE", "CY","MT"), 1,
+  !(Country_code %in% c("GR","IE", "SK", "LU","SI","LT", "LV","EE", "CY","MT")), 0
+))][, IsEA := .(fcase(
+  Country_code %in% c("EA"), 1,
+  !(Country_code %in% c("EA")), 0
+))]
+
+##### Plotting #####
+Ctry_EA19
+Data_all_revisions <- function(Countries, Items, Type_revision, Measure)
+SubPlot_Out <- function(sample, Items, XLab, Grey, Legend){
+  
+  sample <- subset(sample, Variable_code %in% Items &  Country_code %in% Items & Type_revision == "Final" & Revision_nb == 1 &  Measure == "GRate") %>% 
+    mutate(Country_code = factor(Country_code, levels = c(setdiff(Items, "EA"), "EA")),
+           IsEA = factor(IsEA, levels = c("Countries","EA"))
+    ) 
+  
+  
+  temp <- sample %>% 
+    subset(Variable_code %in% Items)%>% 
+    group_by(Variable_long)%>%
+    summarise(
+      N = sum(!is.na(Value))
+    )%>%
+    mutate(Variable_long = factor(Variable_long, levels = LevelItem2)) %>%
+    arrange(Variable_long)
+  
+  NewTitle <- paste0(temp$Variable_long, "\n (", temp$N, ")")
+  
+  plot <- ggplot(data = sample) +
+    ggtitle('') +
+    {if (Grey) 
+      geom_rect(aes(fill = Group),xmin = -Inf,xmax = Inf,
+                ymin = -Inf,ymax = Inf,alpha = 0.3, fill = rgb(230, 230, 230, maxColorValue = 255))
+    }+
+    geom_point(aes(y =Date,  x = Value, color = Country_code,alpha = Country_code), size = 1, shape = 16) + 
+    theme_ECB()+
+    scale_color_manual(values=c(rep(ECB_col[1], 19), ECB_col[2]))+
+    scale_alpha_manual(values= c(seq(19,1, -1)/19, 1))+
+    scale_x_continuous(limits = c(-650,550), breaks = seq(-600, 500, 300))+
+    ylab(NewTitle)+
+    
+    {if (!Legend)
+      theme(legend.position="none")
+    }+
+    
+    {if (!XLab)
+      theme(axis.text.x=element_blank(),
+            axis.ticks.x=element_blank(),
+            axis.line.x = element_line(color =rgb(217, 217, 217, maxColorValue = 255))
+      )
+    }+
+    
+    theme(
+      axis.title.y=element_text(size = 10, face = "bold"),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank(),
+      panel.spacing = unit(0, "cm"),
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      panel.background = element_rect(fill = NA),
+      panel.ontop = TRUE
+    )
+  
+  
+  return(plot)
+}
+Plot_all_revisions <- function(sample){
+  Plot1 <- SubPlot_Out(sample, "TOR", F, F, F)
+  Plot2 <- SubPlot_Out(sample, "DTX", F, F, F)
+  Plot3 <- SubPlot_Out(sample, "TIN", F, F, F)
+  Plot4 <- SubPlot_Out(sample, "SCT", F, F, F)
+  Plot5 <- SubPlot_Out(sample, "OCR", F, T, F)
+  Plot6 <- SubPlot_Out(sample, "KTR", F, T, F)
+  Plot7 <- SubPlot_Out(sample, "TOE", F, F, F)
+  Plot8 <- SubPlot_Out(sample, "THN", F, F, F)
+  Plot9 <- SubPlot_Out(sample, "PUR", F, F, F)
+  Plot10 <- SubPlot_Out(sample, "INP", F, T, F)
+  Plot11 <- SubPlot_Out(sample, "COE", F, F, F)
+  Plot12 <- SubPlot_Out(sample, "OCE", F, T, F)
+  Plot13 <- SubPlot_Out(sample, "GIN", F, F, F)
+  Plot14 <- SubPlot_Out(sample, "OKE", F, T, F)
+  Plot15 <- SubPlot_Out(sample, "YEN", F, F, F)
+  Plot16 <- SubPlot_Out(sample, "PCN", F, F, F)
+  Plot17 <- SubPlot_Out(sample, "ITN", F, F, F)
+  Plot18 <- SubPlot_Out(sample, "EXN", F, F, F)
+  Plot19 <- SubPlot_Out(sample, "GCN", F, F, F)
+  Plot20 <- SubPlot_Out(sample, "WGS", T, F, F)
+  
+  
+  legend <- get_legend(
+    SubPlot_Out(sample, "WGS", T, F, T)    + theme(legend.box.margin = margin(-15, 0, 0, 0))
+  )
+  
+  prow <- plot_grid(Plot1  + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")) ,
+                    Plot2  + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot3  + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot4  + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot5  + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot6  + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot7  + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot8  + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot9  + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot10 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot11 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot12 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot13 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot14 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot15 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot16 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot17 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot18 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot19 + theme(plot.margin = unit(c(-0.74,0,0.24,0), "cm")),
+                    Plot20 + theme(plot.margin = unit(c(-0.74,0,0,0), "cm")),
+                    align = "v", ncol = 1, vjust = -0.8)
+  
+  plot <- plot_grid(legend,
+                    prow + theme(plot.margin = unit(c(-0.3, 0.1, 0.1, 0.1), "cm")), 
+                    ncol = 1, rel_heights = c(0.1, 1))
+  
+  return(plot)
+}
+PlotFunction <- function(sample, aVar){
+  
+  temp <- sample %>% 
+    subset(Country_code != "I8" & Measure == "GRate" & Variable_code == aVar & Type_revision == "Final" & Revision_nb == 1) %>% 
+    group_by(Country_code) %>%
+    summarise(
+      N = sum(!is.na(Value))
+    ) %>%
+    mutate(Country_code = factor(Country_code, levels = Ctry_ALL)) %>%
+    arrange(Country_code)
+  
+  NewTitle <- paste0(temp$Country_code, "\n (", temp$N, ")")
+  names(NewTitle) <- temp$Country_code
+  
+  sample <- subset(sample, Country_code != "I8" & Measure == "GRate" & Variable_code == aVar & Type_revision == "Final" & Revision_nb == 1) %>% 
+    mutate(Country_code = dplyr::recode(Country_code, !!!NewTitle), Country_code = factor(Country_code, levels = NewTitle))
+  
+  plot <- ggplot() +
+    ggtitle('') +
+    geom_rect(data = subset(sample,IsREA == 1), aes(fill = as.factor(IsREA)),xmin = -Inf,xmax = Inf,
+              ymin = -Inf,ymax = Inf,alpha = 0.3)+
+    geom_point(data=sample, aes(x =Date,  y=Value), color = ECB_col[1], size = 1, shape = 16, alpha = 0.5) +
+    coord_flip()+
+    facet_wrap(. ~ Country_code,ncol = 1, strip.position="left") +
+    theme_ECB()+
+    
+    scale_fill_manual(values= rgb(230, 230, 230, maxColorValue = 255), guide = 'none')+
+    
+    theme(axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks.y=element_blank(),
+          panel.spacing = unit(0, "cm"), 
+          strip.placement = "outside",
+          panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank(),
+          panel.background = element_rect(fill = NA),
+          panel.ontop = TRUE
+    )+
+    labs(x = aVar)
+  return(plot)
+}
+PlotFunction3 <- function(sample, LabsY){
+  
+  temp <- sample %>% 
+    subset(Country_code != "I8" & Measure == "GRate" &  Variable_code %in% c("YEN", "TOE", "TOR") & Type_revision == "Final" & Revision_nb == 1) %>% 
+    group_by(Country_code)%>%
+    summarise(
+      N = sum(!is.na(Value))
+    )%>%
+    mutate(Country_code = factor(Country_code, levels = c("EA", "DE", "FR", "IT","ES", "NL", "BE", "AT","FI", "PT","REA",
+                                                          "GR","IE",  "SK", "LU","SI","LT", "LV","EE", "CY","MT", 
+                                                          "PL", "SE", "DK","RO","CZ","BG", "HU", "HR"))) %>%
+    arrange(Country_code)
+  
+  NewTitle <- paste0(temp$Country_code, "\n (", temp$N, ")")
+  names(NewTitle) <- temp$Country_code
+  sample <- subset(sample, Country_code != "I8" & Measure == "GRate" & Variable_code %in% c("YEN", "TOE", "TOR") & Type_revision == "Final" & Revision_nb == 1)%>% 
+    mutate(Country_code = recode(Country_code, !!!NewTitle), Country_code = factor(Country_code, levels = NewTitle), Variable_long = factor(Variable_long, levels = c("Total revenue", "Total expenditure", "GDP"))) 
+  
+  plot <- ggplot() +
+    ggtitle('') +
+    geom_rect(data = subset(sample,IsREA == 1), aes(fill = as.factor(IsREA)),xmin = -Inf,xmax = Inf,
+              ymin = -Inf,ymax = Inf,alpha = 0.3)+
+    geom_point(data=sample, aes(x =Date,  y=Value, color = Variable_long), size = 1, shape = 16, alpha = 0.75) + 
+    
+    coord_flip()+
+    facet_wrap(. ~ Country_code,ncol = 1, strip.position="left") +
+    theme_ECB()+
+    
+    {if (LabsY) 
+      ylim(-50,50)
+    }+
+    
+    scale_color_manual(values=ECB_col)+
+    scale_fill_manual(values= rgb(230, 230, 230, maxColorValue = 255), guide = 'none')+
+    
+    theme(axis.title.y=element_blank(),
+          axis.text.y=element_blank(),
+          axis.ticks.y=element_blank(),
+          panel.spacing = unit(0, "cm"),
+          strip.placement = "outside",
+          panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank(),
+          panel.background = element_rect(fill = NA),
+          panel.ontop = TRUE)
+  
+  return(plot)
+}
+PlotFunction4 <- function(sample, LabsY){
+  
+  
+  sample <- subset(sample, Measure == "GRate" & Variable_code %in% c("YEN", "TOE", "TOR") & Type_revision == "Final" & Revision_nb == 1 &
+                     Country_code  %in% c(Ctry_Agg, "REA"))%>% 
+    mutate(Country_code = factor(Country_code, levels = c("EA", "DE", "FR", "IT","ES", "NL", "BE", "AT","FI", "PT","REA",
+                                                          "GR","IE",  "SK", "LU","SI","LT", "LV","EE", "CY","MT", 
+                                                          "PL", "SE", "DK","RO","CZ","BG", "HU", "HR")), Variable_long = factor(Variable_long, levels = c("Total revenue", "Total expenditure", "GDP"))) 
+  
+  Bound <- sample%>%
+    group_by(Variable_long, ObsY)%>% 
+    summarise(
+      q5 = quantile(Value, c(.05) , na.rm = T),
+      q95 = quantile(Value, c(.95), na.rm = T)
+      
+    )%>% 
+    mutate(ObsY = as.Date(paste0(ObsY, "-07-01")))
+  
+  plot <- ggplot() +
+    ggtitle('') +
+    geom_ribbon(data = Bound, aes(xmin = q5,xmax = q95, y = ObsY, fill = Variable_long), alpha = 0.3)+
+    geom_point(data=sample, aes(x = Value,  y=Date, color = Variable_long), size = 1, shape = 16, alpha = 0.75) + 
+    
+    theme_ECB()+
+    
+    {if (LabsY) 
+      ylim(-50,50)
+    }+
+    
+    scale_color_manual(values=ECB_col)+
+    scale_fill_manual(values=ECB_col,guide = 'none')+
+    scale_y_date(date_breaks = "2 years", date_labels = "%Y")+
+    
+    theme(panel.spacing = unit(0, "cm"),
+          strip.placement = "outside",
+          panel.background = element_rect(fill = NA),
+          panel.ontop = TRUE)
+  
+  return(plot)
+}
+
+PlotFunction(data, "YEN")
+PlotFunction3(data,  F)
+PlotFunction4(data,  F)
+Plot_all_revisions(data)
+
+
+
