@@ -1,4 +1,5 @@
 source("R/utils/theme_ECB.R")
+source("R/functions.R")
 library(dplyr)
 library(tidyr)
 library(stringr)
@@ -13,150 +14,19 @@ library(grid)
 
 # 1) comprendre comment gérer les bases de données pour le projet et pour les plots
 # 2) rendre le code plus beau
-# 3) faire du data.table et le rendre plus rapide
 data <- arrow::read_parquet("data/RevisionDB.parquet")
-
-data <- data %>%
-  mutate(
-    ObsQ = as.integer(substr(quarters(Date), 2, 2)),
-    ObsY = year(Date),
-    Measure = "GRate",
-    Revision_nb = as.double(Revision_nb),
-    ReleaseDate = as.Date(case_when(
-      startsWith(Vintage_base, "W") ~ paste0(str_replace(Vintage_base, "W", "20"), "-01-01"),
-      startsWith(Vintage_base, "G") ~ paste0(str_replace(Vintage_base, "G", "20"), "-04-01"),
-      startsWith(Vintage_base, "S") ~ paste0(str_replace(Vintage_base, "S", "20"), "-07-01"),
-      startsWith(Vintage_base, "A") ~ paste0(str_replace(Vintage_base, "A", "20"), "-10-01")
-    )),
-    IsNAN = is.na(Value),
-    Group = case_when(
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT") ~ "Revenue",
-      Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN") ~ "Expenditure",
-      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS") ~ "Macro",
-      TRUE ~ "Others"
-    ),
-    Group2 = case_when(
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR") ~ "Revenue",
-      Variable_code %in% c("TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE") ~ "Expenditure",
-      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS") ~ "Macro",
-      TRUE ~ "Others"
-    ),
-    ToShade = case_when(
-      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP") ~ "TRUE",
-      TRUE ~ "FALSE"
-    ),
-    RevisionPlace = case_when(
-      ObsQ == 1 ~ Revision_nb,
-      ObsQ == 2 ~ Revision_nb + 1,
-      ObsQ == 3 ~ Revision_nb + 2,
-      ObsQ == 4 ~ Revision_nb + 3,
-    ),
-    Variable_long = case_when(
-      Variable_code %in% c("TOR") ~ "Total revenue",
-      Variable_code %in% c("DTX") ~ "Direct taxes",
-      Variable_code %in% c("TIN") ~ "Indirect taxes",
-      Variable_code %in% c("SCT") ~ "Social contributions",
-      Variable_code %in% c("TOE") ~ "Total expenditure",
-      Variable_code %in% c("THN") ~ "Social transfers",
-      Variable_code %in% c("PUR") ~ "Purchases",
-      Variable_code %in% c("COE") ~ "Gov. compensation",
-      Variable_code %in% c("GIN") ~ "Gov. investment",
-      Variable_code %in% c("YEN") ~ "GDP",
-      Variable_code %in% c("PCN") ~ "Private consumption",
-      Variable_code %in% c("ITN") ~ "Total investment",
-      Variable_code %in% c("EXN") ~ "Exports",
-      Variable_code %in% c("GCN") ~ "Gov. consumption",
-      Variable_code %in% c("WGS") ~ "Wages and salaries",
-      Variable_code %in% c("OCR") ~ "Other current revenue",
-      Variable_code %in% c("KTR") ~ "Capital revenue",
-      Variable_code %in% c("INP") ~ "Interest payments",
-      Variable_code %in% c("OCE") ~ "Other current expenditure",
-      Variable_code %in% c("OKE") ~ "Other capital expenditure",
-      TRUE ~ "Others"
-    )
-  ) %>%
-  filter_all(all_vars(!is.infinite(.)))
+data <- preprocess_revision_db(data)
 
 DatasetRaw <- arrow::read_csv_arrow("data/RealTimeDatabase.csv")
 setDT(DatasetRaw)
-DatasetRaw <- DatasetRaw %>%
-  mutate(
-    ObsQ = as.integer(substr(quarters(Date), 2, 2)),
-    ObsY = year(Date),
-    ReleaseDate = as.Date(ifelse(startsWith(ECB_vintage, "W"), paste0(str_replace(ECB_vintage, "W", "20"), "-01-01"),
-      ifelse(startsWith(ECB_vintage, "G"), paste0(str_replace(ECB_vintage, "G", "20"), "-04-01"),
-        ifelse(startsWith(ECB_vintage, "S"), paste0(str_replace(ECB_vintage, "S", "20"), "-07-01"),
-          paste0(str_replace(ECB_vintage, "A", "20"), "-07-01")
-        )
-      )
-    )),
-    Group = case_when(
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT") ~ "Revenue",
-      Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN") ~ "Expenditure",
-      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS") ~ "Macro",
-      TRUE ~ "Others"
-    ),
-    Group2 = case_when(
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR") ~ "Revenue",
-      Variable_code %in% c("TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE") ~ "Expenditure",
-      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS") ~ "Macro",
-      TRUE ~ "Others"
-    ),
-    ToShade = case_when(
-      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP") ~ "TRUE",
-      TRUE ~ "FALSE"
-    ),
-    Variable_long = case_when(
-      Variable_code %in% c("TOR") ~ "Total revenue",
-      Variable_code %in% c("DTX") ~ "Direct taxes",
-      Variable_code %in% c("TIN") ~ "Indirect taxes",
-      Variable_code %in% c("SCT") ~ "Social contributions",
-      Variable_code %in% c("TOE") ~ "Total expenditure",
-      Variable_code %in% c("THN") ~ "Social transfers",
-      Variable_code %in% c("PUR") ~ "Purchases",
-      Variable_code %in% c("COE") ~ "Gov. compensation",
-      Variable_code %in% c("GIN") ~ "Gov. investment",
-      Variable_code %in% c("YEN") ~ "GDP",
-      Variable_code %in% c("PCN") ~ "Private consumption",
-      Variable_code %in% c("ITN") ~ "Total investment",
-      Variable_code %in% c("EXN") ~ "Exports",
-      Variable_code %in% c("GCN") ~ "Gov. consumption",
-      Variable_code %in% c("WGS") ~ "Wages and salaries",
-      Variable_code %in% c("OCR") ~ "Other current revenue",
-      Variable_code %in% c("KTR") ~ "Capital revenue",
-      Variable_code %in% c("INP") ~ "Interest payments",
-      Variable_code %in% c("OCE") ~ "Other current expenditure",
-      Variable_code %in% c("OKE") ~ "Other capital expenditure",
-      TRUE ~ "Others"
-    )
-  ) %>%
-  filter_all(all_vars(!is.infinite(.)))
+DatasetRaw <- preprocess_raw_db(DatasetRaw)
 
 FinalValues <- arrow::read_parquet("data/FinalValues.parquet")
-FinalValues <- FinalValues %>%
-  mutate(Variable_long = case_when(
-    Variable_code %in% c("TOR") ~ "Total revenue",
-    Variable_code %in% c("DTX") ~ "Direct taxes",
-    Variable_code %in% c("TIN") ~ "Indirect taxes",
-    Variable_code %in% c("SCT") ~ "Social contributions",
-    Variable_code %in% c("TOE") ~ "Total expenditure",
-    Variable_code %in% c("THN") ~ "Social transfers",
-    Variable_code %in% c("PUR") ~ "Purchases",
-    Variable_code %in% c("COE") ~ "Gov. compensation",
-    Variable_code %in% c("GIN") ~ "Gov. investment",
-    Variable_code %in% c("YEN") ~ "GDP",
-    Variable_code %in% c("PCN") ~ "Private consumption",
-    Variable_code %in% c("ITN") ~ "Total investment",
-    Variable_code %in% c("EXN") ~ "Exports",
-    Variable_code %in% c("GCN") ~ "Gov. consumption",
-    Variable_code %in% c("WGS") ~ "Wages and salaries",
-    Variable_code %in% c("OCR") ~ "Other current revenue",
-    Variable_code %in% c("KTR") ~ "Capital revenue",
-    Variable_code %in% c("INP") ~ "Interest payments",
-    Variable_code %in% c("OCE") ~ "Other current expenditure",
-    Variable_code %in% c("OKE") ~ "Other capital expenditure",
-    TRUE ~ "Others"
-  ))
+setDT(FinalValues)
+FinalValues <- preprocess_final_values_db(FinalValues)
+
+GRateDB <- arrow::read_parquet("data/GRateDB.parquet")
+GRateDB <- preprocess_growth_rate_db(GRateDB)
 
 # Lists #####
 VintageList <- c(outer(c("W", "G", "S", "A"), str_pad(7:20, 2, pad = "0"), FUN = paste0))
@@ -576,8 +446,8 @@ Plot_SingleVSTotal <- function(data) {
     scale_color_manual(values = ECB_col)
 
   plot <- plot + annotation_custom(Table2plot,
-    xmin = 3, ymin = 1.1,
-    xmax = 4, ymax = 1.0
+    xmin = 3, ymin = -1.1,
+    xmax = 4, ymax = -1.0
   )
   return(plot)
 }
@@ -792,7 +662,6 @@ Data_Mean_SD <- function(data, Countries, Items, Vintages, MeasureUsed, UpDate, 
   ] %>%
     melt(id.vars = c("Variable_long", "Group2", "ToShade"), value.name = "Value", variable.name = "Statistic")
 
-
   return(sample)
 }
 SubPlot_Mean_SD <- function(sample, Statistics, Legend, Ylabs, scales_y) {
@@ -860,13 +729,13 @@ SubPlot_Mean_SD <- function(sample, Statistics, Legend, Ylabs, scales_y) {
 
   return(plot)
 }
-Plot_Mean_SD <- function(sample, Countries, Items, Vintages, MeasureUsed, UpDate, LowDate, scales_y) {
-  Plot1 <- SubPlot_Mean_SD(Data_Mean_SD(sample, Countries, Items, Vintages, MeasureUsed, UpDate, LowDate), "Mean", F, T, scales_y)
-  Plot2 <- SubPlot_Mean_SD(Data_Mean_SD(sample, Countries, Items, Vintages, MeasureUsed, UpDate, LowDate), "SD", F, F, scales_y)
+Plot_Mean_SD <- function(sample, scales_y) {
+  Plot1 <- SubPlot_Mean_SD(sample, "Mean", F, T, scales_y)
+  Plot2 <- SubPlot_Mean_SD(sample, "SD", F, F, scales_y)
 
   legend <- get_legend(
     # create some space to the left of the legend
-    SubPlot_Mean_SD(Data_Mean_SD(sample, Countries, Items, Vintages, MeasureUsed, UpDate, LowDate), "Mean", T, F, scales_y)
+    SubPlot_Mean_SD(sample, "Mean", T, F, scales_y)
     + theme(legend.box.margin = margin(-15, 0, 0, 0))
   )
 
@@ -896,55 +765,8 @@ scales_ <- list(
       "SD" = expand_limits(y = 120)
     )
 )
-# Remettre que data dans les arguments
-# refaire les premiers appels des tables
-# faire les outliers
 
-Plot_Mean_SD(GRateDB, setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_Expenditure, "KTR", "OCR", "OCE", "OKE", "INP"), "S21", "GRate", as.Date("2019-12-31"), as.Date("2006-01-01"), scales_)
-GRateDB <- arrow::read_parquet("data/GRateDB.parquet")
-GRateDB <- GRateDB %>%
-  mutate(
-    Group = case_when(
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT") ~ "Revenue",
-      Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN") ~ "Expenditure",
-      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS") ~ "Macro",
-      TRUE ~ "Others"
-    ),
-    Group2 = case_when(
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR") ~ "Revenue",
-      Variable_code %in% c("TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE") ~ "Expenditure",
-      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS") ~ "Macro",
-      TRUE ~ "Others"
-    ),
-    ToShade = case_when(
-      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP") ~ "TRUE",
-      TRUE ~ "FALSE"
-    ),
-    Variable_long = case_when(
-      Variable_code %in% c("TOR") ~ "Total revenue",
-      Variable_code %in% c("DTX") ~ "Direct taxes",
-      Variable_code %in% c("TIN") ~ "Indirect taxes",
-      Variable_code %in% c("SCT") ~ "Social contributions",
-      Variable_code %in% c("TOE") ~ "Total expenditure",
-      Variable_code %in% c("THN") ~ "Social transfers",
-      Variable_code %in% c("PUR") ~ "Purchases",
-      Variable_code %in% c("COE") ~ "Gov. compensation",
-      Variable_code %in% c("GIN") ~ "Gov. investment",
-      Variable_code %in% c("YEN") ~ "GDP",
-      Variable_code %in% c("PCN") ~ "Private consumption",
-      Variable_code %in% c("ITN") ~ "Total investment",
-      Variable_code %in% c("EXN") ~ "Exports",
-      Variable_code %in% c("GCN") ~ "Gov. consumption",
-      Variable_code %in% c("WGS") ~ "Wages and salaries",
-      Variable_code %in% c("OCR") ~ "Other current revenue",
-      Variable_code %in% c("KTR") ~ "Capital revenue",
-      Variable_code %in% c("INP") ~ "Interest payments",
-      Variable_code %in% c("OCE") ~ "Other current expenditure",
-      Variable_code %in% c("OKE") ~ "Other capital expenditure",
-      TRUE ~ "Others"
-    )
-  )
-
+Plot_Mean_SD(Data_Mean_SD(GRateDB, setdiff(Ctry_EA19, "EA"), c(Var_Revenue, Var_Macro, Var_Expenditure, "KTR", "OCR", "OCE", "OKE", "INP"), "S21", "GRate", as.Date("2019-12-31"), as.Date("2006-01-01")), scales_)
 
 # Ranking TOE ####
 Data_Ranking <- function(data, Items, Vintages, ObsYear) {
@@ -987,3 +809,5 @@ Plot_Ranking <- function(sample) {
   return(plot)
 }
 Plot_Ranking(Data_Ranking(DatasetRaw, "TOE", "S21", 2019))
+
+# faire les outliers
