@@ -4,24 +4,46 @@ library(stringr)
 library(lubridate)
 source("R/functions.R")
 
-data <- arrow::read_parquet("data/RevisionDB.parquet")
-data <- preprocess_revision_db(data)
+aws.s3::get_bucket("tfaria", region = "")
+data <- aws.s3::s3read_using(
+  FUN = arrow::read_parquet,
+  object = "public/RevisionDB.parquet",
+  bucket = "tfaria",
+  opts = list("region" = "")
+)
+RevisionDB <- preprocess_revision_db(data)
 
-DatasetRaw <- arrow::read_csv_arrow("data/RealTimeDatabase.csv")
-setDT(DatasetRaw)
-DatasetRaw <- preprocess_raw_db(DatasetRaw)
+data <- aws.s3::s3read_using(
+  FUN = arrow::read_csv_arrow,
+  object = "public/RealTimeDatabase.csv",
+  bucket = "tfaria",
+  opts = list("region" = "")
+)
+setDT(data)
+DatasetRaw <- preprocess_raw_db(data)
 
-FinalValues <- arrow::read_parquet("data/FinalValues.parquet")
-setDT(FinalValues)
-FinalValues <- preprocess_final_values_db(FinalValues)
+data <- aws.s3::s3read_using(
+  FUN = arrow::read_parquet,
+  object = "public/FinalValues.parquet",
+  bucket = "tfaria",
+  opts = list("region" = "")
+)
+setDT(data)
+FinalValues <- preprocess_final_values_db(data)
 
-GRateDB <- arrow::read_parquet("data/GRateDB.parquet")
-GRateDB <- preprocess_growth_rate_db(GRateDB)
+data <- aws.s3::s3read_using(
+  FUN = arrow::read_parquet,
+  object = "public/GRateDB.parquet",
+  bucket = "tfaria",
+  opts = list("region" = "")
+)
+GRateDB <- preprocess_growth_rate_db(data)
+
 DateRange <- seq(as.Date("2006-07-01"), as.Date("2019-10-01"), by = "quarter")
 VintageList <- unique(GRateDB[, ECB_vintage])
 date_to_vintage <- setNames(as.list(VintageList[1:length(as.list(DateRange))]), DateRange)
-Countries <- unique(data$Country_code)
-Variables <- unique(data$Variable_code)
+Countries <- unique(RevisionDB$Country_code)
+Variables <- unique(RevisionDB$Variable_code)
 
 get_past_revisions <- function(data, Country, Variable, Obs_date, date_to_vintage, lag) {
   compared_vintages <- c(
@@ -39,19 +61,22 @@ get_past_revisions <- function(data, Country, Variable, Obs_date, date_to_vintag
 
 RegressionDB <- data.table()
 for (country in Countries) {
+  RevisionDB_cropped <- RevisionDB[(Country_code %in% country)]
   for (variable in Variables) {
     cat(country, variable, "\n")
+    GRateDB_cropped <- GRateDB[(Country_code %in% country) & (Variable_code %in% variable)]
     for (obs_date in as.character(DateRange)) {
       obs_date <- as.Date(obs_date)
-      FinalRevision <- data[(Country_code %in% country) & (Variable_code %in% variable) &
+
+      FinalRevision <- RevisionDB_cropped[(Country_code %in% country) & (Variable_code %in% variable) &
         (Date %in% obs_date) & (Revision_nb == 1) &
         (Type_revision == "Final")][, Value]
 
-      FirstAnnounGr <- GRateDB[(Country_code %in% country) & (Variable_code %in% variable) &
+      FirstAnnounGr <- GRateDB_cropped[(Country_code %in% country) & (Variable_code %in% variable) &
         (Date %in% obs_date) & (ECB_vintage %in% date_to_vintage[[as.character(obs_date)]])][, Value]
 
       past_revisions <- unlist(sapply(1:5, get_past_revisions,
-        data = GRateDB,
+        data = GRateDB_cropped,
         Country = country,
         Variable = variable,
         Obs_date = obs_date,
@@ -59,7 +84,7 @@ for (country in Countries) {
       ))
       length(past_revisions) <- 5
 
-      revisions_macro <- data[(Country_code %in% country) &
+      revisions_macro <- RevisionDB_cropped[(Country_code %in% country) &
         (Variable_code %in% c("YEN", "ITN", "EXN", "GCN", "WGS", "PCN")) &
         (Date %in% obs_date) & (Revision_nb == 1) &
         (Type_revision == "Final")][, .(Variable_code, Value)][
@@ -68,7 +93,8 @@ for (country in Countries) {
       ][
         order(Variable_code)
       ][, Value]
-      one_line <- data.table(
+
+      new_line <- data.table(
         Date = obs_date,
         Country_code = country,
         Variable_code = variable,
@@ -87,7 +113,15 @@ for (country in Countries) {
         Rev_PCN = revisions_macro[6]
       )
 
-      RegressionDB <- rbindlist(list(RegressionDB, one_line))
+      RegressionDB <- rbindlist(list(RegressionDB, new_line))
     }
   }
 }
+
+aws.s3::s3write_using(
+  RegressionDB,
+  FUN = arrow::write_parquet,
+  object = "public/RegressionDB.parquet",
+  bucket = "tfaria",
+  opts = list("region" = "")
+)
