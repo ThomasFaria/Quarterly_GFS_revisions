@@ -258,3 +258,27 @@ preprocess_growth_rate_db <- function(data) {
   ]
   return(data)
 }
+
+preprocess_regression_db <- function(data) {
+    data <- data[(Country_code %in% c("DE", "ES", "FR", "IT", "NL", "BE","AT","FI", "PT", "REA"))][, 
+                 Group := .(fcase(
+                   Variable_code %in% c("TOR", "DTX", "TIN", "SCT"), "Revenue",
+                   Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN"), "Expenditure",
+                   Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "Macro",
+                   Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "Others"
+                 ))][(Date > as.Date("2014-03-01")),
+                     ESA2010 := 1 ][
+                       , ObsQ := as.integer(substr(quarters(Date), 2, 2))
+                     ] |>
+    dcast(... ~ paste0("ObsQ_", ObsQ), fun = length) |>
+      dcast(Country_code + ... ~ paste0("Country_", Country_code), fun = length)
+    
+    data <- data[(ObsQ_1 + ObsQ_2 + ObsQ_3 == 0), 
+         ObsQ_4 := 1
+      ][(ObsQ_1 + ObsQ_2 + ObsQ_3 == 1), 
+        ObsQ_4 := 0
+      ] |>
+      na.omit(cols=c("Rev_lag1", "Rev_lag2", "Rev_lag3", "Rev_lag4", "Rev_lag5", "Rev_ITN", "Rev_EXN", "Rev_GCN", "Rev_YEN", "Rev_PCN", "Rev_WGS"))
+    
+  return(data)
+}
