@@ -1,6 +1,4 @@
 library(data.table)
-library(arrow)
-library(stringr)
 library(lubridate)
 source("R/functions.R")
 
@@ -44,20 +42,6 @@ VintageList <- unique(GRateDB[, ECB_vintage])
 date_to_vintage <- setNames(as.list(VintageList[1:length(as.list(DateRange))]), DateRange)
 Countries <- unique(RevisionDB$Country_code)
 Variables <- unique(RevisionDB$Variable_code)
-
-get_past_revisions <- function(data, Country, Variable, Obs_date, date_to_vintage, lag) {
-  compared_vintages <- c(
-    date_to_vintage[[as.character(Obs_date %m-% months(3 * lag))]],
-    date_to_vintage[[as.character(Obs_date)]]
-  )
-
-  past_revision <- diff(data[(Country_code %in% Country) &
-    (Variable_code %in% Variable) &
-    (Date == Obs_date %m-% months(3 * lag)) &
-    (ECB_vintage %in% compared_vintages)][, Value])
-
-  return(past_revision)
-}
 
 RegressionDB <- data.table()
 for (country in Countries) {

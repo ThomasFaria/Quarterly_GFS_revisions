@@ -18,61 +18,87 @@ calcs_revisions <- function(dt, vintage, VintageList, country, variable) {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
         (ECB_vintage %in% VintageList[i:(i + 2)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value]
-
-      if (length(revs) != length(i:(i + 2))) {
+        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+      
+      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 2)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 2)], 1)), Value]
+      
+      if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
         revs <- setNames(rep(NA, length(i:(i + 2))), VintageList[i:(i + 2)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(tail(revs, 1) - revs, VintageList[i:(i + 2)])
+        revs <- setNames(final_value - revs[,Value], VintageList[i:(i + 2)])
       }
     },
     W = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
         (ECB_vintage %in% VintageList[i:(i + 3)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value]
-
-      if (length(revs) != length(i:(i + 3))) {
+        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+      
+      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 3)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 3)], 1)), Value]
+      
+      if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
         revs <- setNames(rep(NA, length(i:(i + 3))), VintageList[i:(i + 3)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(tail(revs, 1) - revs, VintageList[i:(i + 3)])
+        revs <- setNames(final_value - revs[,Value], VintageList[i:(i + 3)])
       }
     },
     A = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
         (ECB_vintage %in% VintageList[i:(i + 4)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value]
-
-      if (length(revs) != length(i:(i + 4))) {
-        # Removing intermediate revisions when final revision doesn't exist
-        revs <- setNames(rep(NA, length(i:(i + 4))), VintageList[i:(i + 4)])
-      } else {
-        # Compute the revisions by substracting the last value
-        revs <- setNames(tail(revs, 1) - revs, VintageList[i:(i + 4)])
-      }
+        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+      
+        revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 4)]), on = .(ECB_vintage)]
+        final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 4)], 1)), Value]
+        
+        if (is.na(final_value)) {
+          # Removing intermediate revisions when final revision doesn't exist
+          revs <- setNames(rep(NA, length(i:(i + 4))), VintageList[i:(i + 4)])
+        } else {
+          # Compute the revisions by substracting the last value
+          revs <- setNames(final_value - revs[,Value], VintageList[i:(i + 4)])
+        }
     },
     S = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
         (ECB_vintage %in% VintageList[i:(i + 5)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value]
+        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
 
-      if (length(revs) != length(i:(i + 5))) {
+      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 5)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 5)], 1)), Value]
+      
+      if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
         revs <- setNames(rep(NA, length(i:(i + 5))), VintageList[i:(i + 5)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(tail(revs, 1) - revs, VintageList[i:(i + 5)])
+        revs <- setNames(final_value - revs[,Value], VintageList[i:(i + 5)])
       }
     },
     stop("Unknown vintage abbreviation. It should start by G, W, A or S")
   )
   return(revs)
+}
+
+get_past_revisions <- function(data, country, variable, obs_date, date_to_vintage, lag) {
+  compared_vintages <- c(
+    date_to_vintage[[as.character(obs_date %m-% months(3 * lag))]],
+    date_to_vintage[[as.character(obs_date)]]
+  )
+  
+  past_revision <- diff(data[(Country_code %in% country) &
+                               (Variable_code %in% variable) &
+                               (Date == obs_date %m-% months(3 * lag)) &
+                               (ECB_vintage %in% compared_vintages)][, Value])
+  
+  return(past_revision)
 }
 
 preprocess_revision_db <- function(data) {
@@ -84,10 +110,10 @@ preprocess_revision_db <- function(data) {
     ObsQ == 3, Revision_nb + 2,
     ObsQ == 4, Revision_nb + 3
   ))][, ReleaseDate := .(fcase(
-    startsWith(Vintage_base, "W"), paste0(str_replace(Vintage_base, "W", "20"), "-01-01"),
-    startsWith(Vintage_base, "G"), paste0(str_replace(Vintage_base, "G", "20"), "-04-01"),
-    startsWith(Vintage_base, "S"), paste0(str_replace(Vintage_base, "S", "20"), "-07-01"),
-    startsWith(Vintage_base, "A"), paste0(str_replace(Vintage_base, "A", "20"), "-10-01")
+    startsWith(Vintage_base, "W"), paste0(stringr::str_replace(Vintage_base, "W", "20"), "-01-01"),
+    startsWith(Vintage_base, "G"), paste0(stringr::str_replace(Vintage_base, "G", "20"), "-04-01"),
+    startsWith(Vintage_base, "S"), paste0(stringr::str_replace(Vintage_base, "S", "20"), "-07-01"),
+    startsWith(Vintage_base, "A"), paste0(stringr::str_replace(Vintage_base, "A", "20"), "-10-01")
   ))][, Group := .(fcase(
     Variable_code %in% c("TOR", "DTX", "TIN", "SCT"), "Revenue",
     Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN"), "Expenditure",
@@ -136,10 +162,10 @@ preprocess_raw_db <- function(data) {
   data[
     , c("ObsQ", "ObsY") := list(as.integer(substr(quarters(Date), 2, 2)), year(Date))
   ][, ReleaseDate := .(fcase(
-    startsWith(ECB_vintage, "W"), paste0(str_replace(ECB_vintage, "W", "20"), "-01-01"),
-    startsWith(ECB_vintage, "G"), paste0(str_replace(ECB_vintage, "G", "20"), "-04-01"),
-    startsWith(ECB_vintage, "S"), paste0(str_replace(ECB_vintage, "S", "20"), "-07-01"),
-    startsWith(ECB_vintage, "A"), paste0(str_replace(ECB_vintage, "A", "20"), "-10-01")
+    startsWith(ECB_vintage, "W"), paste0(stringr::str_replace(ECB_vintage, "W", "20"), "-01-01"),
+    startsWith(ECB_vintage, "G"), paste0(stringr::str_replace(ECB_vintage, "G", "20"), "-04-01"),
+    startsWith(ECB_vintage, "S"), paste0(stringr::str_replace(ECB_vintage, "S", "20"), "-07-01"),
+    startsWith(ECB_vintage, "A"), paste0(stringr::str_replace(ECB_vintage, "A", "20"), "-10-01")
   ))][, Group := .(fcase(
     Variable_code %in% c("TOR", "DTX", "TIN", "SCT"), "Revenue",
     Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN"), "Expenditure",
