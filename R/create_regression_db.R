@@ -61,12 +61,11 @@ for (country in Countries) {
 
       past_revisions <- unlist(sapply(1:5, get_past_revisions,
         data = GRateDB_cropped,
-        Country = country,
-        Variable = variable,
-        Obs_date = obs_date,
+        country = country,
+        variable = variable,
+        obs_date = obs_date,
         date_to_vintage = date_to_vintage
       ))
-      length(past_revisions) <- 5
 
       revisions_macro <- RevisionDB_cropped[(Country_code %in% country) &
         (Variable_code %in% c("YEN", "ITN", "EXN", "GCN", "WGS", "PCN")) &
