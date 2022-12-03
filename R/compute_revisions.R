@@ -1,12 +1,15 @@
 library(arrow)
-library(dplyr)
-library(xts)
-library(stringr)
 library(data.table)
 source("R/functions.R")
 
-data <- arrow::read_parquet("data/GRateDB.parquet")
+data <- aws.s3::s3read_using(
+  FUN = arrow::read_parquet,
+  object = "public/GRateDB.parquet",
+  bucket = "tfaria",
+  opts = list("region" = "")
+)
 
+GRateDB <- preprocess_growth_rate_db(data)
 
 VintageList <- unique(data[, ECB_vintage])
 DateRange <- seq(as.Date("2006-07-01"), as.Date("2019-10-01"), by = "quarter")
@@ -53,4 +56,10 @@ for (vintage in names(vintage_to_date)) {
   }
 }
 
-arrow::write_parquet(x = RevisionDB, "data/RevisionDB.parquet")
+aws.s3::s3write_using(
+  RevisionDB,
+  FUN = arrow::write_parquet,
+  object = "public/RevisionDB.parquet",
+  bucket = "tfaria",
+  opts = list("region" = "")
+)
