@@ -24,8 +24,6 @@ SimulModels <- function(sample, aItem, aCrit, NewModels) {
   sample <- subset(sample, Variable_code == aItem)
   tryCatch(
     expr = {
-      # Your code...
-      # goes here...
       Model <- dplyr::bind_rows(lapply(NewModels[NewModels$Item == aItem, "ModelSpe"], function(model) {
         x <- lm(paste(model, "-1"), data = sample)
         a <- broom::glance(x)
@@ -43,8 +41,6 @@ SimulModels <- function(sample, aItem, aCrit, NewModels) {
       return(Model)
     },
     error = function(e) {
-      # (Optional)
-      # Do this if an error is caught...
       model <- as.character(NewModels[NewModels$Item == aItem, "ModelSpe"])
       x <- lm(model, data = sample)
       Model <- dplyr::tibble(
@@ -80,7 +76,7 @@ ListofModels8 <- unlist(lapply(
 for (aItem in Items) {
   sample <- subset(RegressionDB, Variable_code == aItem)
   Models8[[aItem]] <- dplyr::bind_rows(lapply(ListofModels8, function(model) {
-    x <- lm(paste(ListofModels8[1], "-1"), data = sample)
+    x <- lm(paste(model, "-1"), data = sample)
     a <- broom::glance(x)
     a$ModelSpe <- model
     a$N <- nobs(x)
@@ -130,35 +126,6 @@ TopMod8 <- list(
 )
 
 
-
-##### MODEL 7 : Past revisions #####
-Models7 <- list(
-  "AIC" = list(),
-  "BIC" = list()
-)
-
-for (aCrit in c("AIC", "BIC")) {
-  tmp <- TopMod8[[aCrit]] |>
-    dplyr::mutate(
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+Rev_YEN" = "", "\\+Rev_PCN" = "", "\\+Rev_ITN" = "", "\\+Rev_EXN" = "", "\\+Rev_GCN" = "", "\\+Rev_WGS" = "")),
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("Rev_YEN" = "0", "Rev_PCN" = "0", "Rev_ITN" = "0", "Rev_EXN" = "0", "Rev_GCN" = "0", "Rev_WGS" = "0"))
-    )
-  for (aItem in Items) {
-    Models7[[aCrit]][[aItem]] <- SimulModels(RegressionDB, aItem, aCrit, tmp)
-  }
-}
-
-TopMod7 <- list(
-  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models7[["AIC"]][[item]]
-  })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models7[["BIC"]][[item]]
-  })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
-)
-
 ##### MODEL 6 : First Announcement #####
 Models6 <- list(
   "AIC" = list(),
@@ -166,10 +133,10 @@ Models6 <- list(
 )
 
 for (aCrit in c("AIC", "BIC")) {
-  tmp <- TopMod7[[aCrit]] |>
+  tmp <- TopMod8[[aCrit]] |>
     dplyr::mutate(
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("\\+RevLag1" = "", "\\+RevLag2" = "", "\\+RevLag3" = "", "\\+RevLag4" = "", "\\+RevLag5" = "")),
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("RevLag1" = "0", "RevLag2" = "0", "RevLag3" = "0", "RevLag4" = "0", "RevLag5" = "0"))
+      ModelSpe =  stringr::str_replace_all(ModelSpe, c("\\+Rev_lag1" = "", "\\+Rev_lag2" = "", "\\+Rev_lag3" = "", "\\+Rev_lag4" = "", "\\+Rev_lag5" = "")),
+      ModelSpe =  stringr::str_replace_all(ModelSpe, c("Rev_lag1" = "0", "Rev_lag2" = "0", "Rev_lag3" = "0", "Rev_lag4" = "0", "Rev_lag5" = "0"))
     )
 
   for (aItem in Items) {
@@ -197,8 +164,8 @@ Models5 <- list(
 for (aCrit in c("AIC", "BIC")) {
   tmp <- TopMod6[[aCrit]] |>
     dplyr::mutate(
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("\\+FirstAnnounGr" = "")),
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("FirstAnnounGr" = "0"))
+      ModelSpe =  stringr::str_replace_all(ModelSpe, c("\\+First_announcement" = "")),
+      ModelSpe =  stringr::str_replace_all(ModelSpe, c("First_announcement" = "0"))
     )
 
   for (aItem in Items) {
@@ -316,7 +283,6 @@ for (aCrit in c("AIC", "BIC")) {
   TopMod8[[aCrit]]$RMSE4 <- TopMod4[[aCrit]]$RMSE / TopMod2[[aCrit]]$RMSE
   TopMod8[[aCrit]]$RMSE5 <- TopMod5[[aCrit]]$RMSE / TopMod2[[aCrit]]$RMSE
   TopMod8[[aCrit]]$RMSE6 <- TopMod6[[aCrit]]$RMSE / TopMod2[[aCrit]]$RMSE
-  TopMod8[[aCrit]]$RMSE7 <- TopMod7[[aCrit]]$RMSE / TopMod2[[aCrit]]$RMSE
   TopMod8[[aCrit]]$RMSE8 <- TopMod8[[aCrit]]$RMSE / TopMod2[[aCrit]]$RMSE
 }
 
@@ -327,7 +293,7 @@ y <- TopMod8[["AIC"]] |>
   dplyr::mutate_if(is.numeric, round, digits = 2) |>
   dplyr::arrange(Group) |>
   dplyr::mutate(Group = as.character(Group)) |>
-  dplyr::select("Item", "Group", "N", "ModelSpe", "p.value", "RMSE8", "RMSE7", "RMSE6", "RMSE5", "RMSE4", "RMSE3")
+  dplyr::select("Item", "Group", "N", "ModelSpe", "p.value", "RMSE8", "RMSE6", "RMSE5", "RMSE4", "RMSE3")
 
 x <- TopMod8[["BIC"]] |>
   dplyr::mutate(
@@ -336,4 +302,4 @@ x <- TopMod8[["BIC"]] |>
   dplyr::mutate_if(is.numeric, round, digits = 2) |>
   dplyr::arrange(Group) |>
   dplyr::mutate(Group = as.character(Group)) |>
-  dplyr::select("Item", "Group", "N", "ModelSpe", "p.value", "RMSE8", "RMSE7", "RMSE6", "RMSE5", "RMSE4", "RMSE3")
+  dplyr::select("Item", "Group", "N", "ModelSpe", "p.value", "RMSE8", "RMSE6", "RMSE5", "RMSE4", "RMSE3")

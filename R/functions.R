@@ -1,3 +1,5 @@
+library(styler)
+
 get_reference_year <- function(vintage) {
   past_year <- 2000 + as.double(substr(vintage, start = 2, stop = 3)) - 1
   if (past_year == 2006) {
@@ -295,8 +297,11 @@ preprocess_regression_db <- function(data) {
       Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "Others"
     ))
   ][
-    (Date > as.Date("2014-03-01")),
-    ESA2010 := 1
+    ,
+    ESA2010 := .(fcase(
+      Date > as.Date("2014-03-01"), 1,
+      Date <= as.Date("2014-03-01"), 0
+    ))
   ][
     , ObsQ := as.integer(substr(quarters(Date), 2, 2))
   ] |>
