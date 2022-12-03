@@ -135,8 +135,8 @@ Models6 <- list(
 for (aCrit in c("AIC", "BIC")) {
   tmp <- TopMod8[[aCrit]] |>
     dplyr::mutate(
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("\\+Rev_lag1" = "", "\\+Rev_lag2" = "", "\\+Rev_lag3" = "", "\\+Rev_lag4" = "", "\\+Rev_lag5" = "")),
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("Rev_lag1" = "0", "Rev_lag2" = "0", "Rev_lag3" = "0", "Rev_lag4" = "0", "Rev_lag5" = "0"))
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+Rev_lag1" = "", "\\+Rev_lag2" = "", "\\+Rev_lag3" = "", "\\+Rev_lag4" = "", "\\+Rev_lag5" = "")),
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("Rev_lag1" = "0", "Rev_lag2" = "0", "Rev_lag3" = "0", "Rev_lag4" = "0", "Rev_lag5" = "0"))
     )
 
   for (aItem in Items) {
@@ -145,11 +145,11 @@ for (aCrit in c("AIC", "BIC")) {
 }
 
 TopMod6 <- list(
-  "AIC" =  dplyr::bind_rows(lapply(Items, function(item) {
+  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
     Models6[["AIC"]][[item]]
   })) |>
     dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" =  dplyr::bind_rows(lapply(Items, function(item) {
+  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
     Models6[["BIC"]][[item]]
   })) |>
     dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
@@ -164,8 +164,8 @@ Models5 <- list(
 for (aCrit in c("AIC", "BIC")) {
   tmp <- TopMod6[[aCrit]] |>
     dplyr::mutate(
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("\\+First_announcement" = "")),
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("First_announcement" = "0"))
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+First_announcement" = "")),
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("First_announcement" = "0"))
     )
 
   for (aItem in Items) {
@@ -174,7 +174,7 @@ for (aCrit in c("AIC", "BIC")) {
 }
 
 TopMod5 <- list(
-  "AIC" =  dplyr::bind_rows(lapply(Items, function(item) {
+  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
     Models5[["AIC"]][[item]]
   })) |>
     dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
@@ -193,8 +193,8 @@ Models4 <- list(
 for (aCrit in c("AIC", "BIC")) {
   tmp <- TopMod5[[aCrit]] |>
     dplyr::mutate(
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("\\+ESA2010" = "")),
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("ESA2010" = "0"))
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+ESA2010" = "")),
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("ESA2010" = "0"))
     )
 
   for (aItem in Items) {
@@ -203,11 +203,11 @@ for (aCrit in c("AIC", "BIC")) {
 }
 
 TopMod4 <- list(
-  "AIC" =  dplyr::bind_rows(lapply(Items, function(item) {
+  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
     Models4[["AIC"]][[item]]
   })) |>
     dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" =  dplyr::bind_rows(lapply(Items, function(item) {
+  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
     Models4[["BIC"]][[item]]
   })) |>
     dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
@@ -222,8 +222,8 @@ Models3 <- list(
 for (aCrit in c("AIC", "BIC")) {
   tmp <- TopMod4[[aCrit]] |>
     dplyr::mutate(
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("\\+ObsQ_1" = "", "\\+ObsQ_2" = "", "\\+ObsQ_3" = "", "\\+ObsQ_4" = "")),
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("ObsQ_1" = "0"))
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+ObsQ_1" = "", "\\+ObsQ_2" = "", "\\+ObsQ_3" = "", "\\+ObsQ_4" = "")),
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("ObsQ_1" = "0"))
     )
 
   for (aItem in Items) {
@@ -232,11 +232,11 @@ for (aCrit in c("AIC", "BIC")) {
 }
 
 TopMod3 <- list(
-  "AIC" =  dplyr::bind_rows(lapply(Items, function(item) {
+  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
     Models3[["AIC"]][[item]]
   })) |>
     dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" =  dplyr::bind_rows(lapply(Items, function(item) {
+  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
     Models3[["BIC"]][[item]]
   })) |>
     dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
@@ -252,8 +252,8 @@ Models2 <- list(
 for (aCrit in c("AIC", "BIC")) {
   tmp <- TopMod3[[aCrit]] |>
     dplyr::mutate(
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("\\+Country_DE" = "", "\\+Country_ES" = "", "\\+Country_FR" = "", "\\+Country_IT" = "", "\\+Country_NL" = "", "\\+Country_BE" = "", "\\+Country_AT" = "", "\\+Country_FI" = "", "\\+Country_PT" = "")),
-      ModelSpe =  stringr::str_replace_all(ModelSpe, c("Country_DE" = "0"))
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+Country_DE" = "", "\\+Country_ES" = "", "\\+Country_FR" = "", "\\+Country_IT" = "", "\\+Country_NL" = "", "\\+Country_BE" = "", "\\+Country_AT" = "", "\\+Country_FI" = "", "\\+Country_PT" = "")),
+      ModelSpe = stringr::str_replace_all(ModelSpe, c("Country_DE" = "0"))
     )
 
   for (aItem in Items) {
@@ -262,11 +262,11 @@ for (aCrit in c("AIC", "BIC")) {
 }
 
 TopMod2 <- list(
-  "AIC" =  dplyr::bind_rows(lapply(Items, function(item) {
+  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
     Models2[["AIC"]][[item]]
   })) |>
     dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" =  dplyr::bind_rows(lapply(Items, function(item) {
+  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
     Models2[["BIC"]][[item]]
   })) |>
     dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
