@@ -11,87 +11,116 @@ data <- aws.s3::s3read_using(
 RegressionDB <- preprocess_regression_db(data)
 
 ##### Lists #####
-Ctry_Agg <- c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA")
 Var_Revenue <- c("TOR", "DTX", "SCT", "TIN")
 Var_Expenditure <- c("TOE", "THN", "PUR", "COE", "GIN")
 Var_Macro <- c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS")
 
-Items <- c(Var_Revenue, Var_Macro, Var_Expenditure)
+Variables <- c(Var_Revenue, Var_Macro, Var_Expenditure)
+unique(RegressionDB$Variable_code)
 
-simulate_models <- function(sample, variable, criterion, NewModels) {
+simulate_models <- function(sample, variable, criterion, model_str) {
   sample <- subset(sample, Variable_code == variable)
   tryCatch(
     expr = {
-      Model <- dplyr::bind_rows(lapply(NewModels[NewModels$Item == variable, "ModelSpe"], function(model) {
-        x <- lm(paste(model, "-1"), data = sample)
-        a <- broom::glance(x)
-        a$ModelSpe <- model
-        a$N <- nobs(x)
-        a$Item <- variable
-        a$RMSE <- sqrt(c(crossprod(x$residuals)) / length(x$residuals))
-        a$Group <- ifelse(variable %in% Var_Revenue, "Revenue",
-          ifelse(variable %in% Var_Expenditure, "Expenditure",
-            "Macro"
-          )
-        )
-        return(a)
+      # We estimate a model without constant
+      model_summary <- dplyr::bind_rows(lapply(model_str[model_str$Variable == variable, "Model_specification"], function(model) {
+        estimated_model <- lm(paste(model, "-1"), data = sample)
+        summary <- broom::glance(x)
+        summary$Model_specification <- model
+        summary$N <- nobs(x)
+        summary$Variable <- variable
+        summary$RMSE <- sqrt(c(crossprod(x$residuals)) / length(x$residuals))
+        summary$Group <- unique(sample$Group)
+        return(summary)
       }))
-      return(Model)
+      return(model_summary)
     },
     error = function(e) {
-      model <- as.character(NewModels[NewModels$Item == variable, "ModelSpe"])
+      # When there is no regressor we have to add the constant
+      model <- as.character(model_str[model_str$Variable == variable, "Model_specification"])
       x <- lm(model, data = sample)
-      Model <- dplyr::tibble(
+      model_summary <- dplyr::tibble(
         AIC = c(AIC(x)),
         BIC = c(BIC(x)),
         N = c(nobs(x)),
-        ModelSpe = c(model),
-        Item = c(variable),
+        Model_specification = c(model),
+        Variable = c(variable),
         p.value = NA,
         RMSE = c(sqrt(c(crossprod(x$residuals)) / length(x$residuals))),
-        Group = c(ifelse(variable %in% Var_Revenue, "Revenue",
-          ifelse(variable %in% Var_Expenditure, "Expenditure",
-            "Macro"
-          )
-        ))
+        Group = c(unique(sample$Group))
       )
-      return(Model)
+      return(model_summary)
     }
   )
 }
+
+simulate_models <- function(data, variable, model_str) {
+  sample <- subset(data, Variable_code == variable)
+  tryCatch(
+    expr = {
+      # We estimate a model without constant
+      model_summary <- dplyr::bind_rows(lapply(model_str, function(model) {
+        estimated_model <- lm(paste(model, "-1"), data = sample)
+        summary <- broom::glance(x)
+        summary$Model_specification <- model
+        summary$N <- nobs(x)
+        summary$Variable <- variable
+        summary$RMSE <- sqrt(c(crossprod(x$residuals)) / length(x$residuals))
+        summary$Group <- unique(sample$Group)
+        return(summary)
+      }))
+      return(model_summary)
+    },
+    error = function(e) {
+      # When there is no regressor we have to add the constant
+      x <- lm(model_str, data = sample)
+      model_summary <- dplyr::tibble(
+        AIC = c(AIC(x)),
+        BIC = c(BIC(x)),
+        N = c(nobs(x)),
+        Model_specification = c(model),
+        Variable = c(variable),
+        p.value = NA,
+        RMSE = c(sqrt(c(crossprod(x$residuals)) / length(x$residuals))),
+        Group = c(unique(sample$Group))
+      )
+      return(model_summary)
+    }
+  )
+}
+
+# Faire des fonctions pour simplifier
+# finir le renommage des variables
 ##### MODEL 8 : Macro #####
 Models8 <- list()
-Regressor <- c(paste0("Country_", Ctry_Agg, collapse = "+"),
+Regressors <- c(paste0("Country_", c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), collapse = "+"),
                paste0("ObsQ_", 1:4, collapse = "+"),
                "ESA2010",
                "First_announcement",
                paste0("Rev_lag", 1:5)
                )
-ListofModels8 <- unlist(lapply(
-  1:length(Regressor),
+List_models <- unlist(lapply(
+  1:length(Regressors),
   function(n) {
-    combn(Regressor, n, FUN = function(row) {
+    combn(Regressors, n, FUN = function(row) {
       paste0("Final_revision ~ ", paste0(row, collapse = "+"))
     })
   }
 ))
 
-for (variable in Items) {
+for (variable in Variables) {
   sample <- subset(RegressionDB, Variable_code == variable)
-  Models8[[variable]] <- dplyr::bind_rows(lapply(ListofModels8, function(model) {
+  Models8[[variable]] <- dplyr::bind_rows(lapply(List_models, function(model) {
     x <- lm(paste(model, "-1"), data = sample)
     a <- broom::glance(x)
-    a$ModelSpe <- model
+    a$Model_specification <- model
     a$N <- nobs(x)
-    a$Item <- variable
+    a$Variable <- variable
     a$RMSE <- sqrt(c(crossprod(x$residuals)) / length(x$residuals))
-    a$Group <- ifelse(variable %in% Var_Revenue, "Revenue",
-      ifelse(variable %in% Var_Expenditure, "Expenditure",
-        "Macro"
-      )
-    )
+    a$Group <- unique(sample$Group)
     return(a)
   }))
+  
   x <- lm("Final_revision ~ 0", data = sample)
   Model <- dplyr::tibble(
     AIC = c(AIC(x)),
@@ -103,29 +132,25 @@ for (variable in Items) {
     r.squared = summary(x)$r.squared,
     adj.r.squared = summary(x)$adj.r.squared,
     N = c(nobs(x)),
-    ModelSpe = c("Final_revision ~ 0"),
-    Item = c(variable),
+    Model_specification = c("Final_revision ~ 0"),
+    Variable = c(variable),
     p.value = NA,
     RMSE = c(sqrt(c(crossprod(x$residuals)) / length(x$residuals))),
-    Group = c(ifelse(variable %in% Var_Revenue, "Revenue",
-      ifelse(variable %in% Var_Expenditure, "Expenditure",
-        "Macro"
-      )
-    ))
+    Group = c(unique(sample$Group))
   )
   Models8[[variable]] <- Models8[[variable]] |>
     dplyr::add_row(Model)
 }
 
 TopMod8 <- list(
-  "AIC" = dplyr::bind_rows(lapply(1:length(Items), function(itemNb) {
+  "AIC" = dplyr::bind_rows(lapply(1:length(Variables), function(itemNb) {
     Models8[[itemNb]][order(Models8[[itemNb]]$AIC)[1], ]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" = dplyr::bind_rows(lapply(1:length(Items), function(itemNb) {
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N"),
+  "BIC" = dplyr::bind_rows(lapply(1:length(Variables), function(itemNb) {
     Models8[[itemNb]][order(Models8[[itemNb]]$BIC)[1], ]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")
 )
 
 
@@ -136,26 +161,26 @@ Models6 <- list(
 )
 
 for (criterion in c("AIC", "BIC")) {
-  tmp <- TopMod8[[criterion]] |>
+  new_model <- TopMod8[[criterion]] |>
     dplyr::mutate(
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+Rev_lag1" = "", "\\+Rev_lag2" = "", "\\+Rev_lag3" = "", "\\+Rev_lag4" = "", "\\+Rev_lag5" = "")),
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("Rev_lag1" = "0", "Rev_lag2" = "0", "Rev_lag3" = "0", "Rev_lag4" = "0", "Rev_lag5" = "0"))
+      Model_specification = stringr::str_replace_all(Model_specification, c("\\+Rev_lag1" = "", "\\+Rev_lag2" = "", "\\+Rev_lag3" = "", "\\+Rev_lag4" = "", "\\+Rev_lag5" = "")),
+      Model_specification = stringr::str_replace_all(Model_specification, c("Rev_lag1" = "0", "Rev_lag2" = "0", "Rev_lag3" = "0", "Rev_lag4" = "0", "Rev_lag5" = "0"))
     )
 
-  for (variable in Items) {
-    Models6[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, tmp)
+  for (variable in Variables) {
+    Models6[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, new_model)
   }
 }
 
 TopMod6 <- list(
-  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models6[["AIC"]][[item]]
+  "AIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models6[["AIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models6[["BIC"]][[item]]
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N"),
+  "BIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models6[["BIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")
 )
 
 ##### MODEL 5 : ESA2010 #####
@@ -165,26 +190,26 @@ Models5 <- list(
 )
 
 for (criterion in c("AIC", "BIC")) {
-  tmp <- TopMod6[[criterion]] |>
+  new_model <- TopMod6[[criterion]] |>
     dplyr::mutate(
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+First_announcement" = "")),
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("First_announcement" = "0"))
+      Model_specification = stringr::str_replace_all(Model_specification, c("\\+First_announcement" = "")),
+      Model_specification = stringr::str_replace_all(Model_specification, c("First_announcement" = "0"))
     )
 
-  for (variable in Items) {
-    Models5[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, tmp)
+  for (variable in Variables) {
+    Models5[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, new_model)
   }
 }
 
 TopMod5 <- list(
-  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models5[["AIC"]][[item]]
+  "AIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models5[["AIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models5[["BIC"]][[item]]
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N"),
+  "BIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models5[["BIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")
 )
 
 ##### MODEL 4 : Quarter FIXED EFFECT #####
@@ -194,26 +219,26 @@ Models4 <- list(
 )
 
 for (criterion in c("AIC", "BIC")) {
-  tmp <- TopMod5[[criterion]] |>
+  new_model <- TopMod5[[criterion]] |>
     dplyr::mutate(
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+ESA2010" = "")),
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("ESA2010" = "0"))
+      Model_specification = stringr::str_replace_all(Model_specification, c("\\+ESA2010" = "")),
+      Model_specification = stringr::str_replace_all(Model_specification, c("ESA2010" = "0"))
     )
 
-  for (variable in Items) {
-    Models4[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, tmp)
+  for (variable in Variables) {
+    Models4[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, new_model)
   }
 }
 
 TopMod4 <- list(
-  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models4[["AIC"]][[item]]
+  "AIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models4[["AIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models4[["BIC"]][[item]]
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N"),
+  "BIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models4[["BIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")
 )
 
 ##### MODEL 3 : COUNTRY FIXED EFFECT #####
@@ -223,26 +248,26 @@ Models3 <- list(
 )
 
 for (criterion in c("AIC", "BIC")) {
-  tmp <- TopMod4[[criterion]] |>
+  new_model <- TopMod4[[criterion]] |>
     dplyr::mutate(
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+ObsQ_1" = "", "\\+ObsQ_2" = "", "\\+ObsQ_3" = "", "\\+ObsQ_4" = "")),
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("ObsQ_1" = "0"))
+      Model_specification = stringr::str_replace_all(Model_specification, c("\\+ObsQ_1" = "", "\\+ObsQ_2" = "", "\\+ObsQ_3" = "", "\\+ObsQ_4" = "")),
+      Model_specification = stringr::str_replace_all(Model_specification, c("ObsQ_1" = "0"))
     )
 
-  for (variable in Items) {
-    Models3[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, tmp)
+  for (variable in Variables) {
+    Models3[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, new_model)
   }
 }
 
 TopMod3 <- list(
-  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models3[["AIC"]][[item]]
+  "AIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models3[["AIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models3[["BIC"]][[item]]
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N"),
+  "BIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models3[["BIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")
 )
 
 ##### MODEL 2 : NAIVE #####
@@ -253,32 +278,32 @@ Models2 <- list(
 )
 
 for (criterion in c("AIC", "BIC")) {
-  tmp <- TopMod3[[criterion]] |>
+  new_model <- TopMod3[[criterion]] |>
     dplyr::mutate(
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("\\+Country_DE" = "", "\\+Country_ES" = "", "\\+Country_FR" = "", "\\+Country_IT" = "", "\\+Country_NL" = "", "\\+Country_BE" = "", "\\+Country_AT" = "", "\\+Country_FI" = "", "\\+Country_PT" = "")),
-      ModelSpe = stringr::str_replace_all(ModelSpe, c("Country_DE" = "0"))
+      Model_specification = stringr::str_replace_all(Model_specification, c("\\+Country_DE" = "", "\\+Country_ES" = "", "\\+Country_FR" = "", "\\+Country_IT" = "", "\\+Country_NL" = "", "\\+Country_BE" = "", "\\+Country_AT" = "", "\\+Country_FI" = "", "\\+Country_PT" = "")),
+      Model_specification = stringr::str_replace_all(Model_specification, c("Country_DE" = "0"))
     )
 
-  for (variable in Items) {
-    Models2[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, tmp)
+  for (variable in Variables) {
+    Models2[[criterion]][[variable]] <- simulate_models(RegressionDB, variable, criterion, new_model)
   }
 }
 
 TopMod2 <- list(
-  "AIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models2[["AIC"]][[item]]
+  "AIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models2[["AIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" = dplyr::bind_rows(lapply(Items, function(item) {
-    Models2[["BIC"]][[item]]
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N"),
+  "BIC" = dplyr::bind_rows(lapply(Variables, function(variable) {
+    Models2[["BIC"]][[variable]]
   })) |>
-    dplyr::select("Item", "Group", "ModelSpe", "RMSE", "AIC", "BIC", "p.value", "N")
+    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")
 )
 
 for (criterion in c("AIC", "BIC")) {
   TopMod8[[criterion]] <- TopMod8[[criterion]] |>
-    dplyr::mutate(Item = factor(Item, levels = c(Var_Revenue, Var_Macro, Var_Expenditure))) |>
-    dplyr::arrange(Item)
+    dplyr::mutate(Variable = factor(Variable, levels = c(Var_Revenue, Var_Macro, Var_Expenditure))) |>
+    dplyr::arrange(Variable)
 }
 
 for (criterion in c("AIC", "BIC")) {
@@ -296,7 +321,7 @@ y <- TopMod8[["AIC"]] |>
   dplyr::mutate_if(is.numeric, round, digits = 2) |>
   dplyr::arrange(Group) |>
   dplyr::mutate(Group = as.character(Group)) |>
-  dplyr::select("Item", "Group", "N", "ModelSpe", "p.value", "RMSE8", "RMSE6", "RMSE5", "RMSE4", "RMSE3")
+  dplyr::select("Variable", "Group", "N", "Model_specification", "p.value", "RMSE8", "RMSE6", "RMSE5", "RMSE4", "RMSE3")
 
 x <- TopMod8[["BIC"]] |>
   dplyr::mutate(
@@ -305,4 +330,4 @@ x <- TopMod8[["BIC"]] |>
   dplyr::mutate_if(is.numeric, round, digits = 2) |>
   dplyr::arrange(Group) |>
   dplyr::mutate(Group = as.character(Group)) |>
-  dplyr::select("Item", "Group", "N", "ModelSpe", "p.value", "RMSE8", "RMSE6", "RMSE5", "RMSE4", "RMSE3")
+  dplyr::select("Variable", "Group", "N", "Model_specification", "p.value", "RMSE8", "RMSE6", "RMSE5", "RMSE4", "RMSE3")
