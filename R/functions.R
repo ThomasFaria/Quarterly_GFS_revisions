@@ -321,3 +321,14 @@ preprocess_regression_db <- function(data) {
 
   return(data)
 }
+
+get_best_model <- function(models, variable, criterion){
+  best_model <- models[[variable]][, 
+                                   c("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")][,
+                                    Criterion := criterion
+                                   ]|>
+    setorderv(criterion) |>
+    head(1)
+  return(best_model)
+}
+

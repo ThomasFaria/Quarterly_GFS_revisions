@@ -8,6 +8,7 @@ data <- aws.s3::s3read_using(
   bucket = "tfaria",
   opts = list("region" = "")
 )
+data <- arrow::read_parquet("data/RegressionDB.parquet")
 RegressionDB <- preprocess_regression_db(data)
 
 ##### Lists #####
@@ -17,72 +18,59 @@ Var_Macro <- c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS")
 
 Variables <- c(Var_Revenue, Var_Macro, Var_Expenditure)
 unique(RegressionDB$Variable_code)
+unique(RegressionDB$Country_code)
 
-simulate_models <- function(sample, variable, criterion, model_str) {
-  sample <- subset(sample, Variable_code == variable)
+simulate_models <- function(data, variable, list_models, include_naive, all_models) {
+  sample <- data[(Variable_code == variable)]
+  
+  if (!all_models) {
+    list_models <- list_models[variable]
+  }
+  
   tryCatch(
     expr = {
       # We estimate a model without constant
-      model_summary <- dplyr::bind_rows(lapply(model_str[model_str$Variable == variable, "Model_specification"], function(model) {
+      model_summary <- rbindlist(lapply(list_models, function(model) {
         estimated_model <- lm(paste(model, "-1"), data = sample)
-        summary <- broom::glance(x)
+        summary <- broom::glance(estimated_model)
         summary$Model_specification <- model
-        summary$N <- nobs(x)
+        summary$N <- nobs(estimated_model)
         summary$Variable <- variable
-        summary$RMSE <- sqrt(c(crossprod(x$residuals)) / length(x$residuals))
+        summary$RMSE <- sqrt(c(crossprod(estimated_model$residuals)) / length(estimated_model$residuals))
         summary$Group <- unique(sample$Group)
         return(summary)
-      }))
+      }), use.names=TRUE)
+      
+      if (include_naive) {
+        estimated_model <- lm("Final_revision ~ 0", data = sample)
+        naive_summary <- data.table(
+          AIC = AIC(estimated_model),
+          BIC = BIC(estimated_model),
+          N = nobs(estimated_model),
+          Model_specification = "Final_revision ~ 0",
+          Variable = variable,
+          p.value = NA,
+          RMSE = c(sqrt(crossprod(estimated_model$residuals) / length(estimated_model$residuals))),
+          Group = unique(sample$Group)
+        )
+        model_summary <- rbindlist(list(model_summary, naive_summary), use.names=TRUE, fill=TRUE)
+      }
+      
       return(model_summary)
+      
     },
     error = function(e) {
       # When there is no regressor we have to add the constant
-      model <- as.character(model_str[model_str$Variable == variable, "Model_specification"])
-      x <- lm(model, data = sample)
-      model_summary <- dplyr::tibble(
-        AIC = c(AIC(x)),
-        BIC = c(BIC(x)),
-        N = c(nobs(x)),
-        Model_specification = c(model),
-        Variable = c(variable),
+      estimated_model <- lm(list_models, data = sample)
+      model_summary <- data.table(
+        AIC = AIC(estimated_model),
+        BIC = BIC(estimated_model),
+        N = nobs(estimated_model),
+        Model_specification = list_models,
+        Variable = variable,
         p.value = NA,
-        RMSE = c(sqrt(c(crossprod(x$residuals)) / length(x$residuals))),
-        Group = c(unique(sample$Group))
-      )
-      return(model_summary)
-    }
-  )
-}
-
-simulate_models <- function(data, variable, model_str) {
-  sample <- subset(data, Variable_code == variable)
-  tryCatch(
-    expr = {
-      # We estimate a model without constant
-      model_summary <- dplyr::bind_rows(lapply(model_str, function(model) {
-        estimated_model <- lm(paste(model, "-1"), data = sample)
-        summary <- broom::glance(x)
-        summary$Model_specification <- model
-        summary$N <- nobs(x)
-        summary$Variable <- variable
-        summary$RMSE <- sqrt(c(crossprod(x$residuals)) / length(x$residuals))
-        summary$Group <- unique(sample$Group)
-        return(summary)
-      }))
-      return(model_summary)
-    },
-    error = function(e) {
-      # When there is no regressor we have to add the constant
-      x <- lm(model_str, data = sample)
-      model_summary <- dplyr::tibble(
-        AIC = c(AIC(x)),
-        BIC = c(BIC(x)),
-        N = c(nobs(x)),
-        Model_specification = c(model),
-        Variable = c(variable),
-        p.value = NA,
-        RMSE = c(sqrt(c(crossprod(x$residuals)) / length(x$residuals))),
-        Group = c(unique(sample$Group))
+        RMSE = c(sqrt(crossprod(estimated_model$residuals) / length(estimated_model$residuals))),
+        Group = unique(sample$Group)
       )
       return(model_summary)
     }
@@ -91,14 +79,13 @@ simulate_models <- function(data, variable, model_str) {
 
 # Faire des fonctions pour simplifier
 # finir le renommage des variables
-##### MODEL 8 : Macro #####
-Models8 <- list()
+##### MODEL 8  #####
 Regressors <- c(paste0("Country_", c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), collapse = "+"),
-               paste0("ObsQ_", 1:4, collapse = "+"),
-               "ESA2010",
-               "First_announcement",
-               paste0("Rev_lag", 1:5)
-               )
+                paste0("ObsQ_", 1:4, collapse = "+"),
+                "ESA2010",
+                "First_announcement",
+                paste0("Rev_lag", 1:5)
+)
 List_models <- unlist(lapply(
   1:length(Regressors),
   function(n) {
@@ -108,51 +95,57 @@ List_models <- unlist(lapply(
   }
 ))
 
-for (variable in Variables) {
-  sample <- subset(RegressionDB, Variable_code == variable)
-  Models8[[variable]] <- dplyr::bind_rows(lapply(List_models, function(model) {
-    x <- lm(paste(model, "-1"), data = sample)
-    a <- broom::glance(x)
-    a$Model_specification <- model
-    a$N <- nobs(x)
-    a$Variable <- variable
-    a$RMSE <- sqrt(c(crossprod(x$residuals)) / length(x$residuals))
-    a$Group <- unique(sample$Group)
-    return(a)
-  }))
-  
-  x <- lm("Final_revision ~ 0", data = sample)
-  Model <- dplyr::tibble(
-    AIC = c(AIC(x)),
-    BIC = c(BIC(x)),
-    deviance = deviance(x),
-    logLik = logLik(x)[1],
-    sigma = sigma(x),
-    df = summary(x)$df[1],
-    r.squared = summary(x)$r.squared,
-    adj.r.squared = summary(x)$adj.r.squared,
-    N = c(nobs(x)),
-    Model_specification = c("Final_revision ~ 0"),
-    Variable = c(variable),
-    p.value = NA,
-    RMSE = c(sqrt(c(crossprod(x$residuals)) / length(x$residuals))),
-    Group = c(unique(sample$Group))
+model_results <- sapply(Variables, simulate_models, data=RegressionDB, list_models=List_models, include_naive=TRUE, simplify = FALSE, all_models=TRUE)
+get_best_model(model_results, "TOR", "AIC")
+top_models <- rbindlist(lapply(c("AIC", "BIC"), function(criterion){rbindlist(lapply(Variables, get_best_model, models=model_results, criterion=criterion))}))
+
+top_models[Criterion == criterion, Model_specification]
+
+get_intermediate_models <- function(old_models, interm_model_number){
+  if (interm_model_number == 1) {
+    model_str <- stringr::str_replace_all(
+      old_models, c("\\+Rev_lag1" = "", "\\+Rev_lag2" = "", "\\+Rev_lag3" = "", "\\+Rev_lag4" = "", "\\+Rev_lag5" = "")
+    ) |>
+      stringr::str_replace_all(
+        c("Rev_lag1" = "0", "Rev_lag2" = "0", "Rev_lag3" = "0", "Rev_lag4" = "0", "Rev_lag5" = "0")
+      )
+  } else if (interm_model_number == 2) {
+    model_str <- stringr::str_replace_all(
+      old_models, c("\\+First_announcement" = "")
+    ) |>
+      stringr::str_replace_all(
+        c("First_announcement" = "0")
+      )
+  } else if (interm_model_number == 3) {
+    model_str <- stringr::str_replace_all(
+      old_models, c("\\+ESA2010" = "")
+    ) |>
+  stringr::str_replace_all(
+    c("ESA2010" = "0")
   )
-  Models8[[variable]] <- Models8[[variable]] |>
-    dplyr::add_row(Model)
+  } else if (interm_model_number == 4) {
+    model_str <- stringr::str_replace_all(
+      old_models, c("\\+ObsQ_1" = "", "\\+ObsQ_2" = "", "\\+ObsQ_3" = "", "\\+ObsQ_4" = "")
+    ) |>
+      stringr::str_replace_all(
+        c("ObsQ_1" = "0")
+      )
+  } else {
+    model_str <- stringr::str_replace_all(
+      old_models, c("\\+Country_DE" = "", "\\+Country_ES" = "", "\\+Country_FR" = "", "\\+Country_IT" = "", "\\+Country_NL" = "", "\\+Country_BE" = "", "\\+Country_AT" = "", "\\+Country_FI" = "", "\\+Country_PT" = "", "\\+Country_REA" = "")
+    ) |>
+      stringr::str_replace_all(
+        c("Country_DE" = "0")
+      )
+  }
+  return(model_str)
 }
+new_models <- get_intermediate_models(top_models[Criterion == "AIC", Model_specification], 1)
+names(new_models) <- Variables
 
-TopMod8 <- list(
-  "AIC" = dplyr::bind_rows(lapply(1:length(Variables), function(itemNb) {
-    Models8[[itemNb]][order(Models8[[itemNb]]$AIC)[1], ]
-  })) |>
-    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N"),
-  "BIC" = dplyr::bind_rows(lapply(1:length(Variables), function(itemNb) {
-    Models8[[itemNb]][order(Models8[[itemNb]]$BIC)[1], ]
-  })) |>
-    dplyr::select("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")
-)
+variable <- "TOR"
 
+model_resultss <- rbindlist(sapply(Variables, simulate_models, data=RegressionDB, list_models=new_models, include_naive=FALSE, simplify = FALSE, all_models=FALSE))
 
 ##### MODEL 6 : First Announcement #####
 Models6 <- list(
