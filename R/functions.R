@@ -314,6 +314,8 @@ preprocess_regression_db <- function(data) {
   ][
     (ObsQ_1 + ObsQ_2 + ObsQ_3 == 1),
     ObsQ_4 := 0
+  ][
+    (Group != "Others")
   ] |>
     na.omit(cols = c("Rev_lag1", "Rev_lag2", "Rev_lag3", "Rev_lag4", "Rev_lag5", "Rev_ITN", "Rev_EXN", "Rev_GCN", "Rev_YEN", "Rev_PCN", "Rev_WGS"))
 
