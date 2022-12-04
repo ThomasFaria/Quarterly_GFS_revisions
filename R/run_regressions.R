@@ -102,50 +102,62 @@ top_models <- rbindlist(lapply(c("AIC", "BIC"), function(criterion){rbindlist(la
 top_models[Criterion == criterion, Model_specification]
 
 get_intermediate_models <- function(old_models, interm_model_number){
-  if (interm_model_number == 1) {
     model_str <- stringr::str_replace_all(
       old_models, c("\\+Rev_lag1" = "", "\\+Rev_lag2" = "", "\\+Rev_lag3" = "", "\\+Rev_lag4" = "", "\\+Rev_lag5" = "")
     ) |>
       stringr::str_replace_all(
         c("Rev_lag1" = "0", "Rev_lag2" = "0", "Rev_lag3" = "0", "Rev_lag4" = "0", "Rev_lag5" = "0")
       )
-  } else if (interm_model_number == 2) {
+    
+    if (interm_model_number == 1) {return(model_str)}
+      
     model_str <- stringr::str_replace_all(
-      old_models, c("\\+First_announcement" = "")
+      model_str, c("\\+First_announcement" = "")
     ) |>
       stringr::str_replace_all(
         c("First_announcement" = "0")
       )
-  } else if (interm_model_number == 3) {
+    
+    if (interm_model_number == 2) {return(model_str)}
+    
     model_str <- stringr::str_replace_all(
-      old_models, c("\\+ESA2010" = "")
+      model_str, c("\\+ESA2010" = "")
     ) |>
-  stringr::str_replace_all(
-    c("ESA2010" = "0")
-  )
-  } else if (interm_model_number == 4) {
+      stringr::str_replace_all(
+        c("ESA2010" = "0")
+      )
+    if (interm_model_number == 3) {return(model_str)}
+    
     model_str <- stringr::str_replace_all(
-      old_models, c("\\+ObsQ_1" = "", "\\+ObsQ_2" = "", "\\+ObsQ_3" = "", "\\+ObsQ_4" = "")
+      model_str, c("\\+ObsQ_1" = "", "\\+ObsQ_2" = "", "\\+ObsQ_3" = "", "\\+ObsQ_4" = "")
     ) |>
       stringr::str_replace_all(
         c("ObsQ_1" = "0")
       )
-  } else {
+    
+    if (interm_model_number == 4) {return(model_str)}
+    
     model_str <- stringr::str_replace_all(
-      old_models, c("\\+Country_DE" = "", "\\+Country_ES" = "", "\\+Country_FR" = "", "\\+Country_IT" = "", "\\+Country_NL" = "", "\\+Country_BE" = "", "\\+Country_AT" = "", "\\+Country_FI" = "", "\\+Country_PT" = "", "\\+Country_REA" = "")
+      model_str, c("\\+Country_DE" = "", "\\+Country_ES" = "", "\\+Country_FR" = "", "\\+Country_IT" = "", "\\+Country_NL" = "", "\\+Country_BE" = "", "\\+Country_AT" = "", "\\+Country_FI" = "", "\\+Country_PT" = "", "\\+Country_REA" = "")
     ) |>
       stringr::str_replace_all(
         c("Country_DE" = "0")
       )
-  }
   return(model_str)
 }
-new_models <- get_intermediate_models(top_models[Criterion == "AIC", Model_specification], 1)
-names(new_models) <- Variables
 
-variable <- "TOR"
+for (interm_model in 1:5) {
+  new_models <- get_intermediate_models(top_models[, Model_specification], interm_model)
+  names(new_models) <- rep(Variables,2)
+  results_interm_models <- rbindlist(sapply(rep(Variables,2), simulate_models, data=RegressionDB, list_models=new_models, include_naive=FALSE, simplify = FALSE, all_models=FALSE), fill = TRUE)
+  top_models[, paste0("RMSE_interm_", interm_model) := results_interm_models$RMSE]
+}
 
-model_resultss <- rbindlist(sapply(Variables, simulate_models, data=RegressionDB, list_models=new_models, include_naive=FALSE, simplify = FALSE, all_models=FALSE))
+
+
+top_models[]
+#model_resultss[, Criterion := rep(c("AIC", "BIC"), each=length(Variables))]
+
 
 ##### MODEL 6 : First Announcement #####
 Models6 <- list(
