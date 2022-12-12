@@ -51,7 +51,7 @@ for (vintage in names(vintage_to_date)) {
                               ][ , Revision_nb := 1:(length(revs)-1),
                               ]
 
-      RevisionDB <- rbindlist(list(RevisionDB, final_rev, interm_rev), use.names=TRUE)
+      RevisionDB <- rbindlist(list(RevisionDB, final_rev, interm_rev), use.names = TRUE)
     }
   }
 }
