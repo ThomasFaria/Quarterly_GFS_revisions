@@ -313,7 +313,7 @@ preprocess_regression_db <- function(data) {
       Variable_code %in% c("EXN"), "Exports",
       Variable_code %in% c("GCN"), "Gov. consumption",
       Variable_code %in% c("WGS"), "Wages and salaries"
-      ))
+    ))
   ][
     ,
     ESA2010 := .(fcase(
@@ -340,7 +340,7 @@ preprocess_regression_db <- function(data) {
   return(data)
 }
 
-get_list_models <- function(countries){
+get_list_models <- function(countries) {
   Regressors <- c(
     paste0("Country_", countries, collapse = "+"),
     paste0("ObsQ_", 1:4, collapse = "+"),
@@ -348,7 +348,7 @@ get_list_models <- function(countries){
     "First_announcement",
     paste0("Rev_lag", 1:5)
   )
-  
+
   List_models <- unlist(lapply(
     1:length(Regressors),
     function(n) {
@@ -357,7 +357,7 @@ get_list_models <- function(countries){
       })
     }
   ))
-  
+
   return(List_models)
 }
 
@@ -368,22 +368,22 @@ get_intermediate_models <- function(old_models, interm_model_number) {
     stringr::str_replace_all(
       c("Rev_lag1" = "0", "Rev_lag2" = "0", "Rev_lag3" = "0", "Rev_lag4" = "0", "Rev_lag5" = "0")
     )
-  
+
   if (interm_model_number == 1) {
     return(model_str)
   }
-  
+
   model_str <- stringr::str_replace_all(
     model_str, c("\\+First_announcement" = "")
   ) |>
     stringr::str_replace_all(
       c("First_announcement" = "0")
     )
-  
+
   if (interm_model_number == 2) {
     return(model_str)
   }
-  
+
   model_str <- stringr::str_replace_all(
     model_str, c("\\+ESA2010" = "")
   ) |>
@@ -393,18 +393,18 @@ get_intermediate_models <- function(old_models, interm_model_number) {
   if (interm_model_number == 3) {
     return(model_str)
   }
-  
+
   model_str <- stringr::str_replace_all(
     model_str, c("\\+ObsQ_1" = "", "\\+ObsQ_2" = "", "\\+ObsQ_3" = "", "\\+ObsQ_4" = "")
   ) |>
     stringr::str_replace_all(
       c("ObsQ_1" = "0")
     )
-  
+
   if (interm_model_number == 4) {
     return(model_str)
   }
-  
+
   model_str <- stringr::str_replace_all(
     model_str, c("\\+Country_DE" = "", "\\+Country_ES" = "", "\\+Country_FR" = "", "\\+Country_IT" = "", "\\+Country_NL" = "", "\\+Country_BE" = "", "\\+Country_AT" = "", "\\+Country_FI" = "", "\\+Country_PT" = "", "\\+Country_REA" = "")
   ) |>
@@ -416,11 +416,11 @@ get_intermediate_models <- function(old_models, interm_model_number) {
 
 simulate_models <- function(data, variable, list_models, include_naive, all_models) {
   sample <- data[(Variable_code == variable)]
-  
+
   if (!all_models) {
     list_models <- list_models[variable]
   }
-  
+
   tryCatch(
     expr = {
       # We estimate a model without constant
@@ -435,7 +435,7 @@ simulate_models <- function(data, variable, list_models, include_naive, all_mode
         summary$Group <- unique(sample$Group)
         return(summary)
       }), use.names = TRUE)
-      
+
       if (include_naive) {
         estimated_model <- lm("Final_revision ~ 0", data = sample)
         naive_summary <- data.table(
@@ -451,7 +451,7 @@ simulate_models <- function(data, variable, list_models, include_naive, all_mode
         )
         model_summary <- rbindlist(list(model_summary, naive_summary), use.names = TRUE, fill = TRUE)
       }
-      
+
       return(model_summary)
     },
     error = function(e) {
@@ -486,13 +486,13 @@ get_best_model <- function(models, variable, criterion) {
   return(best_model)
 }
 
-run_regression <- function(data, list_models, variables){
+run_regression <- function(data, list_models, variables) {
   # Run complete model
   model_results <- sapply(variables, simulate_models, data = data, list_models = list_models, include_naive = TRUE, simplify = FALSE, all_models = TRUE)
   top_models <- rbindlist(lapply(c("AIC", "BIC"), function(criterion) {
     rbindlist(lapply(Variables, get_best_model, models = model_results, criterion = criterion))
   }))
-  
+
   # Run intermediate model
   for (interm_model in 1:5) {
     new_models <- get_intermediate_models(top_models[, Model_specification], interm_model)
@@ -504,21 +504,28 @@ run_regression <- function(data, list_models, variables){
   return(top_models)
 }
 
-get_regression_table <- function(data, criterion){
-  table<- data[Criterion == criterion][,
-                                       c("Compl/Naive", "Intrm1/Naive", "Intrm2/Naive", "Intrm3/Naive", "Intrm4/Naive") := lapply(.SD, function(rmse) round(rmse/get('RMSE_interm_5'),2)), 
-                                       .SDcols = c("RMSE", "RMSE_interm_1", "RMSE_interm_2", "RMSE_interm_3", "RMSE_interm_4")][,
-                                                                                                                                Variable := factor(Variable, levels = Variables)][, 
-                                                                                                                                                                                  c("F-value", "Expl. variable") := list(round(p.value, 2), Model_specification)][,
-                                                                                                                                                                                                                                                                  .(Variable_long, `Expl. variable`, N, `F-value`, `Compl/Naive`, `Intrm1/Naive`, `Intrm2/Naive`, `Intrm3/Naive`, `Intrm4/Naive`)][,
-                                                                                                                                                                                                                                                                  ][,
-                                                                                                                                                                                                                                                                    `Expl. variable` :=  stringr::str_replace_all(get("Expl. variable"), c("Final_revision ~ " = "", 
-                                                                                                                                                                                                                                                                                                                                           "First_announcement" = "x1",
-                                                                                                                                                                                                                                                                                                                                           "ev_lag" = "_",
-                                                                                                                                                                                                                                                                                                                                           "ObsQ_1\\+ObsQ_2\\+ObsQ_3\\+ObsQ_4"= "Q",
-                                                                                                                                                                                                                                                                                                                                           "Country_DE\\+Country_ES\\+Country_FR\\+Country_IT\\+Country_NL\\+Country_BE\\+Country_AT\\+Country_FI\\+Country_PT\\+Country_REA" = "Country"
-                                                                                                                                                                                                                                                                    )
-                                                                                                                                                                                                                                                                    )
-                                                                                                                                                                                                                                                                  ]
+get_regression_table <- function(data, criterion) {
+  table <- data[Criterion == criterion][,
+    c("Compl/Naive", "Intrm1/Naive", "Intrm2/Naive", "Intrm3/Naive", "Intrm4/Naive") := lapply(.SD, function(rmse) round(rmse / get("RMSE_interm_5"), 2)),
+    .SDcols = c("RMSE", "RMSE_interm_1", "RMSE_interm_2", "RMSE_interm_3", "RMSE_interm_4")
+  ][
+    ,
+    Variable := factor(Variable, levels = Variables)
+  ][
+    ,
+    c("F-value", "Expl. variable") := list(round(p.value, 2), Model_specification)
+  ][
+    ,
+    .(Variable_long, `Expl. variable`, N, `F-value`, `Compl/Naive`, `Intrm1/Naive`, `Intrm2/Naive`, `Intrm3/Naive`, `Intrm4/Naive`)
+  ][, ][
+    ,
+    `Expl. variable` := stringr::str_replace_all(get("Expl. variable"), c(
+      "Final_revision ~ " = "",
+      "First_announcement" = "x1",
+      "ev_lag" = "_",
+      "ObsQ_1\\+ObsQ_2\\+ObsQ_3\\+ObsQ_4" = "Q",
+      "Country_DE\\+Country_ES\\+Country_FR\\+Country_IT\\+Country_NL\\+Country_BE\\+Country_AT\\+Country_FI\\+Country_PT\\+Country_REA" = "Country"
+    ))
+  ]
   return(table)
 }
