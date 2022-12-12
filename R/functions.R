@@ -217,7 +217,6 @@ preprocess_final_values_db <- function(data) {
     ,
     Variable_long := .(fcase(
       Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("TOR"), "Total revenue",
       Variable_code %in% c("DTX"), "Direct taxes",
       Variable_code %in% c("TIN"), "Indirect taxes",
       Variable_code %in% c("SCT"), "Social contributions",
@@ -298,6 +297,25 @@ preprocess_regression_db <- function(data) {
     ))
   ][
     ,
+    Variable_long := .(fcase(
+      Variable_code %in% c("TOR"), "Total revenue",
+      Variable_code %in% c("DTX"), "Direct taxes",
+      Variable_code %in% c("TIN"), "Indirect taxes",
+      Variable_code %in% c("SCT"), "Social contributions",
+      Variable_code %in% c("TOE"), "Total expenditure",
+      Variable_code %in% c("THN"), "Social transfers",
+      Variable_code %in% c("PUR"), "Purchases",
+      Variable_code %in% c("COE"), "Gov. compensation",
+      Variable_code %in% c("GIN"), "Gov. investment",
+      Variable_code %in% c("YEN"), "GDP",
+      Variable_code %in% c("PCN"), "Private consumption",
+      Variable_code %in% c("ITN"), "Total investment",
+      Variable_code %in% c("EXN"), "Exports",
+      Variable_code %in% c("GCN"), "Gov. consumption",
+      Variable_code %in% c("WGS"), "Wages and salaries"
+      ))
+  ][
+    ,
     ESA2010 := .(fcase(
       Date > as.Date("2014-03-01"), 1,
       Date <= as.Date("2014-03-01"), 0
@@ -320,6 +338,27 @@ preprocess_regression_db <- function(data) {
     na.omit(cols = c("Rev_lag1", "Rev_lag2", "Rev_lag3", "Rev_lag4", "Rev_lag5", "Rev_ITN", "Rev_EXN", "Rev_GCN", "Rev_YEN", "Rev_PCN", "Rev_WGS"))
 
   return(data)
+}
+
+get_list_models <- function(countries){
+  Regressors <- c(
+    paste0("Country_", countries, collapse = "+"),
+    paste0("ObsQ_", 1:4, collapse = "+"),
+    "ESA2010",
+    "First_announcement",
+    paste0("Rev_lag", 1:5)
+  )
+  
+  List_models <- unlist(lapply(
+    1:length(Regressors),
+    function(n) {
+      combn(Regressors, n, FUN = function(row) {
+        paste0("Final_revision ~ ", paste0(row, collapse = "+"))
+      })
+    }
+  ))
+  
+  return(List_models)
 }
 
 get_intermediate_models <- function(old_models, interm_model_number) {
@@ -391,6 +430,7 @@ simulate_models <- function(data, variable, list_models, include_naive, all_mode
         summary$Model_specification <- model
         summary$N <- nobs(estimated_model)
         summary$Variable <- variable
+        summary$Variable_long <- unique(sample$Variable_long)
         summary$RMSE <- sqrt(c(crossprod(estimated_model$residuals)) / length(estimated_model$residuals))
         summary$Group <- unique(sample$Group)
         return(summary)
@@ -404,6 +444,7 @@ simulate_models <- function(data, variable, list_models, include_naive, all_mode
           N = nobs(estimated_model),
           Model_specification = "Final_revision ~ 0",
           Variable = variable,
+          Variable_long = unique(sample$Variable_long),
           p.value = NA,
           RMSE = c(sqrt(crossprod(estimated_model$residuals) / length(estimated_model$residuals))),
           Group = unique(sample$Group)
@@ -422,6 +463,7 @@ simulate_models <- function(data, variable, list_models, include_naive, all_mode
         N = nobs(estimated_model),
         Model_specification = list_models,
         Variable = variable,
+        Variable_long = unique(sample$Variable_long),
         p.value = NA,
         RMSE = c(sqrt(crossprod(estimated_model$residuals) / length(estimated_model$residuals))),
         Group = unique(sample$Group)
@@ -434,7 +476,7 @@ simulate_models <- function(data, variable, list_models, include_naive, all_mode
 get_best_model <- function(models, variable, criterion) {
   best_model <- models[[variable]][
     ,
-    c("Variable", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")
+    c("Variable", "Variable_long", "Group", "Model_specification", "RMSE", "AIC", "BIC", "p.value", "N")
   ][
     ,
     Criterion := criterion
@@ -442,4 +484,41 @@ get_best_model <- function(models, variable, criterion) {
     setorderv(criterion) |>
     head(1)
   return(best_model)
+}
+
+run_regression <- function(data, list_models, variables){
+  # Run complete model
+  model_results <- sapply(variables, simulate_models, data = data, list_models = list_models, include_naive = TRUE, simplify = FALSE, all_models = TRUE)
+  top_models <- rbindlist(lapply(c("AIC", "BIC"), function(criterion) {
+    rbindlist(lapply(Variables, get_best_model, models = model_results, criterion = criterion))
+  }))
+  
+  # Run intermediate model
+  for (interm_model in 1:5) {
+    new_models <- get_intermediate_models(top_models[, Model_specification], interm_model)
+    names(new_models) <- rep(variables, 2)
+    results_interm_models <- rbindlist(sapply(rep(variables, 2), simulate_models, data = data, list_models = new_models, include_naive = FALSE, simplify = FALSE, all_models = FALSE), fill = TRUE)
+    top_models[, paste0("RMSE_interm_", interm_model) := results_interm_models$RMSE]
+  }
+  # Return only best models according to AIC and BIC
+  return(top_models)
+}
+
+get_regression_table <- function(data, criterion){
+  table<- data[Criterion == criterion][,
+                                       c("Compl/Naive", "Intrm1/Naive", "Intrm2/Naive", "Intrm3/Naive", "Intrm4/Naive") := lapply(.SD, function(rmse) round(rmse/get('RMSE_interm_5'),2)), 
+                                       .SDcols = c("RMSE", "RMSE_interm_1", "RMSE_interm_2", "RMSE_interm_3", "RMSE_interm_4")][,
+                                                                                                                                Variable := factor(Variable, levels = Variables)][, 
+                                                                                                                                                                                  c("F-value", "Expl. variable") := list(round(p.value, 2), Model_specification)][,
+                                                                                                                                                                                                                                                                  .(Variable_long, `Expl. variable`, N, `F-value`, `Compl/Naive`, `Intrm1/Naive`, `Intrm2/Naive`, `Intrm3/Naive`, `Intrm4/Naive`)][,
+                                                                                                                                                                                                                                                                  ][,
+                                                                                                                                                                                                                                                                    `Expl. variable` :=  stringr::str_replace_all(get("Expl. variable"), c("Final_revision ~ " = "", 
+                                                                                                                                                                                                                                                                                                                                           "First_announcement" = "x1",
+                                                                                                                                                                                                                                                                                                                                           "ev_lag" = "_",
+                                                                                                                                                                                                                                                                                                                                           "ObsQ_1\\+ObsQ_2\\+ObsQ_3\\+ObsQ_4"= "Q",
+                                                                                                                                                                                                                                                                                                                                           "Country_DE\\+Country_ES\\+Country_FR\\+Country_IT\\+Country_NL\\+Country_BE\\+Country_AT\\+Country_FI\\+Country_PT\\+Country_REA" = "Country"
+                                                                                                                                                                                                                                                                    )
+                                                                                                                                                                                                                                                                    )
+                                                                                                                                                                                                                                                                  ]
+  return(table)
 }
