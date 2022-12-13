@@ -495,7 +495,7 @@ run_regression <- function(data, list_models, variables) {
 
   # Run intermediate model
   for (interm_model in 1:5) {
-    for (criterion in c("AIC", "BIC")){
+    for (criterion in c("AIC", "BIC")) {
       new_models <- get_intermediate_models(top_models[Criterion == criterion, Model_specification], interm_model)
       names(new_models) <- variables
       results_interm_models <- rbindlist(sapply(variables, simulate_models, data = data, list_models = new_models, include_naive = FALSE, simplify = FALSE, all_models = FALSE), fill = TRUE)
