@@ -490,15 +490,17 @@ run_regression <- function(data, list_models, variables) {
   # Run complete model
   model_results <- sapply(variables, simulate_models, data = data, list_models = list_models, include_naive = TRUE, simplify = FALSE, all_models = TRUE)
   top_models <- rbindlist(lapply(c("AIC", "BIC"), function(criterion) {
-    rbindlist(lapply(Variables, get_best_model, models = model_results, criterion = criterion))
+    rbindlist(lapply(variables, get_best_model, models = model_results, criterion = criterion))
   }))
 
   # Run intermediate model
   for (interm_model in 1:5) {
-    new_models <- get_intermediate_models(top_models[, Model_specification], interm_model)
-    names(new_models) <- rep(variables, 2)
-    results_interm_models <- rbindlist(sapply(rep(variables, 2), simulate_models, data = data, list_models = new_models, include_naive = FALSE, simplify = FALSE, all_models = FALSE), fill = TRUE)
-    top_models[, paste0("RMSE_interm_", interm_model) := results_interm_models$RMSE]
+    for (criterion in c("AIC", "BIC")){
+      new_models <- get_intermediate_models(top_models[Criterion == criterion, Model_specification], interm_model)
+      names(new_models) <- variables
+      results_interm_models <- rbindlist(sapply(variables, simulate_models, data = data, list_models = new_models, include_naive = FALSE, simplify = FALSE, all_models = FALSE), fill = TRUE)
+      top_models[Criterion == criterion, paste0("RMSE_interm_", interm_model) := results_interm_models$RMSE]
+    }
   }
   # Return only best models according to AIC and BIC
   return(top_models)
