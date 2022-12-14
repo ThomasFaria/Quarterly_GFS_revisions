@@ -24,7 +24,7 @@ All necessary packages have been already installed in the docker image and depen
 
 ## Database
 
-One major contribution of our paper is the construction of a **real-time fiscal dataset** for the euro area. The dataset is stored on MinIO, and is made available via this [url]().
+One major contribution of our paper is the construction of a **real-time fiscal dataset** for the euro area. The dataset is stored on MinIO, and is made available via this [url](https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv).
 
 The dataset contains published releases from 2006Q3 to 2019Q4[^1] for several fiscal and macroeconomic series as specified in the following table:
 
