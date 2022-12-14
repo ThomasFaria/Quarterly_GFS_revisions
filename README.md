@@ -3,7 +3,7 @@
 [![Licence](https://img.shields.io/badge/Licence-EUPL--1.2-001489)](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12)
 [![Onyxia](https://img.shields.io/badge/Launch-Datalab-orange?logo=R)](https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=true&service.image.pullPolicy=«Always»&service.image.custom.enabled=true&service.image.custom.version=«thomasfaria%2Fquarterly_gfs_revisions%3Alatest»&security.allowlist.enabled=false&onyxia.friendlyName=«QGFS»)
 
-Repository replicating the results presented in our paper [Krzysztof Bańkowski](https://www.ecb.europa.eu/pub/research/authors/profiles/krzysztof-bankowski.fr.html), [Thomas Faria](https://www.ecb.europa.eu/pub/research/authors/profiles/thomas-faria.fr.html), [Robert Schall](https://www.ecb.europa.eu/pub/research/authors/profiles/robert-schall.fr.html) (2022) [How well-behaved are revisions to quarterly fiscal data in the euro area?](https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp2676~65f27f7ac1.fr.pdf?7f2b353ebef0e876f2feb488dbea1079).
+Repository replicating the results presented in our paper [Krzysztof Bańkowski](https://www.ecb.europa.eu/pub/research/authors/profiles/krzysztof-bankowski.fr.html), [Thomas Faria](https://www.ecb.europa.eu/pub/research/authors/profiles/thomas-faria.fr.html), [Robert Schall](https://www.ecb.europa.eu/pub/research/authors/profiles/robert-schall.fr.html) (2022) ["How well-behaved are revisions to quarterly fiscal data in the euro area?"](https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp2676~65f27f7ac1.fr.pdf?7f2b353ebef0e876f2feb488dbea1079).
 
 ## Set-up
 
