@@ -532,14 +532,12 @@ get_regression_table <- function(data, criterion, variables) {
   return(table)
 }
 
-produce_regressions <- function(data, variables) {
+produce_regressions <- function(data, variables, criterion) {
   RegressionDB <- preprocess_regression_db(data)
   List_models <- get_list_models(c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"))
   results <- run_regression(RegressionDB, List_models, variables)
-
-  return(lapply(c("AIC", "BIC"), get_regression_table, data = results, variables = variables))
+  return(results)
 }
-
 
 compute_growth_rate <- function(data) {
   GRateDB <- data.table()
@@ -578,3 +576,6 @@ get_final_values <- function(raw_data, growth_rate_data) {
   return(FinalValues)
 }
 
+get_RTDB <- function(file) {
+  return(data.table(arrow::read_csv_arrow(file)))
+}

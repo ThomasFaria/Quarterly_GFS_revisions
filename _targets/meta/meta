@@ -1,8 +1,9 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
 calcs_revisions|function|21e462edba1bb643|||||||||||||||
 compute_growth_rate|function|542b4b4409492ebe|||||||||||||||
-data|stem|44b543084ec6cc56|ebaf12e7b9a2830b|c3b5fc02cdc369c1|1588979285||t19341.9119470311s|2cd82a6696bc6f7a|1364664|rds|local|vector|||1.442||
-Final_values|stem|1fa2f5b151063fac|ddd6e985932a39f1|f9187ca6a3d878f5|-1113945698||t19345.63615687s|752434d5d0d54ff1|354618|rds|local|vector|||2.726||
+data|stem|f628442bdb5a7eac|ebaf12e7b9a2830b|c3b5fc02cdc369c1|1588979285||t19345.675505918s|046d7982f123fcf1|1760596|parquet|local|vector|||0.547||
+file|stem|3203b01d23419c56|a8d7202b2b8b6bdd|ef46db3751d8e999|-1301001980|data/RealTimeDatabase.csv|t19309.7746521956s|14705ee6d517e9db|112394576|file|local|vector|||0.024||
+Final_values|stem|1cc442632f4786ae|ddd6e985932a39f1|82ad27ca77bcbf5a|-1113945698||t19345.6802911971s|ad56037759ab38bb|510762|parquet|local|vector|||4.16||
 get_best_model|function|59bf5e25da534364|||||||||||||||
 get_final_values|function|6c4c8b7bb6b38a42|||||||||||||||
 get_intermediate_models|function|7d0b15a3a90cca29|||||||||||||||
@@ -10,17 +11,20 @@ get_list_models|function|aed31e7702fa9a23|||||||||||||||
 get_past_revisions|function|f1fc007ea218b3b1|||||||||||||||
 get_reference_year|function|73bbec67bdc9d73c|||||||||||||||
 get_regression_table|function|c91d29212348cb15|||||||||||||||
-GRateDB|stem|490cdcb4f40f2dbe|8007a7c8edba4686|b29e019651f24231|106306174||t19341.9245012707s|f4c13076f056fdd6|13574999|rds|local|vector|||8.445|Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN|
+get_RTDB|function|427a81ac84a3d5fa|||||||||||||||
+GRateDB|stem|1757e53d1fb187e1|8007a7c8edba4686|738b022396a774ea|106306174||t19345.6802322255s|8a54cf0225c4f1ee|13111000|parquet|local|vector|||11.893|Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN|
+input|stem|3203b01d23419c56|a8d7202b2b8b6bdd|ef46db3751d8e999|-1276294782|data/RealTimeDatabase.csv|t19309.7746521956s|14705ee6d517e9db|112394576|file|local|vector|||0.052||
 preprocess_final_values_db|function|fcb6d98e6d05f97b|||||||||||||||
 preprocess_growth_rate_db|function|9a2cfc9abd049d91|||||||||||||||
 preprocess_raw_db|function|87fcaa5cb748481b|||||||||||||||
 preprocess_regression_db|function|b8f1d2e2f39e761f|||||||||||||||
 preprocess_revision_db|function|2eab5b62fe668a18|||||||||||||||
-produce_regressions|function|ca0a7bf263152f3d|||||||||||||||
-Regressions|stem|2520ec70d2100a14|417889284972417e|1aa295be58fbd5df|1418747898||t19341.9174970582s|dff923d388a70b81|856|rds|local|vector|||60.058||
-RTDB|stem|dd519735f1efafcd|70f6910f0449eba6|4f24934d0456ef21|-1202613||t19341.924364391s|dac087a29656617d|9182105|rds|local|vector|||4.245||
+produce_regressions|function|e87b4598c7bfa9eb|||||||||||||||
+Regressions|stem|dc84e360c492ba55|417889284972417e|433e4e1fd04b67fc|1418747898||t19345.6800760855s|d4c55ffdd6f98f88|10879|parquet|local|vector|||78.094||
+RTDB|stem|470b41cce72fd961|428e8f0796fa898b|215bf292f9fa3f8f|-1202613||t19345.6755867039s|dd909a4e7836b39c|11054540|parquet|local|vector|||4.299||
 run_regression|function|aa6e2f1fd05d1e6b|||||||||||||||
 simulate_models|function|f76215188ef4483f|||||||||||||||
+table_AIC|stem|eebfee964a43e6dd|09aa7485e51e386f|094a7b868aefd310|-1575614368||t19345.6811626699s|4e9d06160ff96624|6055|parquet|local|vector|||0.088||
 Var_Expenditure|object|4db90a897daa681c|||||||||||||||
 Var_Macro|object|162ddb1f3f20eeb3|||||||||||||||
 Var_Revenue|object|ab21244e93153d4b|||||||||||||||
