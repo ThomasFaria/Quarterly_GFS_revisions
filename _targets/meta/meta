@@ -1,6 +1,7 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
 calcs_revisions|function|21e462edba1bb643|||||||||||||||
 compute_growth_rate|function|542b4b4409492ebe|||||||||||||||
+create_regression_db|function|db5b214c347530f7|||||||||||||||
 data|stem|f628442bdb5a7eac|ebaf12e7b9a2830b|c3b5fc02cdc369c1|1588979285||t19345.675505918s|046d7982f123fcf1|1760596|parquet|local|vector|||0.547||
 file|stem|3203b01d23419c56|a8d7202b2b8b6bdd|ef46db3751d8e999|-1301001980|data/RealTimeDatabase.csv|t19309.7746521956s|14705ee6d517e9db|112394576|file|local|vector|||0.024||
 Final_values|stem|1cc442632f4786ae|ddd6e985932a39f1|82ad27ca77bcbf5a|-1113945698||t19345.6802911971s|ad56037759ab38bb|510762|parquet|local|vector|||4.16||
@@ -20,7 +21,7 @@ preprocess_raw_db|function|87fcaa5cb748481b|||||||||||||||
 preprocess_regression_db|function|b8f1d2e2f39e761f|||||||||||||||
 preprocess_revision_db|function|2eab5b62fe668a18|||||||||||||||
 produce_regressions|function|e87b4598c7bfa9eb|||||||||||||||
-Regressions|stem|dc84e360c492ba55|417889284972417e|433e4e1fd04b67fc|1418747898||t19345.6800760855s|d4c55ffdd6f98f88|10879|parquet|local|vector|||78.094||
+Regressions|stem|dc84e360c492ba55|417889284972417e|9dc878bbbe1d931c|1418747898||t19345.6800760855s||10879|parquet|local|vector|||0.505||objet Country_code introuvable
 RTDB|stem|470b41cce72fd961|428e8f0796fa898b|215bf292f9fa3f8f|-1202613||t19345.6755867039s|dd909a4e7836b39c|11054540|parquet|local|vector|||4.299||
 run_regression|function|aa6e2f1fd05d1e6b|||||||||||||||
 simulate_models|function|f76215188ef4483f|||||||||||||||
@@ -29,3 +30,23 @@ Var_Expenditure|object|4db90a897daa681c|||||||||||||||
 Var_Macro|object|162ddb1f3f20eeb3|||||||||||||||
 Var_Revenue|object|ab21244e93153d4b|||||||||||||||
 Variables|object|36e2475476b85667|||||||||||||||
+get_reference_year|function|73bbec67bdc9d73c
+get_regression_table|function|c91d29212348cb15
+get_best_model|function|59bf5e25da534364
+get_intermediate_models|function|7d0b15a3a90cca29
+get_list_models|function|aed31e7702fa9a23
+preprocess_regression_db|function|b8f1d2e2f39e761f
+preprocess_final_values_db|function|fcb6d98e6d05f97b
+preprocess_revision_db|function|2eab5b62fe668a18
+simulate_models|function|f76215188ef4483f
+get_RTDB|function|427a81ac84a3d5fa
+get_past_revisions|function|f1fc007ea218b3b1
+preprocess_growth_rate_db|function|9a2cfc9abd049d91
+preprocess_raw_db|function|87fcaa5cb748481b
+compute_growth_rate|function|542b4b4409492ebe
+calcs_revisions|function|21e462edba1bb643
+get_final_values|function|6c4c8b7bb6b38a42
+run_regression|function|aa6e2f1fd05d1e6b
+create_regression_db|function|adbbab69500390ab
+produce_regressions|function|e87b4598c7bfa9eb
+RevisionDB|stem|c3d3e47124fd320f|961820374b8e7212|c3b5fc02cdc369c1|-144718082||t19345.7079417193s|67b41c918d0e9334|1272869|parquet|local|vector|||1.197||

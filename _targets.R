@@ -1,7 +1,7 @@
 library(targets)
 
 tar_option_set(
-  packages = c("data.table"),
+  packages = c("data.table", "lubridate"),
   format = "parquet",
   memory = "transient", 
   garbage_collection = TRUE
@@ -28,12 +28,16 @@ list(
     command = get_final_values(RTDB, GRateDB),
   ),
   tar_target(
-    name = data,
-    command = arrow::read_parquet("data/RegressionDB.parquet"),
+    name = RevisionDB,
+    command = arrow::read_parquet("data/RevisionDB.parquet"),
+  ),
+  tar_target(
+    name = RegressionDB,
+    command = create_regression_db(RTDB, RevisionDB, GRateDB, Final_values),
   ),
   tar_target(
     name = Regressions,
-    command = produce_regressions(data, c(c("TOR", "DTX", "TIN", "SCT"), c("TOE", "THN", "PUR", "COE", "GIN"), c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS")))
+    command = produce_regressions(RegressionDB, c(c("TOR", "DTX", "TIN", "SCT"), c("TOE", "THN", "PUR", "COE", "GIN"), c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS")))
   ),
   tar_target(
     name = table_AIC,
