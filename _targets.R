@@ -29,7 +29,7 @@ list(
   ),
   tar_target(
     name = RevisionDB,
-    command = arrow::read_parquet("data/RevisionDB.parquet"),
+    command = compute_revisions(GRateDB),
   ),
   tar_target(
     name = RegressionDB,

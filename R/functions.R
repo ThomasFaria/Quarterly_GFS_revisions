@@ -10,78 +10,76 @@ get_reference_year <- function(vintage) {
   return(reference_year)
 }
 
-calcs_revisions <- function(dt, vintage, VintageList, country, variable) {
-  case <- substr(vintage, 1, 1)
-
-  i <- match(vintage, VintageList)
+calcs_revisions <- function(dt, index_vintage, VintageList, date, country, variable) {
+  case <- substr(VintageList[[index_vintage]], 1, 1)
 
   switch(case,
     G = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
-        (ECB_vintage %in% VintageList[i:(i + 2)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+        (ECB_vintage %in% VintageList[index_vintage:(index_vintage + 2)]) &
+        (Date == date), Value, ECB_vintage]
 
-      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 2)]), on = .(ECB_vintage)]
-      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 2)], 1)), Value]
+      revs <- revs[data.table(ECB_vintage = VintageList[index_vintage:(index_vintage + 2)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[index_vintage:(index_vintage + 2)], 1)), Value]
 
       if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
-        revs <- setNames(rep(NA, length(i:(i + 2))), VintageList[i:(i + 2)])
+        revs <- setNames(rep(NA, length(index_vintage:(index_vintage + 2))), VintageList[index_vintage:(index_vintage + 2)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(final_value - revs[, Value], VintageList[i:(i + 2)])
+        revs <- setNames(final_value - revs[, Value], VintageList[index_vintage:(index_vintage + 2)])
       }
     },
     W = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
-        (ECB_vintage %in% VintageList[i:(i + 3)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+        (ECB_vintage %in% VintageList[index_vintage:(index_vintage + 3)]) &
+        (Date == date), Value, ECB_vintage]
 
-      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 3)]), on = .(ECB_vintage)]
-      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 3)], 1)), Value]
+      revs <- revs[data.table(ECB_vintage = VintageList[index_vintage:(index_vintage + 3)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[index_vintage:(index_vintage + 3)], 1)), Value]
 
       if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
-        revs <- setNames(rep(NA, length(i:(i + 3))), VintageList[i:(i + 3)])
+        revs <- setNames(rep(NA, length(index_vintage:(index_vintage + 3))), VintageList[index_vintage:(index_vintage + 3)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(final_value - revs[, Value], VintageList[i:(i + 3)])
+        revs <- setNames(final_value - revs[, Value], VintageList[index_vintage:(index_vintage + 3)])
       }
     },
     A = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
-        (ECB_vintage %in% VintageList[i:(i + 4)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+        (ECB_vintage %in% VintageList[index_vintage:(index_vintage + 4)]) &
+        (Date == date), Value, ECB_vintage]
 
-      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 4)]), on = .(ECB_vintage)]
-      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 4)], 1)), Value]
+      revs <- revs[data.table(ECB_vintage = VintageList[index_vintage:(index_vintage + 4)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[index_vintage:(index_vintage + 4)], 1)), Value]
 
       if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
-        revs <- setNames(rep(NA, length(i:(i + 4))), VintageList[i:(i + 4)])
+        revs <- setNames(rep(NA, length(index_vintage:(index_vintage + 4))), VintageList[index_vintage:(index_vintage + 4)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(final_value - revs[, Value], VintageList[i:(i + 4)])
+        revs <- setNames(final_value - revs[, Value], VintageList[index_vintage:(index_vintage + 4)])
       }
     },
     S = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
-        (ECB_vintage %in% VintageList[i:(i + 5)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+        (ECB_vintage %in% VintageList[index_vintage:(index_vintage + 5)]) &
+        (Date == date), Value, ECB_vintage]
 
-      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 5)]), on = .(ECB_vintage)]
-      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 5)], 1)), Value]
+      revs <- revs[data.table(ECB_vintage = VintageList[index_vintage:(index_vintage + 5)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[index_vintage:(index_vintage + 5)], 1)), Value]
 
       if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
-        revs <- setNames(rep(NA, length(i:(i + 5))), VintageList[i:(i + 5)])
+        revs <- setNames(rep(NA, length(index_vintage:(index_vintage + 5))), VintageList[index_vintage:(index_vintage + 5)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(final_value - revs[, Value], VintageList[i:(i + 5)])
+        revs <- setNames(final_value - revs[, Value], VintageList[index_vintage:(index_vintage + 5)])
       }
     },
     stop("Unknown vintage abbreviation. It should start by G, W, A or S")
@@ -649,4 +647,55 @@ create_regression_db <- function(raw_data, revision_data, gr_data, final_values)
       }
     }
   }
+  
+  return(RegressionDB)
+}
+
+compute_revisions <- function(data) {
+  VintageList <- unique(data[, ECB_vintage])
+  Countries <- unique(data$Country_code)
+  Variables <- unique(data$Variable_code)
+  DateRange <- seq(as.Date("2006-07-01"), as.Date("2019-10-01"), by = "quarter")
+  
+  vintage_to_date <- setNames(as.list(DateRange), VintageList[1:length(as.list(DateRange))])
+  
+  RevisionDB <- data.table()
+  for (vintage in names(vintage_to_date)) {
+    index_vintage <- match(vintage, VintageList)
+    date <- vintage_to_date[[VintageList[index_vintage]]]
+    
+    for (country in Countries) {
+      cat(vintage, "-", country, "\n")
+      
+      for (variable in Variables) {
+        revs <- calcs_revisions(data, index_vintage, VintageList, date, country, variable)
+        
+        if (is.na(revs[[1]])) {
+          revs[1:length(revs)] <- NA
+        }
+        
+        # Add final revisions
+        final_rev <- data.table(Vintage_base = names(revs), Value = revs)[ , Type_revision := "Final",
+        ][ , Vintage_comp := tail(names(revs),1),
+        ][ , Date := date,
+        ][ , Country_code := country,
+        ][ , Variable_code := variable,
+        ][ , Revision_nb := 1:length(revs),
+        ]
+        
+        # Add intermediate revisions
+        interm_rev <- data.table(Vintage_comp = names(diff(revs)), Value = diff(revs) * -1)[ , Type_revision := "Intermediate",
+        ][ , Vintage_base := names(revs)[1:(length(revs)-1)],
+        ][ , Date := date,
+        ][ , Country_code := country,
+        ][ , Variable_code := variable,
+        ][ , Revision_nb := 1:(length(revs)-1),
+        ]
+        
+        RevisionDB <- rbindlist(list(RevisionDB, final_rev, interm_rev), use.names = TRUE)
+      }
+    }
+  }
+  
+  return(RevisionDB)
 }
