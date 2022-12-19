@@ -506,13 +506,13 @@ run_regression <- function(data, list_models, variables) {
   return(top_models)
 }
 
-get_regression_table <- function(data, criterion) {
+get_regression_table <- function(data, criterion, variables) {
   table <- data[Criterion == criterion][,
     c("Compl/Naive", "Intrm1/Naive", "Intrm2/Naive", "Intrm3/Naive", "Intrm4/Naive") := lapply(.SD, function(rmse) round(rmse / get("RMSE_interm_5"), 2)),
     .SDcols = c("RMSE", "RMSE_interm_1", "RMSE_interm_2", "RMSE_interm_3", "RMSE_interm_4")
   ][
     ,
-    Variable := factor(Variable, levels = Variables)
+    Variable := factor(Variable, levels = variables)
   ][
     ,
     c("F-value", "Expl. variable") := list(round(p.value, 2), Model_specification)
@@ -531,3 +531,50 @@ get_regression_table <- function(data, criterion) {
   ]
   return(table)
 }
+
+produce_regressions <- function(data, variables) {
+  RegressionDB <- preprocess_regression_db(data)
+  List_models <- get_list_models(c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"))
+  results <- run_regression(RegressionDB, List_models, variables)
+
+  return(lapply(c("AIC", "BIC"), get_regression_table, data = results, variables = variables))
+}
+
+
+compute_growth_rate <- function(data) {
+  GRateDB <- data.table()
+  vintage_list <- unique(data[, ECB_vintage])
+  for (vintage in vintage_list) {
+    xts_data <- data[ECB_vintage %in% vintage, c("Date", "Variable_code", "Country_code", "Value")] |>
+      dcast(Date ~ paste0(Country_code, "_", Variable_code), value.var = "Value") |>
+      as.xts.data.table()
+
+    xts_growth_rate <- (log(xts_data / stats::lag(xts_data, 4)) * 100)["1999-01-01/"] |>
+      as.data.table() |>
+      melt(measure.vars = patterns("(.)_(.)"), value.name = "Value")
+    xts_growth_rate[, c("Country_code", "Variable_code") := tstrsplit(variable, "_", fixed = TRUE)][, "ECB_vintage" := vintage][, variable := NULL]
+    GRateDB <- rbindlist(list(GRateDB, xts_growth_rate))
+  }
+  setnames(GRateDB, "index", "Date")
+
+  return(GRateDB)
+}
+
+get_final_values <- function(raw_data, growth_rate_data) {
+  vintage_list <- unique(raw_data[, ECB_vintage])
+  Final_vintages <- vintage_list[startsWith(vintage_list, "A")]
+  reference_years <- sapply(Final_vintages, get_reference_year, simplify = FALSE, USE.NAMES = TRUE)
+
+  for (final_vintage in c(Final_vintages)) {
+    growth_rate_data[(ECB_vintage %in% final_vintage) & (Date %between% reference_years[[final_vintage]]), Is_final_value := T]
+    raw_data[(ECB_vintage %in% final_vintage) & (Date %between% reference_years[[final_vintage]]), Is_final_value := T]
+  }
+
+  FinalValues <- rbindlist(list(
+    growth_rate_data[(Is_final_value)][, Measure := "GRate"],
+    raw_data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Value", "Country_code", "Variable_code", "ECB_vintage", "Is_final_value", "Measure")]
+  ))
+
+  return(FinalValues)
+}
+
