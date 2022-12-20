@@ -2,13 +2,14 @@ library(targets)
 library(tarchetypes)
 
 tar_option_set(
-  packages = c("data.table", "lubridate", "rmarkdown"),
+  packages = c("data.table", "lubridate", "rmarkdown", "ggplot2"),
   format = "parquet",
   memory = "transient", 
   garbage_collection = TRUE
 )
 # Run the R scripts in the R/ folder with your custom functions:
 tar_source("R/functions.R")
+tar_source("R/plot_functions.R")
 
 list(
   tar_target(
@@ -46,6 +47,7 @@ list(
   ),
   tar_target(
     name = plot_total_revision,
-    command = Plot_TOTAL_REVISION(RevisionDB, Final_values, c("NL"), c("COE"), "GRate")
+    command = Plot_TOTAL_REVISION(RevisionDB, Final_values, c("NL"), c("COE"), "GRate"),
+    format = "rds"
   )
 )
