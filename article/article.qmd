@@ -62,6 +62,9 @@ format:
 # Unconditional properties of final revisions {#sec-Magnitude-of-total}
 {{< include sections/3-Uncond-properties.qmd >}}
 
+# Predictability final revisions {#sec-Predictability}
+{{< include sections/4-Predictability.qmd >}}
+
 \newpage{}
 
 Please make sure that your manuscript follows the guidelines in the 
