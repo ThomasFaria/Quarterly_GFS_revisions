@@ -47,6 +47,8 @@ format:
       model: 3p
       cite-style: authoryear
     toc: true
+    include-in-header:
+      - packages.tex
     # lof: true
     # lot: true
 ---
