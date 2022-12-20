@@ -4,52 +4,60 @@ author:
   - name: Krzysztof Bankowski
     email: krzysztof.bankowski@europa.ecb.eu
     affiliations: 
-        - id: some-tech
+        - id: ECB
           name: European Central Bank
           department: Fiscal Policies Division
-          address:  Sonnemannstrasse 20
+          # address:  Sonnemannstrasse 20
           city: Frankfurt
           postal-code: 60314
-    attributes:
-        corresponding: true
-    note: This is the first author footnote.
-  - name: Bob Security
-    email: bob@example.com
+    # attributes:
+    #     corresponding: true
+    # note: This is the first author footnote.
+  - name: Thomas Faria
+    email: thomas.faria@insee.fr
     affiliations:
-        - id: another-u
-          name: Another University
-          department: Department Name
-          address: Street Address
-          city: City
-          state: State
-          postal-code: Postal Code
-    note: |
-      Another author footnote, this is a very long footnote and it should be a really long footnote. But this footnote is not yet sufficiently long enough to make two lines of footnote text.
-  - name: Cat Memes
-    email: cat@example.com
+        - id: Insee
+          name: Institut national de la statistique et des études économiques
+          department: SSP Lab
+          # address: 88, avenue Verdier
+          city: Montrouge
+          postal-code: 92541
+  - name: Robert Schall
+    email: robert.schall@eui.eu
     affiliations:
-        - ref: another-u
-    note: Yet another author footnote.
-  - name: Derek Zoolander
-    email: derek@example.com
-    affilations:
-        - ref: some-tech
+        - id: EUI
+          name: European University Institute
+          city: Fiesole
+          postal-code: 50014
+
 abstract: |
-  This is the abstract. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum augue turpis, dictum non malesuada a, volutpat eget velit. Nam placerat turpis purus, eu tristique ex tincidunt et. Mauris sed augue eget turpis ultrices tincidunt. Sed et mi in leo porta egestas. Aliquam non laoreet velit. Nunc quis ex vitae eros aliquet auctor nec ac libero. Duis laoreet sapien eu mi luctus, in bibendum leo molestie. Sed hendrerit diam diam, ac dapibus nisl volutpat vitae. Aliquam bibendum varius libero, eu efficitur justo rutrum at. Sed at tempus elit.
+  We investigate the properties of fiscal revisions in the euro area by contrasting them with macro revisions. To this end, we construct a fiscal real-time dataset containing quarterly releases of Government Finance Statistics, which is supplemented by macro variables from Main National Accounts. Fiscal revisions, like macro revisions, do not satisfy desirable properties expected from well-behaved revisions. In particular, they tend to have positive mean, are non-negligible in size and are predictable. With our investigation we contradict the often heard view that fiscal data are subject to extraordinarily sizeable revisions. While it was the case some years ago since 2014 the revisions for the main fiscal categories are in the same ballpark as the revisions for the main macroeconomic series. In general, properties of fiscal and macro revisions are quite similar since the introduction of ESA 2010 in 2014.
 keywords: 
-  - keyword1
-  - keyword2
+  - Fiscal policy
+  - real-time data
+  - data revisions
 date: last-modified
 bibliography: bibliography.bib
 format:
   elsevier-pdf:
     keep-tex: true
     journal:
-      name: Journal Name
+      name: International Journal of Central Banking
       formatting: preprint
       model: 3p
       cite-style: authoryear
+    toc: true
+    # lof: true
+    # lot: true
 ---
+
+\newpage{}
+
+# Introduction
+{{< include sections/1-introduction.qmd >}}
+
+
+\newpage{}
 
 Please make sure that your manuscript follows the guidelines in the 
 Guide for Authors of the relevant journal. It is not necessary to 
