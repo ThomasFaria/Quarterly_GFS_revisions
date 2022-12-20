@@ -1,7 +1,8 @@
 library(targets)
+library(tarchetypes)
 
 tar_option_set(
-  packages = c("data.table", "lubridate"),
+  packages = c("data.table", "lubridate", "rmarkdown"),
   format = "parquet",
   memory = "transient", 
   garbage_collection = TRUE
