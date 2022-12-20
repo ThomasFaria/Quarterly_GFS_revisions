@@ -40,7 +40,7 @@ date: last-modified
 bibliography: bibliography.bib
 format:
   elsevier-pdf:
-    keep-tex: true
+    keep-tex: false
     journal:
       name: International Journal of Central Banking
       formatting: preprint
