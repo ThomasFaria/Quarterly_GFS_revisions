@@ -43,5 +43,9 @@ list(
   tar_target(
     name = table_AIC,
     command = get_regression_table(Regressions, "AIC", c(c("TOR", "DTX", "TIN", "SCT"), c("TOE", "THN", "PUR", "COE", "GIN"), c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS")))
+  ),
+  tar_target(
+    name = plot_total_revision,
+    command = Plot_TOTAL_REVISION(RevisionDB, Final_values, c("NL"), c("COE"), "GRate")
   )
 )

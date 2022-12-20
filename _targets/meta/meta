@@ -4,6 +4,8 @@ compute_growth_rate|function|542b4b4409492ebe|||||||||||||||
 compute_revisions|function|68e254d109f98c34|||||||||||||||
 create_regression_db|function|9399f4e07bdbb19c|||||||||||||||
 data|stem|f628442bdb5a7eac|ebaf12e7b9a2830b|c3b5fc02cdc369c1|1588979285||t19345.675505918s|046d7982f123fcf1|1760596|parquet|local|vector|||0.547||
+Data_TOTAL_REV|function|dc816ddccd4a8ef8|||||||||||||||
+Data_TOTAL_REV_DECOMP|function|b268adbffc811ade|||||||||||||||
 file|stem|3203b01d23419c56|a8d7202b2b8b6bdd|ef46db3751d8e999|-1301001980|data/RealTimeDatabase.csv|t19309.7746521956s|14705ee6d517e9db|112394576|file|local|vector|||0.024||
 Final_values|stem|1cc442632f4786ae|ddd6e985932a39f1|82ad27ca77bcbf5a|-1113945698||t19345.6802911971s|ad56037759ab38bb|510762|parquet|local|vector|||4.16||
 get_best_model|function|59bf5e25da534364|||||||||||||||
@@ -16,6 +18,10 @@ get_regression_table|function|c91d29212348cb15|||||||||||||||
 get_RTDB|function|427a81ac84a3d5fa|||||||||||||||
 GRateDB|stem|1757e53d1fb187e1|8007a7c8edba4686|738b022396a774ea|106306174||t19345.6802322255s|8a54cf0225c4f1ee|13111000|parquet|local|vector|||11.893|Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN|
 input|stem|3203b01d23419c56|a8d7202b2b8b6bdd|ef46db3751d8e999|-1276294782|data/RealTimeDatabase.csv|t19309.7746521956s|14705ee6d517e9db|112394576|file|local|vector|||0.052||
+Plot_TOTAL_REV|function|85a71a33c57fa455|||||||||||||||
+Plot_TOTAL_REV_DECOMP|function|329adab4e0373588|||||||||||||||
+plot_total_revision|stem||0df2420326ab29e0|d2b9e06c97444050|-1326289463||t19346.7638833543s||0|parquet|local|vector|||2.427||Object Measure not found amongst Vintage_base, Value, Type_revision, Vintage_comp, Date and 3 more
+Plot_TOTAL_REVISION|function|15f6aa27b2d8f6cf|||||||||||||||
 preprocess_final_values_db|function|fcb6d98e6d05f97b|||||||||||||||
 preprocess_growth_rate_db|function|9a2cfc9abd049d91|||||||||||||||
 preprocess_raw_db|function|87fcaa5cb748481b|||||||||||||||
