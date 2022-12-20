@@ -70,6 +70,9 @@ format:
 # Properties of intermediate revisions {#sec-Intermediate-revisions}
 {{< include sections/5-Intermediate-revisions.qmd >}}
 
+# Conclusions {#sec-Conclusions}
+{{< include sections/6-Conclusion.qmd >}}
+
 \newpage{}
 
 Please make sure that your manuscript follows the guidelines in the 
