@@ -59,6 +59,9 @@ format:
 # Real-time quarterly fiscal dataset {#sec-Real-time-quarterly-fiscal}
 {{< include sections/2-Data.qmd >}}
 
+# Unconditional properties of final revisions {#sec-Magnitude-of-total}
+{{< include sections/3-Uncond-properties.qmd >}}
+
 \newpage{}
 
 Please make sure that your manuscript follows the guidelines in the 
