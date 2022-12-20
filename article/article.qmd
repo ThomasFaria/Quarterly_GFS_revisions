@@ -56,6 +56,8 @@ format:
 # Introduction
 {{< include sections/1-introduction.qmd >}}
 
+# Real-time quarterly fiscal dataset {#sec-Real-time-quarterly-fiscal}
+{{< include sections/2-Data.qmd >}}
 
 \newpage{}
 
