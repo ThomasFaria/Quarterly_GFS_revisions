@@ -68,7 +68,7 @@ format:
 {{< include sections/4-Predictability.qmd >}}
 
 # Properties of intermediate revisions {#sec-Intermediate-revisions}
-{{< include sections/5-Intermediate-revisions >}}
+{{< include sections/5-Intermediate-revisions.qmd >}}
 
 \newpage{}
 
