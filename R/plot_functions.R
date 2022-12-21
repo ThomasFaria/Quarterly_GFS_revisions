@@ -1,6 +1,4 @@
 Data_TOTAL_REV <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber) {
-  data_rev <- preprocess_revision_db(data_rev)
-  data_final <- preprocess_final_values_db(data_final)
 
   sample <- rbindlist(list(
     data_rev[(Country_code %in% Countries) &
@@ -39,8 +37,6 @@ Plot_TOTAL_REV <- function(sample, Legend) {
 }
 
 Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed) {
-  data_rev <- preprocess_revision_db(data_rev)
-  data_final <- preprocess_final_values_db(data_final)
 
   sample <- rbindlist(list(
     data_rev[(Country_code %in% Countries) &
@@ -131,7 +127,6 @@ Plot_TOTAL_REVISION <- function(data_rev, data_final, Countries, Items, MeasureU
 }
 
 Data_all_revisions <- function(data, Countries, TypeOfRevision, RevisionNb, MeasureUsed) {
-  data <- preprocess_revision_db(data)
 
   sample <- data[
     (Country_code %in% Countries) &
@@ -259,8 +254,7 @@ Plot_all_revisions <- function(sample) {
 }
 
 Data_revisions_across_countries <- function(data, Countries, Items, TypeOfRevision, RevisionNb, MeasureUsed) {
-  data <- preprocess_revision_db(data)
-  
+
   sample <- data[
     (Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -318,8 +312,7 @@ Plot_revisions_across_countries <- function(sample) {
 }
 
 Data_revisions_across_time <- function(data, Countries, Items, TypeOfRevision, RevisionNb, MeasureUsed) {
-  data <- preprocess_revision_db(data)
-  
+
   sample <- data[
     (Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -365,9 +358,7 @@ Plot_revisions_across_time <- function(sample) {
 }
 
 Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate) {
-  sample <- preprocess_revision_db(sample)
-  Finalvalues <- preprocess_final_values_db(Finalvalues)
-  
+ 
   Final_values <- Finalvalues[
     (Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -432,7 +423,9 @@ SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y) {
     
     # set general theme
     theme_ECB() +
-    theme(plot.title = element_text(size = 9, face = "plain", colour = "black")) +
+    theme(plot.title = element_text(size = 9, face = "plain", colour = "black"),
+          strip.text.y = element_text(hjust = 0)
+    ) +
     {
       if (rlang::is_empty(scales_y)) {
         scale_y_continuous(expand = c(1, 0))
@@ -501,8 +494,7 @@ Plot_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
 }
 
 Data_SingleVSTotal <- function(data, Countries, Items, MeasureUsed, TypeOfRevision, UpDate, LowDate) {
-  data <- preprocess_revision_db(data)
-  
+
   sample <- data[(Country_code %in% Countries) &
                    (Variable_code %in% Items) &
                    (Measure == MeasureUsed) &
@@ -598,8 +590,7 @@ Plot_SingleVSTotal <- function(data) {
 }
 
 Data_PATHS <- function(data, Countries, Items, TypeOfRevision, MeasureUsed, UpDate, LowDate) {
-  data <- preprocess_revision_db(data)
-  
+
   sample <- data[
     (Country_code %in% Countries) &
       (Variable_code %in% Items) &

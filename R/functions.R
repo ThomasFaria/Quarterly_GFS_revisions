@@ -564,8 +564,8 @@ compute_growth_rate <- function(data) {
     GRateDB <- rbindlist(list(GRateDB, xts_growth_rate))
   }
   setnames(GRateDB, "index", "Date")
-
-  return(GRateDB)
+  
+  return(preprocess_growth_rate_db(GRateDB))
 }
 
 get_final_values <- function(raw_data, growth_rate_data) {
@@ -583,50 +583,47 @@ get_final_values <- function(raw_data, growth_rate_data) {
     raw_data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Value", "Country_code", "Variable_code", "ECB_vintage", "Is_final_value", "Measure")]
   ))
 
-  return(FinalValues)
+  return(preprocess_final_values_db(FinalValues))
 }
 
 get_RTDB <- function(file) {
-  return(data.table(arrow::read_csv_arrow(file)))
+  data <- data.table(arrow::read_csv_arrow(file))
+  return(preprocess_raw_db(data))
 }
 
-create_regression_db <- function(raw_data, revision_data, gr_data, final_values) {
-  DatasetRaw <- preprocess_raw_db(raw_data)
-  RevisionDB <- preprocess_revision_db(revision_data)
-  FinalValues <- preprocess_final_values_db(final_values)
-  GRateDB <- preprocess_growth_rate_db(gr_data)
+create_regression_db <- function(revision_data, gr_data, final_values) {
   DateRange <- seq(as.Date("2006-07-01"), as.Date("2019-10-01"), by = "quarter")
 
-  VintageList <- unique(GRateDB[, ECB_vintage])
+  VintageList <- unique(gr_data[, ECB_vintage])
   date_to_vintage <- setNames(as.list(VintageList[1:length(as.list(DateRange))]), DateRange)
-  Countries <- unique(RevisionDB$Country_code)
-  Variables <- unique(RevisionDB$Variable_code)
+  Countries <- unique(revision_data$Country_code)
+  Variables <- unique(revision_data$Variable_code)
 
   RegressionDB <- data.table()
   for (country in Countries) {
-    RevisionDB_cropped <- RevisionDB[(Country_code %in% country)]
+    revision_data_cropped <- revision_data[(Country_code %in% country)]
     for (variable in Variables) {
       cat(country, variable, "\n")
-      GRateDB_cropped <- GRateDB[(Country_code %in% country) & (Variable_code %in% variable)]
+      gr_data_cropped <- gr_data[(Country_code %in% country) & (Variable_code %in% variable)]
       for (obs_date in as.character(DateRange)) {
         obs_date <- as.Date(obs_date)
 
-        FinalRevision <- RevisionDB_cropped[(Country_code %in% country) & (Variable_code %in% variable) &
+        FinalRevision <- revision_data_cropped[(Country_code %in% country) & (Variable_code %in% variable) &
           (Date %in% obs_date) & (Revision_nb == 1) &
           (Type_revision == "Final")][, Value]
 
-        FirstAnnounGr <- GRateDB_cropped[(Country_code %in% country) & (Variable_code %in% variable) &
+        FirstAnnounGr <- gr_data_cropped[(Country_code %in% country) & (Variable_code %in% variable) &
           (Date %in% obs_date) & (ECB_vintage %in% date_to_vintage[[as.character(obs_date)]])][, Value]
 
         past_revisions <- unlist(sapply(1:5, get_past_revisions,
-          data = GRateDB_cropped,
+          data = gr_data_cropped,
           country = country,
           variable = variable,
           obs_date = obs_date,
           date_to_vintage = date_to_vintage
         ))
 
-        revisions_macro <- RevisionDB_cropped[(Country_code %in% country) &
+        revisions_macro <- revision_data_cropped[(Country_code %in% country) &
           (Variable_code %in% c("YEN", "ITN", "EXN", "GCN", "WGS", "PCN")) &
           (Date %in% obs_date) & (Revision_nb == 1) &
           (Type_revision == "Final")][, .(Variable_code, Value)][
@@ -708,8 +705,8 @@ compute_revisions <- function(data) {
       }
     }
   }
-
-  return(RevisionDB)
+  
+  return(preprocess_revision_db(RevisionDB))
 }
 
 rename_to_latex <- function(table) {
