@@ -72,5 +72,14 @@ list(
                                                                     c("YEN", "TOE", "TOR"), 
                                                                     "Final", 1, "GRate")),
     format = "rds"
+  ),
+  tar_target(
+    name = plot_statistics_full_sample,
+    command = Plot_STATISTICS(RevisionDB, Final_values, 
+                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), 
+                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), 
+                              "Final", "GRate", c(1), 
+                              as.Date("2020-01-01"), as.Date("2006-01-01"), scales_Big9),
+    format = "rds"
   )
 )

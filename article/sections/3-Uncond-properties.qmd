@@ -11,6 +11,17 @@ The MR statistic will help us assess whether revisions are biased. Other metrics
 
 ## Entire sample 2006Q3-2019Q4
 
+```{r}
+#| label: fig-FinRevGItems
+#| fig-cap: Summary statistics of final revisions in the entire sample
+#| fig-width: 6.3
+#| fig-height: 4.75
+#| fig-align: center
+#| echo: false
+#| 
+setwd("../")
+targets::tar_read(plot_statistics_full_sample)
+```
 
 <!-- \begin{figure}[H]
 \begin{centering}

@@ -212,7 +212,6 @@ Our dataset consists of 59 quarterly GFS vintages taking place since January 200
 #| 
 setwd("../")
 targets::tar_read(plot_revisions_across_time)
-
 ```
  <!-- \begin{figure}[H]
  \begin{centering}

@@ -7,6 +7,7 @@ data|stem|f628442bdb5a7eac|ebaf12e7b9a2830b|c3b5fc02cdc369c1|1588979285||t19345.
 Data_all_revisions|function|ddb0f03b700b2abd|||||||||||||||
 Data_revisions_across_countries|function|527e806c96d7fb8b|||||||||||||||
 Data_revisions_across_time|function|ce43be88927f6edb|||||||||||||||
+Data_STATISTICS|function|d5696ac0671e8207|||||||||||||||
 Data_TOTAL_REV|function|2463db7840c75eb3|||||||||||||||
 Data_TOTAL_REV_DECOMP|function|873f1dd4eadd8535|||||||||||||||
 ECB_col|object|f951352c033ab3c7|||||||||||||||
@@ -28,6 +29,8 @@ Plot_revisions_across_countries|function|3286a13376c7a315|||||||||||||||
 plot_revisions_across_time|stem|8183f4b362991ee4|f6977ac81e0f1f75|22810a65be622f16|222953493||t19347.59486764s|b7fd5f85847edcd8|151852|rds|local|vector|||2.494||
 Plot_revisions_across_time|function|3e314b781fd07dba|||||||||||||||
 plot_revisions_across_variables|stem|b778ab54cc226930|a44cba78b2423b0d|561ba81483fe7de3|1285952900||t19347.5080744423s|01398768f8392983|8083807|rds|local|vector|||6.281|1m22mRemoved 67 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 54 rows containing missing values geom_point.. 1m22mRemoved 54 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 72 rows containing missing values geom_point.. 1m22mRemoved 154 rows containing missing values geom_point.. 1m22mRemoved 73 rows containing missing values geom_point.. 1m22mRemoved 54 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 73 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 84 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 376 rows containing missing values geom_point.. 1m22mRemoved 28 rows containing missing values geom_point.. 1m22mRemoved 35 rows containing missing values geom_point.. 1m22mRemoved 30 rows containing missing values geom_point.. 1m22mRemoved 35 rows containing missing values geom_point.. 1m22mRemoved 64 rows containing missing values geom_point.. 1m22mRemoved 67 rows containing missing values geom_point.|
+Plot_STATISTICS|function|d576958077f9262f|||||||||||||||
+plot_statistics_full_sample|stem|dd55aba95a69d465|3236a923afc77d51|8007076b4e110a60|-603236027||t19347.6213189897s|e53296924f19abe0|692440|rds|local|vector|||9.2||
 Plot_TOTAL_REV|function|f179488d42f3c320|||||||||||||||
 Plot_TOTAL_REV_DECOMP|function|97e2799f8141720e|||||||||||||||
 plot_total_revision|stem|914e20677b1e413d|0df2420326ab29e0|08268180bdb261aa|-1326289463||t19347.5079359802s|7efbe8d05b71a1f3|532113|rds|local|vector|||6.922|1m22mRemoved 1 rows containing missing values position_stack.. 1m22mRemoved 5 rows containing missing values position_stack.. 1m22mRemoved 59 rows containing missing values geom_point.. 1m22mRemoved 1 rows containing missing values position_stack.. 1m22mRemoved 5 rows containing missing values position_stack.. 1m22mRemoved 59 rows containing missing values geom_point.|
@@ -44,8 +47,10 @@ RevisionDB|stem|135bba91969bb655|616eee59be5fb7b3|3392633175f9d6b8|-144718082||t
 rgb2hex|function|9942e2b68de42068|||||||||||||||
 RTDB|stem|470b41cce72fd961|428e8f0796fa898b|215bf292f9fa3f8f|-1202613||t19345.6755867039s|dd909a4e7836b39c|11054540|parquet|local|vector|||4.299||
 run_regression|function|aa6e2f1fd05d1e6b|||||||||||||||
+scales_Big9|object|309548b0d382257b|||||||||||||||
 simulate_models|function|f76215188ef4483f|||||||||||||||
 Subplot_all_revision|function|924af7c3c0547716|||||||||||||||
+SubPlot_STATISTICS|function|2f4373e2364d9612|||||||||||||||
 table_AIC|stem|eebfee964a43e6dd|09aa7485e51e386f|094a7b868aefd310|-1575614368||t19345.6811626699s|4e9d06160ff96624|6055|parquet|local|vector|||0.088||
 temp_col|object|7bd7d0481f0e2444|||||||||||||||
 theme_ECB|function|cebe997ee7c7b493|||||||||||||||

@@ -366,6 +366,142 @@ Plot_revisions_across_time <- function(sample) {
   return(plot)
 }
 
+Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate) {
+  sample <- preprocess_revision_db(sample)
+  Finalvalues <- preprocess_final_values_db(Finalvalues)
+  
+  Final_values <- Finalvalues[
+    (Country_code %in% Countries) &
+      (Variable_code %in% Items) &
+      (Measure == MeasureUsed) &
+      (Date %between% c(LowDate, UpDate)),
+    .(SDF = sd(Value, na.rm = TRUE)),
+    by = Variable_long
+  ]
+  
+  sample <- sample[
+    (Country_code %in% Countries) &
+      (Variable_code %in% Items) &
+      (Measure == MeasureUsed) &
+      (Revision_nb %in% RevisionNumber) &
+      (Type_revision %in% TypeOfRevision) &
+      (Date %between% c(LowDate, UpDate)),
+    .(
+      SD = sd(Value, na.rm = TRUE),
+      MR = mean(Value, na.rm = TRUE),
+      N = as.double(sum(!is.na(Value))),
+      MAR = mean(abs(Value), na.rm = TRUE),
+      RMSR = sqrt(mean(Value^2, na.rm = TRUE)),
+      MIN = min(Value, na.rm = TRUE),
+      MAX = max(Value, na.rm = TRUE)
+    ),
+    by = .(Variable_long, Group)
+  ] |>
+    merge.data.table(Final_values)
+  
+  sample[, N2S := SD / SDF]
+  sample <- melt(sample, id.vars = c("Variable_long", "Group"), value.name = "Value", variable.name = "Statistic")
+  return(sample[!(Statistic %in% c("SD", "SDF"))])
+}
+
+SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y) {
+  sample <- sample[, c("Variable_long", "Group", "Statistic") := list(
+    factor(Variable_long, levels = c("Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
+                                     "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
+                                     "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+    )),
+    factor(Group, levels = c("Revenue", "Expenditure", "Macro")),
+    factor(Statistic, levels = c("N", "MR", "MIN", "MAX", "MAR", "RMSR", "N2S"))
+  )][, Variable_long := forcats::fct_rev(Variable_long)]
+  
+  temp <- sample[(Statistic == "N")][order(Variable_long)]
+  
+  NewTitle <- paste0(temp$Variable_long, "\n(", temp$Value, ")")
+  names(NewTitle) <- temp$Variable_long
+  
+  sample <- sample[(Statistic != "N")][, Variable_long := factor(dplyr::recode(Variable_long, !!!NewTitle), levels = NewTitle)]
+  
+  plot <- ggplot(data = subset(sample, Statistic == Statistics)) +
+    ggtitle(Statistics) +
+    
+    # makes the bar and format
+    geom_bar(aes(x = Variable_long, y = Value, fill = Group), stat = "identity", position = "dodge", width = 0.8) +
+    geom_hline(yintercept = 0) +
+    coord_flip() +
+    
+    # Add labels
+    geom_text(aes(x = Variable_long, y = Value, hjust = ifelse(Value > 0, -0.2, 1.15), label = round(Value, 2)), size = 3) +
+    
+    # set general theme
+    theme_ECB() +
+    theme(plot.title = element_text(size = 9, face = "plain", colour = "black")) +
+    {
+      if (rlang::is_empty(scales_y)) {
+        scale_y_continuous(expand = c(1, 0))
+      }
+    } +
+    {
+      if (!rlang::is_empty(scales_y$Scale)) {
+        scales_y$Scale[[Statistics]]
+      }
+    } +
+    {
+      if (!rlang::is_empty(scales_y$Expand)) {
+        scales_y$Expand[[Statistics]]
+      }
+    } +
+    {
+      if (!Legend) {
+        theme(legend.position = "none")
+      }
+    } +
+    {
+      if (!Ylabs) {
+        theme(
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank()
+        )
+      }
+    } +
+    # set colors and name of data
+    scale_fill_manual("", values = ECB_col)
+  
+  return(plot)
+}
+
+Plot_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate, scales_y) {
+  data <- Data_STATISTICS(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate)
+  Plot1 <- SubPlot_STATISTICS(data, "MR", F, T, scales_y)
+  Plot2 <- SubPlot_STATISTICS(data, "MIN", F, F, scales_y)
+  Plot3 <- SubPlot_STATISTICS(data, "MAX", F, F, scales_y)
+  Plot4 <- SubPlot_STATISTICS(data, "MAR", F, F, scales_y)
+  Plot5 <- SubPlot_STATISTICS(data, "RMSR", F, F, scales_y)
+  Plot6 <- SubPlot_STATISTICS(data, "N2S", F, F, scales_y)
+  
+  
+  legend <- cowplot::get_legend(
+    # create some space to the left of the legend
+    SubPlot_STATISTICS(Data_STATISTICS(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate), "MR", T, F, scales_y)
+    + theme(legend.box.margin = margin(-15, 0, 0, 0))
+  )
+  
+  prow <- cowplot::plot_grid(Plot1 + theme(plot.margin = unit(c(0, -2.5, 0, 0.2), "cm")),
+                             Plot2 + theme(plot.margin = unit(c(0, -2, 0, 2.5), "cm")),
+                             Plot3 + theme(plot.margin = unit(c(0, -1.5, 0, 2), "cm")),
+                             Plot4 + theme(plot.margin = unit(c(0, -1, 0, 1.5), "cm")),
+                             Plot5 + theme(plot.margin = unit(c(0, -0.5, 0, 1), "cm")),
+                             Plot6 + theme(plot.margin = unit(c(0, 0, 0, 0.5), "cm")),
+                             align = "h", ncol = 6, vjust = -0.8
+  )
+  
+  plot <- cowplot::plot_grid(legend,
+                             prow + theme(plot.margin = unit(c(-0.5, 0, 0, 0), "cm")),
+                             ncol = 1, rel_heights = c(0.1, 1)
+  )
+  
+  return(plot)
+}
+
 theme_ECB <- function() {
   dark_grey <- rgb(83, 83, 83, maxColorValue = 255)
   light_grey <- rgb(217, 217, 217, maxColorValue = 255)
@@ -391,6 +527,27 @@ theme_ECB <- function() {
       legend.key.width = unit(0.4, "cm")
     )
 }
+
+scales_Big9 <- list(
+  "Scale" =
+    list(
+      "MR" = ggplot2::scale_y_continuous(breaks = seq(-2, 2, 2)),
+      "MIN" = ggplot2::scale_y_continuous(limits = c(NA, 0), breaks = seq(-300, 0, 100)),
+      "MAX" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 149, 50)),
+      "MAR" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 8, 3)),
+      "RMSR" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 20, 8)),
+      "N2S" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 2, 0.5))
+    ),
+  "Expand" =
+    list(
+      "MR" = ggplot2::expand_limits(y = c(-3, 2.5)),
+      "MIN" = ggplot2::expand_limits(y = -250),
+      "MAX" = ggplot2::expand_limits(y = 149),
+      "MAR" = ggplot2::expand_limits(y = 9),
+      "RMSR" = ggplot2::expand_limits(y = 20),
+      "N2S" = ggplot2::expand_limits(y = 1.2)
+    )
+)
 
 ## Customize ECB palette
 rgb2hex <- function(x) rgb(x[1], x[2], x[3], maxColorValue = 255)
