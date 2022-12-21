@@ -719,6 +719,8 @@ rename_to_latex <- function(table) {
                                                          "Country" = "\\\\sum\\\\limits_{m=1}^{10}C_{m}",
                                                          "\\bQ\\b" = "\\\\sum\\\\limits_{j=1}^{4}Q_{t}^{j}",
                                                          "x1" = "x_{t,m}^{1}",
+                                                         "R_1\\+R_2\\+R_3\\+R_4" = "\\\\sum\\\\limits_{i=1}^{4}R_{t-i,m}",
+                                                         "R_2\\+R_3\\+R_4\\+R_5" = "\\\\sum\\\\limits_{i=2}^{5}R_{t-i,m}",
                                                          "R_1" = "R_{t-1,m}",
                                                          "R_2" = "R_{t-2,m}",
                                                          "R_3" = "R_{t-3,m}",
