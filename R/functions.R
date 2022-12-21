@@ -154,7 +154,17 @@ preprocess_revision_db <- function(data) {
       Variable_code %in% c("OCE"), "Other current expenditure",
       Variable_code %in% c("OKE"), "Other capital expenditure"
     ))
-  ]
+  ][, Group3 := .(fcase(
+    Group %in% c("Revenue", "Expenditure"), "Fiscal",
+    Group %in% c("Macro"), "Macro",
+    !(Group %in% c("Macro", "Revenue", "Expenditure")), "Others"
+  ))][, IsREA := .(fcase(
+    Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 1,
+    !(Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT")), 0
+  ))][, IsEA := .(fcase(
+    Country_code %in% c("EA"), 1,
+    !(Country_code %in% c("EA")), 0
+  ))]
   return(data)
 }
 
@@ -647,7 +657,7 @@ create_regression_db <- function(raw_data, revision_data, gr_data, final_values)
       }
     }
   }
-  
+
   return(RegressionDB)
 }
 
@@ -656,24 +666,24 @@ compute_revisions <- function(data) {
   Countries <- unique(data$Country_code)
   Variables <- unique(data$Variable_code)
   DateRange <- seq(as.Date("2006-07-01"), as.Date("2019-10-01"), by = "quarter")
-  
+
   vintage_to_date <- setNames(as.list(DateRange), VintageList[1:length(as.list(DateRange))])
-  
+
   RevisionDB <- data.table()
   for (vintage in names(vintage_to_date)) {
     index_vintage <- match(vintage, VintageList)
     date <- vintage_to_date[[VintageList[index_vintage]]]
-    
+
     for (country in Countries) {
       cat(vintage, "-", country, "\n")
-      
+
       for (variable in Variables) {
         revs <- calcs_revisions(data, index_vintage, VintageList, date, country, variable)
-        
+
         if (is.na(revs[[1]])) {
           revs[1:length(revs)] <- NA
         }
-        
+
         # Add final revisions
         final_rev <- data.table(Vintage_base = names(revs), Value = revs)[ , Type_revision := "Final",
         ][ , Vintage_comp := tail(names(revs),1),
@@ -696,6 +706,6 @@ compute_revisions <- function(data) {
       }
     }
   }
-  
+
   return(RevisionDB)
 }

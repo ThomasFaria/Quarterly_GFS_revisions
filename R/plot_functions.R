@@ -1,18 +1,18 @@
 Data_TOTAL_REV <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber) {
   data_rev <- preprocess_revision_db(data_rev)
   data_final <- preprocess_final_values_db(data_final)
-  
+
   sample <- rbindlist(list(
     data_rev[(Country_code %in% Countries) &
-               (Variable_code %in% Items) &
-               (Type_revision %in% TypeOfRevision) &
-               (Revision_nb %in% RevisionNumber) &
-               (Measure == MeasureUsed)][, Type := "Revision"][, .(Date, Value, Type)],
+      (Variable_code %in% Items) &
+      (Type_revision %in% TypeOfRevision) &
+      (Revision_nb %in% RevisionNumber) &
+      (Measure == MeasureUsed)][, Type := "Revision"][, .(Date, Value, Type)],
     data_final[(Country_code %in% Countries) &
-                 (Variable_code %in% Items) &
-                 (Measure == MeasureUsed)][, Type := "Data"][, .(Date, Value, Type)]
+      (Variable_code %in% Items) &
+      (Measure == MeasureUsed)][, Type := "Data"][, .(Date, Value, Type)]
   ))
-  
+
   return(sample)
 }
 Plot_TOTAL_REV <- function(sample, Legend) {
@@ -25,7 +25,7 @@ Plot_TOTAL_REV <- function(sample, Legend) {
     # set general theme
     theme_ECB() +
     theme(plot.margin = unit(c(0.15, 0.3, 0.15, 0.15), "cm")) +
-    
+
     # set colors and name of data
     scale_fill_manual("", values = "#003299", labels = "Final revision") +
     scale_color_manual("", values = "black", labels = "Realised data") +
@@ -39,31 +39,32 @@ Plot_TOTAL_REV <- function(sample, Legend) {
 Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed) {
   data_rev <- preprocess_revision_db(data_rev)
   data_final <- preprocess_final_values_db(data_final)
-  
+
   sample <- rbindlist(list(
     data_rev[(Country_code %in% Countries) &
-               (Variable_code %in% Items) &
-               (Type_revision %in% TypeOfRevision) &
-               (Measure == MeasureUsed)][, c("Type", "Revision_nb") := list("Revision", as.character(Revision_nb))][, .(Date, Value, Revision_nb, Type)],
+      (Variable_code %in% Items) &
+      (Type_revision %in% TypeOfRevision) &
+      (Measure == MeasureUsed)][, c("Type", "Revision_nb") := list("Revision", as.character(Revision_nb))][, .(Date, Value, Revision_nb, Type)],
     data_final[(Country_code %in% Countries) &
-                 (Variable_code %in% Items) &
-                 (Measure == MeasureUsed)][, c("Type", "Revision_nb") := list("Data", NA)][, .(Date, Value, Revision_nb, Type)]
+      (Variable_code %in% Items) &
+      (Measure == MeasureUsed)][, c("Type", "Revision_nb") := list("Data", NA)][, .(Date, Value, Revision_nb, Type)]
   ))
-  
+
   return(sample)
 }
 Plot_TOTAL_REV_DECOMP <- function(sample, Legend) {
   ###### Defining factors
   sample[, Revision_nb := factor(Revision_nb, levels = paste0(1:5))]
-  
-  SumData <- sample[(Type == "Revision"),  Sum := sum(Value), by = Date][,
-         FinalRev := "Final revision"
+
+  SumData <- sample[(Type == "Revision"), Sum := sum(Value), by = Date][
+    ,
+    FinalRev := "Final revision"
   ]
-  
+
   ##### Plotting
   plot <- ggplot() +
     ggtitle("") +
-    
+
     # makes the bar and format
     geom_bar(data = sample[(Type == "Revision")], aes(x = Date, y = Value, fill = Revision_nb), stat = "identity") +
     geom_point(data = SumData, aes(x = Date, y = Sum, color = FinalRev), shape = "-", size = 6, stroke = 7) +
@@ -98,35 +99,35 @@ Plot_TOTAL_REVISION <- function(data_rev, data_final, Countries, Items, MeasureU
   sample_rev_decomp <- Data_TOTAL_REV_DECOMP(data_rev, data_final, Countries, Items, "Intermediate", MeasureUsed)
   Plot1 <- Plot_TOTAL_REV(sample_rev, F)
   Plot2 <- Plot_TOTAL_REV_DECOMP(sample_rev_decomp, F)
-  
+
   legend1 <- cowplot::get_legend(
     Plot_TOTAL_REV(sample_rev, T) + theme(legend.box.margin = margin(0, 0, 0, 0))
   )
-  
+
   legend2 <- cowplot::get_legend(
     Plot_TOTAL_REV_DECOMP(sample_rev_decomp, T) + theme(legend.box.margin = margin(0, 0, 0, 0))
   )
-  
+
   legends <- cowplot::plot_grid(legend1,
-                       legend2,
-                       ncol = 2, vjust = -0.8
+    legend2,
+    ncol = 2, vjust = -0.8
   )
-  
+
   prow <- cowplot::plot_grid(Plot1 + theme(plot.margin = unit(c(0, 0, 0, 0), "cm")),
-                    Plot2 + theme(plot.margin = unit(c(0, 0, 0, 0), "cm")),
-                    ncol = 2, vjust = -0.8
+    Plot2 + theme(plot.margin = unit(c(0, 0, 0, 0), "cm")),
+    ncol = 2, vjust = -0.8
   )
-  
+
   plot <- cowplot::plot_grid(legends + theme(plot.margin = unit(c(1.4, 0, -0.1, 0), "cm")),
-                    prow + theme(plot.margin = unit(c(1.2, 0.2, 0, 0), "cm")),
-                    ncol = 1, rel_heights = c(0.1, 1)
+    prow + theme(plot.margin = unit(c(1.2, 0.2, 0, 0), "cm")),
+    ncol = 1, rel_heights = c(0.1, 1)
   )
-  
+
   return(plot)
 }
 Data_all_revisions <- function(data, Countries, TypeOfRevision, RevisionNb, MeasureUsed) {
   data <- preprocess_revision_db(data)
-  
+
   sample <- data[
     (Country_code %in% Countries) &
       (Type_revision %in% TypeOfRevision) &
@@ -143,20 +144,20 @@ Data_all_revisions <- function(data, Countries, TypeOfRevision, RevisionNb, Meas
 }
 Subplot_all_revision <- function(sample, variable, x_lab, grey_bg, Legend) {
   temp <- sample[(Variable_code %in% variable),
-                 .(N = sum(!is.na(Value))),
-                 by = Variable_long
+    .(N = sum(!is.na(Value))),
+    by = Variable_long
   ]
-  
+
   NewTitle <- paste0(temp$Variable_long, "\n(", temp$N, ")")
   names(NewTitle) <- temp$Variable_long
-  
+
   plot <- ggplot(data = sample[(Variable_code %in% variable)]) +
     ggtitle("") +
     {
       if (grey_bg) {
         geom_rect(aes(fill = Group),
-                  xmin = -Inf, xmax = Inf,
-                  ymin = -Inf, ymax = Inf, alpha = 0.3, fill = rgb(230, 230, 230, maxColorValue = 255)
+          xmin = -Inf, xmax = Inf,
+          ymin = -Inf, ymax = Inf, alpha = 0.3, fill = rgb(230, 230, 230, maxColorValue = 255)
         )
       }
     } +
@@ -181,7 +182,7 @@ Subplot_all_revision <- function(sample, variable, x_lab, grey_bg, Legend) {
       }
     } +
     theme(
-      #axis.title.y = element_text(size = 10, face = "bold"),
+      # axis.title.y = element_text(size = 10, face = "bold"),
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
       panel.spacing = unit(0, "cm"),
@@ -190,7 +191,7 @@ Subplot_all_revision <- function(sample, variable, x_lab, grey_bg, Legend) {
       panel.background = element_rect(fill = NA),
       panel.ontop = TRUE
     )
-  
+
   return(plot)
 }
 Plot_all_revisions <- function(sample) {
@@ -214,39 +215,39 @@ Plot_all_revisions <- function(sample) {
   Plot18 <- Subplot_all_revision(sample, "EXN", F, F, F)
   Plot19 <- Subplot_all_revision(sample, "GCN", F, F, F)
   Plot20 <- Subplot_all_revision(sample, "WGS", T, F, F)
-  
+
   legend <- cowplot::get_legend(
     Subplot_all_revision(sample, "WGS", T, F, T) + theme(legend.box.margin = margin(-15, 0, 0, 0))
   )
-  
+
   prow <- cowplot::plot_grid(Plot1 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot2 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot3 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot4 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot5 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot6 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot7 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot8 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot9 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot10 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot11 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot12 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot13 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot14 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot15 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot16 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot17 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot18 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot19 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
-                             Plot20 + theme(plot.margin = unit(c(-0.74, 0, 0, 0), "cm")),
-                             align = "v", ncol = 1, vjust = -0.8
+    Plot2 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot3 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot4 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot5 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot6 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot7 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot8 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot9 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot10 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot11 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot12 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot13 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot14 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot15 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot16 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot17 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot18 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot19 + theme(plot.margin = unit(c(-0.74, 0, 0.24, 0), "cm")),
+    Plot20 + theme(plot.margin = unit(c(-0.74, 0, 0, 0), "cm")),
+    align = "v", ncol = 1, vjust = -0.8
   )
-  
+
   plot <- cowplot::plot_grid(legend,
-                             prow + theme(plot.margin = unit(c(-0.3, 0.1, 0.1, 0.1), "cm")),
-                             ncol = 1, rel_heights = c(0.1, 1)
+    prow + theme(plot.margin = unit(c(-0.3, 0.1, 0.1, 0.1), "cm")),
+    ncol = 1, rel_heights = c(0.1, 1)
   )
-  
+
   return(plot)
 }
 
@@ -254,30 +255,31 @@ theme_ECB <- function() {
   dark_grey <- rgb(83, 83, 83, maxColorValue = 255)
   light_grey <- rgb(217, 217, 217, maxColorValue = 255)
   ECB_blue <- "#003299"
-    theme_minimal() %+replace%
-      theme(
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        legend.title = element_blank(),
-        axis.ticks = element_line(color = dark_grey),
-        axis.ticks.length = unit(5, "pt"),
-        legend.position = "top",
-        strip.text.x = element_text(size = 10),
-        strip.text.y = element_text(size = 10),
-        legend.text = element_text(size = 10),
-        plot.caption = element_text(hjust = 0, size = 8, colour = ECB_blue),
-        plot.subtitle = element_text(size = 10, colour = ECB_blue),
-        plot.title = element_text(size = 14, face = "bold", colour = ECB_blue),
-        panel.background = element_rect(colour = light_grey),
-        axis.line = element_line(color = dark_grey),
-        legend.margin = margin(t = -0.1, b = -0.1, unit = "cm"),
-        legend.key.size = unit(0.2, "cm"),
-        legend.key.width = unit(0.4, "cm")
-      )
+  theme_minimal() %+replace%
+    theme(
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      legend.title = element_blank(),
+      axis.ticks = element_line(color = dark_grey),
+      axis.ticks.length = unit(5, "pt"),
+      legend.position = "top",
+      strip.text.x = element_text(size = 10),
+      strip.text.y = element_text(size = 10),
+      legend.text = element_text(size = 10),
+      plot.caption = element_text(hjust = 0, size = 8, colour = ECB_blue),
+      plot.subtitle = element_text(size = 10, colour = ECB_blue),
+      plot.title = element_text(size = 14, face = "bold", colour = ECB_blue),
+      panel.background = element_rect(colour = light_grey),
+      axis.line = element_line(color = dark_grey),
+      legend.margin = margin(t = -0.1, b = -0.1, unit = "cm"),
+      legend.key.size = unit(0.2, "cm"),
+      legend.key.width = unit(0.4, "cm")
+    )
 }
 
 ## Customize ECB palette
-temp_col <- rbind(
+rgb2hex <- function(x) rgb(x[1], x[2], x[3], maxColorValue = 255)
+ECB_col <- sapply(list(
   c(0, 50, 153),
   c(255, 180, 0),
   c(255, 75, 0),
@@ -295,6 +297,4 @@ temp_col <- rbind(
   c(174, 151, 199),
   c(169, 169, 169),
   c(217, 217, 217)
-)
-
-ECB_col <- rgb(temp_col[, 1], temp_col[, 2], temp_col[, 3], maxColorValue = 255)
+), rgb2hex)
