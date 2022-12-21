@@ -625,7 +625,7 @@ theme_ECB <- function() {
     )
 }
 
-scales_Big9 <- list(
+scales_final_rev <- list(
   "Scale" =
     list(
       "MR" = ggplot2::scale_y_continuous(breaks = seq(-2, 2, 2)),
@@ -643,6 +643,27 @@ scales_Big9 <- list(
       "MAR" = ggplot2::expand_limits(y = 9),
       "RMSR" = ggplot2::expand_limits(y = 20),
       "N2S" = ggplot2::expand_limits(y = 1.2)
+    )
+)
+
+scales_interm_rev <- list(
+  "Scale" =
+    list(
+      "MR" = ggplot2::scale_y_continuous(breaks = seq(-0.5, 0.5, 0.5)),
+      "MIN" = ggplot2::scale_y_continuous(limits = c(NA, 0), breaks = seq(-300, 0, 150)),
+      "MAX" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 150, 75)),
+      "MAR" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 4, 2)),
+      "RMSR" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 10, 5)),
+      "N2S" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 0.6, 0.3))
+    ),
+  "Expand" =
+    list(
+      "MR" = ggplot2::expand_limits(y = c(-0.9, 0.7)),
+      "MIN" = ggplot2::expand_limits(y = -320),
+      "MAX" = ggplot2::expand_limits(y = 170),
+      "MAR" = ggplot2::expand_limits(y = 4.7),
+      "RMSR" = ggplot2::expand_limits(y = 13.5),
+      "N2S" = ggplot2::expand_limits(y = 0.9)
     )
 )
 

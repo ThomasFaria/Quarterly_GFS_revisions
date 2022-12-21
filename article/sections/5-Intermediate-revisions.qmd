@@ -38,6 +38,30 @@ Regarding the dispersion of intermediate revisions, even though they bring new i
 
 Notwithstanding these undesirable releases, intermediate revisions point to the same conclusions on the dispersion of the revisions like the final ones. In the pre-2014Q2 subsample fiscal revisions are approximately twice as dispersed as macro revisions, as judged by the MAR measure for the biggest and most stable categories. In the post-2014Q2 subsample the MAR measure for both types of variables fiscal and macro are not far away from each other. Volatile categories, in particular government and total investment, are associated with exceptionally high values of the statistics measuring dispersion, especially in the second subsample.
 
+```{r}
+#| label: fig-inRevGItems_pre2014
+#| fig-cap: Summary statistics of intermediate revisions in the two subsamples
+#| fig-width: 6.3
+#| fig-height: 4.75
+#| fig-align: center
+#| echo: false
+#| 
+setwd("../")
+targets::tar_read(plot_statistics_interm_pre2014)
+```
+
+```{r}
+#| label: fig-inRevGItems_post2014
+#| fig-cap: Summary statistics of intermediate revisions in the two subsamples
+#| fig-width: 6.3
+#| fig-height: 4.75
+#| fig-align: center
+#| echo: false
+#| 
+setwd("../")
+targets::tar_read(plot_statistics_interm_post2014)
+```
+
 <!-- \newgeometry{tmargin=0.5cm,bmargin=0.5cm,lmargin=2.5cm,rmargin=2.5cm}
 \begin{figure}
      \centering
