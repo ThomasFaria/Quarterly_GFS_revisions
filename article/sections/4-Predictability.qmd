@@ -87,7 +87,7 @@ kableExtra::kbl(table,
   kableExtra::pack_rows("Revenue", 1, 4) |>
   kableExtra::pack_rows("Expenditure", 5, 9) |>
   kableExtra::pack_rows("Macro", 10, 15) |>
-  kableExtra::footnote(general = "$R_{t-i,m}$ in the specification of explanatory variables are past revisions defined by $R_{t-i,m}=\\left(x_{t-i,m}^{i+1}-x_{t-i,m}^{1}\\right)$, as introduced in the equation of the complete model.", escape=FALSE) |>
+  kableExtra::footnote(general = "$R_{t-i,m}$ in the specification of explanatory variables are past revisions defined by $R_{t-i,m}=\\\\left(x_{t-i,m}^{i+1}-x_{t-i,m}^{1}\\\\right)$, as introduced in the equation of the complete model.", escape=FALSE) |>
   kableExtra::kable_styling(latex_options = c("striped", "scale_down"))
 
 
