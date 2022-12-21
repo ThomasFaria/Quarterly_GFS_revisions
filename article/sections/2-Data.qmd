@@ -11,7 +11,9 @@ In addition, the dataset is supplemented with a limited set of variables from Ma
 
 The structure of our real-time dataset follows a typical set-up, as presented in @diebold_rudebusch and as embedded in ECB's Statistical Data Warehouse (SDW) (see a demonstration in Table @chron). Each column represents a data release, which in the case of GFS data takes place four times per year (in January, April, July and October).^[The data for a given quarter are compiled for the first time 90 days after the end of the quarter and are published after validation around 110 days after the end of the quarter.] Each row, in turn, represents a quarter for which the economic activity is measured. Data releases for a given quarter can be traced from left to right within the corresponding row. Differences between releases constitute intermediate revisions, which then make up final revisions (i.e. a difference between the final release and the first release).
 
- <!-- \begin{table}[H]
+<!-- \caption{Timing of the revisions and underlying releases \label{chron}} -->
+
+ \begin{table}[H]
  \centering{}\caption{Timing of the revisions and underlying releases \label{chron}}
  \noindent\begin{minipage}[t]{1\columnwidth}%
  \begin{center}
@@ -60,7 +62,7 @@ The structure of our real-time dataset follows a typical set-up, as presented in
  \end{tabular}
  \par\end{center}%
  \end{minipage}
- \end{table} -->
+ \end{table}
 
 To define revisions it is necessary to take a stance which release constitutes a final value for a certain quarter. Treating the most recent available observations as final releases may be suboptimal because of benchmark revisions, which take place every several years and lead to revisions of not only the most recent quarters but also remote ones. ^[Statistical agencies occasionally adjust their methodologies, which leads to revisions of entire time series -- the so-called benchmark revisions. In the European Union a harmonised European revision policy was put in place to ensure coordinated and consistent revisions (see @ec_revision_guidelines). According to this policy, benchmark revisions should take place each five years, with implementation years ending with '4' and '9'. Consequently, benchmark revisions for ESA 2010, which govern both GFS and MNA, were supposed to be implemented in 2014 (at the time of the ESA 2010 introduction) and 5 years later in 2019. In practice, however, not all countries  followed the recommendations. Some Member States carried out benchmark revisions outside the benchmark years -- before, after or even each year including during the benchmark years. The lack of regularity makes controlling for benchmark revisions in practice extremely challenging.] Against this background, the selection of a final value becomes a delicate balancing act between two objectives. On the one hand, there is a desire to incorporate as many releases as possible to reflect any new incoming information since the moment of the initial release. On the other hand, one should limit the number of releases to avoid as much as possible the undesirable contamination of the dataset with benchmark revisions. The notion of a final value in this situation becomes necessarily arbitrary. In addition, it should be recognised that fiscal data even though reported at quarterly frequency carry some characteristics of annual data, which reflects the annual nature of budgeting and reporting in the public sector.
 
