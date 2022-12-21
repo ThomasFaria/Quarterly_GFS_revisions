@@ -78,7 +78,7 @@ $$
 r_{t}^{f}=x_{t}^{f}-x_{t}^{1}
 $$
 
-The definition implies that a positive value is associated with an underestimation of a first release and the other way around (see the left-hand-side chart of Figure @fig-dataoverview1 for illustration).
+The definition implies that a positive value is associated with an underestimation of a first release and the other way around (see the left-hand-side chart of @fig-dataoverview1 for illustration).
 
 Intermediate revisions are calculated as a difference between directly succeeding data releases as follows:
 
@@ -88,19 +88,21 @@ $$
 
 where $x_{t}^{i}$ is an *i*-th release for quarter *t*. 
 
-The sum of intermediate revisions to a given quarterly value amounts to a final revision (see Table @chron and the right-hand-side chart of Figure @fig-dataoverview1 for illustration). In this context, intermediate revisions can be used to decompose final revisions -- the aspect we explore in Section @sec-Intermediate-revisions. The varying distance between final and initial releases results in a different number of intermediate revisions depending on a quarter (see again Table @chron for illustration).
+The sum of intermediate revisions to a given quarterly value amounts to a final revision (see Table @chron and the right-hand-side chart of @fig-dataoverview1 for illustration). In this context, intermediate revisions can be used to decompose final revisions -- the aspect we explore in @sec-Intermediate-revisions. The varying distance between final and initial releases results in a different number of intermediate revisions depending on a quarter (see again Table @chron for illustration).
 
 
 ```{r}
 #| label: fig-dataoverview1
-#| fig-cap: A meaningless scatterplot
-#| fig-width: 5
-#| fig-height: 5
+#| fig-cap: Revisions to the growth rate of gov. compensation in the Netherlands
+#| fig-width: 6.3
+#| fig-height: 3.5
 #| fig-align: center
-#| out-width: 50%
 #| echo: false
+#| 
 setwd("../")
 targets::tar_read(plot_total_revision)
+# out-width: 50%
+
 ```
 
 
@@ -144,6 +146,19 @@ The dataset is supplemented with the selected following items from the MNA datas
 - Wages and salaries
 
 We regard this set of variables as a reliable benchmark for assessing fiscal revisions. Similarly to the fiscal variables, the series keys needed for data retrieval are specified in the online appendix in Table @tab-Code_series_macro.
+
+```{r}
+#| label: fig-revisions_across_variables
+#| fig-cap: Final revisions across fiscal and macro variables
+#| fig-width: 6.3
+#| fig-height: 8
+#| fig-align: center
+#| echo: false
+#| 
+setwd("../")
+targets::tar_read(plot_revisions_across_variables)
+
+```
 
  <!-- \begin{figure}[H]
  \centering{}\caption{Final revisions across fiscal and macro variables \label{fig:revisions_across_variables}}

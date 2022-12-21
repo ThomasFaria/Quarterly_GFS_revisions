@@ -4,6 +4,7 @@ compute_growth_rate|function|542b4b4409492ebe|||||||||||||||
 compute_revisions|function|68e254d109f98c34|||||||||||||||
 create_regression_db|function|9399f4e07bdbb19c|||||||||||||||
 data|stem|f628442bdb5a7eac|ebaf12e7b9a2830b|c3b5fc02cdc369c1|1588979285||t19345.675505918s|046d7982f123fcf1|1760596|parquet|local|vector|||0.547||
+Data_all_revisions|function|05815469ba551f14|||||||||||||||
 Data_TOTAL_REV|function|dc816ddccd4a8ef8|||||||||||||||
 Data_TOTAL_REV_DECOMP|function|d21b2b761d9633f4|||||||||||||||
 ECB_col|object|f951352c033ab3c7|||||||||||||||
@@ -19,6 +20,8 @@ get_regression_table|function|c91d29212348cb15|||||||||||||||
 get_RTDB|function|427a81ac84a3d5fa|||||||||||||||
 GRateDB|stem|1757e53d1fb187e1|8007a7c8edba4686|738b022396a774ea|106306174||t19345.6802322255s|8a54cf0225c4f1ee|13111000|parquet|local|vector|||11.893|Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN. Production de NaN|
 input|stem|3203b01d23419c56|a8d7202b2b8b6bdd|ef46db3751d8e999|-1276294782|data/RealTimeDatabase.csv|t19309.7746521956s|14705ee6d517e9db|112394576|file|local|vector|||0.052||
+Plot_all_revisions|function|4f1fbe96847231a4|||||||||||||||
+plot_revisions_across_variables|stem|8afe8bc6347617a6|a44cba78b2423b0d|6172042780fa9fb1|1285952900||t19347.4817714699s|423a6e71fd0ece66|9010445|rds|local|vector|||8.049|1m22mRemoved 67 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 54 rows containing missing values geom_point.. 1m22mRemoved 54 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 72 rows containing missing values geom_point.. 1m22mRemoved 154 rows containing missing values geom_point.. 1m22mRemoved 73 rows containing missing values geom_point.. 1m22mRemoved 54 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 73 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 84 rows containing missing values geom_point.. 1m22mRemoved 71 rows containing missing values geom_point.. 1m22mRemoved 376 rows containing missing values geom_point.. 1m22mRemoved 28 rows containing missing values geom_point.. 1m22mRemoved 35 rows containing missing values geom_point.. 1m22mRemoved 30 rows containing missing values geom_point.. 1m22mRemoved 35 rows containing missing values geom_point.. 1m22mRemoved 64 rows containing missing values geom_point.. 1m22mRemoved 67 rows containing missing values geom_point.|
 Plot_TOTAL_REV|function|f179488d42f3c320|||||||||||||||
 Plot_TOTAL_REV_DECOMP|function|97e2799f8141720e|||||||||||||||
 plot_total_revision|stem|914e20677b1e413d|0df2420326ab29e0|244b1d6dfba0fd6c|-1326289463||t19346.9224426275s|7efbe8d05b71a1f3|532113|rds|local|vector|||8.487|1m22mRemoved 1 rows containing missing values position_stack.. 1m22mRemoved 5 rows containing missing values position_stack.. 1m22mRemoved 59 rows containing missing values geom_point.. 1m22mRemoved 1 rows containing missing values position_stack.. 1m22mRemoved 5 rows containing missing values position_stack.. 1m22mRemoved 59 rows containing missing values geom_point.|
@@ -35,6 +38,7 @@ RevisionDB|stem|135bba91969bb655|616eee59be5fb7b3|3392633175f9d6b8|-144718082||t
 RTDB|stem|470b41cce72fd961|428e8f0796fa898b|215bf292f9fa3f8f|-1202613||t19345.6755867039s|dd909a4e7836b39c|11054540|parquet|local|vector|||4.299||
 run_regression|function|aa6e2f1fd05d1e6b|||||||||||||||
 simulate_models|function|f76215188ef4483f|||||||||||||||
+Subplot_all_revision|function|51e1764aecc69ff2|||||||||||||||
 table_AIC|stem|eebfee964a43e6dd|09aa7485e51e386f|094a7b868aefd310|-1575614368||t19345.6811626699s|4e9d06160ff96624|6055|parquet|local|vector|||0.088||
 temp_col|object|7bd7d0481f0e2444|||||||||||||||
 theme_ECB|function|cebe997ee7c7b493|||||||||||||||

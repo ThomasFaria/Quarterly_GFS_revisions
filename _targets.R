@@ -49,5 +49,12 @@ list(
     name = plot_total_revision,
     command = Plot_TOTAL_REVISION(RevisionDB, Final_values, c("NL"), c("COE"), "GRate"),
     format = "rds"
+  ),
+  tar_target(
+    name = plot_revisions_across_variables,
+    command = Plot_all_revisions(Data_all_revisions(RevisionDB, 
+                                                    c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 
+                                                    "Final", 1,"GRate")),
+    format = "rds"
   )
 )
