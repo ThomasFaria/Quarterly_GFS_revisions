@@ -15,6 +15,7 @@ Data_TOTAL_REV <- function(data_rev, data_final, Countries, Items, TypeOfRevisio
 
   return(sample)
 }
+
 Plot_TOTAL_REV <- function(sample, Legend) {
   plot <- ggplot() +
     ggtitle("") +
@@ -36,6 +37,7 @@ Plot_TOTAL_REV <- function(sample, Legend) {
     }
   return(plot)
 }
+
 Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed) {
   data_rev <- preprocess_revision_db(data_rev)
   data_final <- preprocess_final_values_db(data_final)
@@ -52,6 +54,7 @@ Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOf
 
   return(sample)
 }
+
 Plot_TOTAL_REV_DECOMP <- function(sample, Legend) {
   ###### Defining factors
   sample[, Revision_nb := factor(Revision_nb, levels = paste0(1:5))]
@@ -94,6 +97,7 @@ Plot_TOTAL_REV_DECOMP <- function(sample, Legend) {
     }
   return(plot)
 }
+
 Plot_TOTAL_REVISION <- function(data_rev, data_final, Countries, Items, MeasureUsed) {
   sample_rev <- Data_TOTAL_REV(data_rev, data_final, Countries, Items, "Final", MeasureUsed, 1)
   sample_rev_decomp <- Data_TOTAL_REV_DECOMP(data_rev, data_final, Countries, Items, "Intermediate", MeasureUsed)
@@ -125,6 +129,7 @@ Plot_TOTAL_REVISION <- function(data_rev, data_final, Countries, Items, MeasureU
 
   return(plot)
 }
+
 Data_all_revisions <- function(data, Countries, TypeOfRevision, RevisionNb, MeasureUsed) {
   data <- preprocess_revision_db(data)
 
@@ -142,6 +147,7 @@ Data_all_revisions <- function(data, Countries, TypeOfRevision, RevisionNb, Meas
   ]
   return(sample)
 }
+
 Subplot_all_revision <- function(sample, variable, x_lab, grey_bg, Legend) {
   temp <- sample[(Variable_code %in% variable),
     .(N = sum(!is.na(Value))),
@@ -194,6 +200,7 @@ Subplot_all_revision <- function(sample, variable, x_lab, grey_bg, Legend) {
 
   return(plot)
 }
+
 Plot_all_revisions <- function(sample) {
   Plot1 <- Subplot_all_revision(sample, "TOR", F, F, F)
   Plot2 <- Subplot_all_revision(sample, "DTX", F, F, F)
@@ -250,6 +257,7 @@ Plot_all_revisions <- function(sample) {
 
   return(plot)
 }
+
 Data_revisions_across_countries <- function(data, Countries, Items, TypeOfRevision, RevisionNb, MeasureUsed) {
   data <- preprocess_revision_db(data)
   
@@ -282,6 +290,7 @@ Data_revisions_across_countries <- function(data, Countries, Items, TypeOfRevisi
   )]
   return(sample)
 }
+
 Plot_revisions_across_countries <- function(sample) {
   plot <- ggplot() +
     ggtitle("") +
@@ -309,6 +318,54 @@ Plot_revisions_across_countries <- function(sample) {
   
   return(plot)
 }
+
+Data_revisions_across_time <- function(data, Countries, Items, TypeOfRevision, RevisionNb, MeasureUsed) {
+  data <- preprocess_revision_db(data)
+  
+  sample <- data[
+    (Country_code %in% Countries) &
+      (Variable_code %in% Items) &
+      (Type_revision %in% TypeOfRevision) &
+      (Revision_nb == RevisionNb) &
+      (Measure == MeasureUsed)
+  ][
+    ,
+    Country_code := factor(Country_code, levels = Countries)
+  ][
+    ,
+    .(Date, ObsY, Variable_long, Variable_code, Group, Value)
+  ]
+  
+  sample[, Variable_long := factor(Variable_long, levels = c("Total revenue", "Total expenditure", "GDP"))]
+  return(sample)
+}
+
+Plot_revisions_across_time <- function(sample) {
+  Bound <- sample[, .(
+    q5 = quantile(Value, c(.05), na.rm = TRUE),
+    q95 = quantile(Value, c(.95), na.rm = TRUE)
+  ),
+  by = .(Variable_long, ObsY)
+  ][, ObsY := as.Date(paste0(ObsY, "-07-01"))]
+  
+  plot <- ggplot() +
+    ggtitle("") +
+    geom_ribbon(data = Bound, aes(xmin = q5, xmax = q95, y = ObsY, fill = Variable_long), alpha = 0.3) +
+    geom_point(data = sample, aes(x = Value, y = Date, color = Variable_long), size = 1, shape = 16, alpha = 0.75) +
+    theme_ECB() +
+    scale_color_manual(values = ECB_col) +
+    scale_fill_manual(values = ECB_col, guide = "none") +
+    scale_y_date(date_breaks = "2 years", date_labels = "%Y") +
+    theme(
+      panel.spacing = unit(0, "cm"),
+      strip.placement = "outside",
+      panel.background = element_rect(fill = NA),
+      panel.ontop = TRUE
+    )
+  
+  return(plot)
+}
+
 theme_ECB <- function() {
   dark_grey <- rgb(83, 83, 83, maxColorValue = 255)
   light_grey <- rgb(217, 217, 217, maxColorValue = 255)

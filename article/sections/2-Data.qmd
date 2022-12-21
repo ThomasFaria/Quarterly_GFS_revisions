@@ -173,6 +173,19 @@ area aggregate.^[With the intention of saving space the following country abbrev
 
 Giving the small and volatile countries a prominent role in forming conclusions on the euro area fiscal data would be misleading. The volatility and incompleteness exhibited by these countries does not influence the big picture on fiscal policy in the euro area simply because of the small size. For this reason we group the small volatile 10 countries into one geographical unit -- the rest of the euro area (REA). By doing so we reduce the weight of these countries in the analysis even though we still cover them. In addition, we occasionally look at the euro area aggregate, especially with a view to putting the country fiscal data into perspective.
 
+```{r}
+#| label: fig-revisions_across_countries
+#| fig-cap: Final revisions across countries
+#| fig-width: 6.3
+#| fig-height: 8
+#| fig-align: center
+#| echo: false
+#| 
+setwd("../")
+targets::tar_read(plot_revisions_across_countries)
+
+```
+
  <!-- \begin{figure}[H]
  \begin{centering}
  \caption{Final revisions across countries \label{fig:revisions_exmample}}
@@ -187,6 +200,18 @@ Giving the small and volatile countries a prominent role in forming conclusions 
 
 Our dataset consists of 59 quarterly GFS vintages taking place since January 2007 to July 2021. The selection of the first vintage is dictated by the moment in which quarterly GFS data started being stored in an organised and complete manner.^[The development work on Government Finance Statistics took place since 2002. Only in 2007 the data were considered to be of sufficient quality and complete enough to be used in economic analysis at the ECB.] Admittedly, it took until October 2014 before the reporting of the GFS data became compulsory and complete. Notwithstanding this, even well before October 2014 the GFS data were published regularly by most of the euro area countries on voluntary basis.^[Our fiscal real-time dataset contains some missing values due to data unavailability before October 2014. Most notably, Germany and France published the GFS data only in October once per year rather than on quarterly basis.] The last vintage is simply the release containing final values for 2019, which is the last year unaffected by the COVID-19 crisis.
 
+```{r}
+#| label: fig-revisions_over_time
+#| fig-cap: Final revisions across time
+#| fig-width: 6.3
+#| fig-height: 8
+#| fig-align: center
+#| echo: false
+#| 
+setwd("../")
+targets::tar_read(plot_revisions_across_time)
+
+```
  <!-- \begin{figure}[H]
  \begin{centering}
  \caption{Final revisions across time \label{fig: revisions_over_time}}

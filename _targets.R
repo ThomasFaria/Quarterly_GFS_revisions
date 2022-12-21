@@ -64,5 +64,13 @@ list(
                                                                               c("TOR", "TOE", "YEN"),
                                                                               "Final", 1, "GRate")),
     format = "rds"
+  ),
+  tar_target(
+    name = plot_revisions_across_time,
+    command = Plot_revisions_across_time(Data_revisions_across_time(RevisionDB, 
+                                                                    c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), 
+                                                                    c("YEN", "TOE", "TOR"), 
+                                                                    "Final", 1, "GRate")),
+    format = "rds"
   )
 )
