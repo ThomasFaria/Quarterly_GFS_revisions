@@ -537,6 +537,8 @@ get_regression_table <- function(data, criterion, variables) {
       "Country_DE\\+Country_ES\\+Country_FR\\+Country_IT\\+Country_NL\\+Country_BE\\+Country_AT\\+Country_FI\\+Country_PT\\+Country_REA" = "Country"
     ))
   ]
+  
+  table <- rename_to_latex(table)
   return(table)
 }
 
@@ -708,4 +710,26 @@ compute_revisions <- function(data) {
   }
 
   return(RevisionDB)
+}
+
+rename_to_latex <- function(table) {
+  
+  table[, `Expl. variable` := stringr::str_replace_all(`Expl. variable`, 
+                                                       c("ESA2010" = "\\\\mathds{1}_{\\\\left[t\\\\geq2014Q2\\\\right]}",
+                                                         "Country" = "\\\\sum\\\\limits_{m=1}^{10}C_{m}",
+                                                         "\\bQ\\b" = "\\\\sum\\\\limits_{j=1}^{4}Q_{t}^{j}",
+                                                         "x1" = "x_{t,m}^{1}",
+                                                         "R_1" = "R_{t-1,m}",
+                                                         "R_2" = "R_{t-2,m}",
+                                                         "R_3" = "R_{t-3,m}",
+                                                         "R_4" = "R_{t-4,m}",
+                                                         "R_5" = "R_{t-5,m}",
+                                                         "^0" = "")
+  )
+  ][,
+    `Expl. variable` := paste0("$", `Expl. variable`, "$")
+  ]
+  
+  return(table)
+  
 }
