@@ -56,5 +56,13 @@ list(
                                                     c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 
                                                     "Final", 1,"GRate")),
     format = "rds"
+  ),
+  tar_target(
+    name = plot_revisions_across_countries,
+    command = Plot_revisions_across_countries(Data_revisions_across_countries(RevisionDB, 
+                                                                              c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+                                                                              c("TOR", "TOE", "YEN"),
+                                                                              "Final", 1, "GRate")),
+    format = "rds"
   )
 )

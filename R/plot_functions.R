@@ -250,7 +250,65 @@ Plot_all_revisions <- function(sample) {
 
   return(plot)
 }
-
+Data_revisions_across_countries <- function(data, Countries, Items, TypeOfRevision, RevisionNb, MeasureUsed) {
+  data <- preprocess_revision_db(data)
+  
+  sample <- data[
+    (Country_code %in% Countries) &
+      (Variable_code %in% Items) &
+      (Type_revision %in% TypeOfRevision) &
+      (Revision_nb == RevisionNb) &
+      (Measure == MeasureUsed)
+  ][
+    ,
+    Country_code := factor(Country_code, levels = Countries)
+  ][
+    ,
+    .(Date, Variable_long, Variable_code, Country_code, Group, IsREA, Value)
+  ]
+  
+  
+  temp <- sample[, .(N = sum(!is.na(Value))), by = Country_code][
+    ,
+    Country_code := factor(Country_code, levels = Countries)
+  ][order(Country_code)]
+  
+  NewTitle <- paste0(temp$Country_code, "\n (", temp$N, ")")
+  names(NewTitle) <- temp$Country_code
+  
+  sample[, Country_code := dplyr::recode(Country_code, !!!NewTitle)][, c("Country_code", "Variable_long") := list(
+    factor(Country_code, levels = NewTitle),
+    factor(Variable_long, levels = c("Total revenue", "Total expenditure", "GDP"))
+  )]
+  return(sample)
+}
+Plot_revisions_across_countries <- function(sample) {
+  plot <- ggplot() +
+    ggtitle("") +
+    geom_rect(
+      data = subset(sample, IsREA == 1), aes(fill = as.factor(IsREA)), xmin = -Inf, xmax = Inf,
+      ymin = -Inf, ymax = Inf, alpha = 0.3
+    ) +
+    geom_point(data = sample, aes(x = Date, y = Value, color = Variable_long), size = 1, shape = 16, alpha = 0.75) +
+    coord_flip() +
+    facet_wrap(. ~ Country_code, ncol = 1, strip.position = "left") +
+    theme_ECB() +
+    scale_color_manual(values = ECB_col) +
+    scale_fill_manual(values = rgb(230, 230, 230, maxColorValue = 255), guide = "none") +
+    theme(
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      panel.spacing = unit(0, "cm"),
+      strip.placement = "outside",
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      panel.background = element_rect(fill = NA),
+      panel.ontop = TRUE
+    )
+  
+  return(plot)
+}
 theme_ECB <- function() {
   dark_grey <- rgb(83, 83, 83, maxColorValue = 255)
   light_grey <- rgb(217, 217, 217, maxColorValue = 255)
