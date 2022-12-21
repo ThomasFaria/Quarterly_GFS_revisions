@@ -123,5 +123,13 @@ list(
     command = Plot_SingleVSTotal(Data_SingleVSTotal(RevisionDB, c("FR", "AT", "FI"), "SCT", "GRate", "Final",
                                                     as.Date("2016-07-02"), as.Date("2016-06-30"))),
     format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_paths,
+    command = Plot_PATHS(Data_PATHS(RevisionDB,
+                                    c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT"), 
+                                    c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), 
+                                    "Final", "GRate", as.Date("2020-01-01"), as.Date("2006-01-01"))),
+    format = "rds"
   )
 )

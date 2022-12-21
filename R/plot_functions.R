@@ -599,6 +599,148 @@ Plot_SingleVSTotal <- function(data) {
   return(plot)
 }
 
+Data_PATHS <- function(data, Countries, Items, TypeOfRevision, MeasureUsed, UpDate, LowDate) {
+  data <- preprocess_revision_db(data)
+  
+  sample <- data[
+    (Country_code %in% Countries) &
+      (Variable_code %in% Items) &
+      (Type_revision %in% TypeOfRevision) &
+      (Date %between% c(LowDate, UpDate)) &
+      (Measure == MeasureUsed),
+    .(MAR = mean(abs(Value), na.rm = TRUE)),
+    by = .(Variable_code, RevisionPlace, ObsQ, Group)
+  ][,
+    .(RevisionPlace = RevisionPlace, MAR = MAR, Benchmark = MAR / max(MAR)),
+    by = .(Variable_code, ObsQ, Group)
+  ][, NotSelected := .(fcase(
+    Variable_code %in% c("COE", "DTX", "PUR", "SCT", "YEN"), Variable_code,
+    !(Variable_code %in% c("COE", "DTX", "PUR", "SCT", "YEN")), "Others"
+  ))][, RevisionPlace := .(fcase(
+    RevisionPlace == 1, "Jul (T)",
+    RevisionPlace == 2, "Oct (T)",
+    RevisionPlace == 3, "Jan (T+1)",
+    RevisionPlace == 4, "Apr (T+1)",
+    RevisionPlace == 5, "Jul (T+1)",
+    RevisionPlace == 6, "Oct (T+1)"
+  ))]
+  
+  return(sample)
+}
+
+Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
+  if (Typevalue == "Raw") {
+    colnames(sample) <- c("Item", "ObsQ", "Group", "Revision", "value", "Normalised", "NotSelected")
+  } else {
+    colnames(sample) <- c("Item", "ObsQ", "Group", "Revision", "Raw", "value", "NotSelected")
+  }
+  
+  sample <- sample[(ObsQ == Q)][, 
+                                Revision := factor(Revision, levels = c("Jul (T)", "Oct (T)", "Jan (T+1)", "Apr (T+1)", "Jul (T+1)", "Oct (T+1)"))
+  ][,
+    Group := factor(Group, levels = c("Revenue", "Expenditure", "Macro", "Others"))]
+  
+  plot <- ggplot(data = sample, aes(x = Revision, y = value, color = Group, group = Item)) +
+    {
+      if (Typevalue == "Raw") {
+        ggtitle(paste0("Q", Q, " (T)"))
+      }
+    } +
+    {
+      if (Typevalue == "Normalised") {
+        ggtitle("")
+      }
+    } +
+    
+    # makes the bar and format
+    geom_line(stat = "summary", fun = sum) +
+    stat_summary(fun = sum, geom = "line") +
+    theme_ECB() +
+    theme(
+      axis.text.x = element_text(size = 6),
+      plot.title = element_text(size = 10),
+    ) +
+    {
+      if (Q == 1 | Q == 3) {
+        theme(axis.title.y = element_text(size = 10, angle = 90, color = rgb(83, 83, 83, maxColorValue = 255)))
+      }
+    } +
+    {
+      if (Typevalue == "Normalised") {
+        if (Q == 1 | Q == 3) {
+          scale_y_continuous(Typevalue)
+        } else {
+          scale_y_continuous("")
+        }
+      }
+    } +
+    {
+      if (Typevalue == "Raw") {
+        if (Q == 1 | Q == 3) {
+          ylab(Typevalue)
+        }
+      }
+    } +
+    {
+      if (Typevalue == "Raw") {
+        theme(axis.text.x = element_blank())
+      }
+    } +
+    {
+      if (!Legend) {
+        theme(legend.position = "none")
+      }
+    } +
+    {
+      if (Legend) {
+        guides(color = guide_legend(nrow = 1))
+      }
+    } +
+    
+    # set colors and name of data
+    
+    scale_color_manual("", values = ECB_col)
+  
+  # plot <- last_plot() + aes(group=rev(Item))
+  
+  return(plot)
+}
+
+Plot_PATHS <- function(sample) {
+  plotQ1B <- Subplot_PATHS(sample, "Normalised", F, 1)
+  plotQ1A <- Subplot_PATHS(sample, "Raw", F, 1)
+  
+  plotQ2B <- Subplot_PATHS(sample, "Normalised", F, 2)
+  plotQ2A <- Subplot_PATHS(sample, "Raw", F, 2)
+  
+  plotQ3B <- Subplot_PATHS(sample, "Normalised", F, 3)
+  plotQ3A <- Subplot_PATHS(sample, "Raw", F, 3)
+  
+  plotQ4B <- Subplot_PATHS(sample, "Normalised", F, 4)
+  plotQ4A <- Subplot_PATHS(sample, "Raw", F, 4)
+  
+  
+  prow <- cowplot::plot_grid(plotQ1A + theme(plot.margin = unit(c(0, 0, 0.05, 0), "cm")), plotQ2A + theme(plot.margin = unit(c(0, 0.2, 0.05, -0.2), "cm")),
+                             plotQ1B + theme(plot.margin = unit(c(-0.15, 0, 0, 0), "cm")), plotQ2B + theme(plot.margin = unit(c(-0.15, 0.2, 0, -0.2), "cm")),
+                             plotQ3A + theme(plot.margin = unit(c(0, 0, 0.05, 0), "cm")), plotQ4A + theme(plot.margin = unit(c(0, 0.2, 0.05, -0.2), "cm")),
+                             plotQ3B + theme(plot.margin = unit(c(-0.15, 0, 0, 0), "cm")), plotQ4B + theme(plot.margin = unit(c(-0.15, 0.2, 0, -0.2), "cm")),
+                             align = "v", ncol = 2, vjust = -0.8
+  )
+  
+  prow
+  
+  legend <-  cowplot::get_legend(
+    # create some space to the left of the legend
+    Subplot_PATHS(sample, "Normalised", T, 1) + theme(legend.box.margin = margin(-18, 0, 0, 0))
+  )
+  
+  plot <-  cowplot::plot_grid(legend,
+                              prow + theme(plot.margin = unit(c(-0.75, 0, 0, 0), "cm")),
+                              ncol = 1, rel_heights = c(.1, 1)
+  )
+  return(plot)
+}
+
 theme_ECB <- function() {
   dark_grey <- rgb(83, 83, 83, maxColorValue = 255)
   light_grey <- rgb(217, 217, 217, maxColorValue = 255)

@@ -97,6 +97,18 @@ Looking at the shapes of the lines in Figure @fig-Single_Rev_Path it becomes cle
 Even by looking at the aggregated data single instances of lines trending
 upwards are visible (see Figure @fig-Single_Rev_Path). This only re-affirms that  cases where single releases takes us away from final values compared to a preceding release exist in the dataset. Naturally, in such cases the subsequent revisions need to be particularly large as they need to make up for any move in the 'wrong' direction.  
 
+```{r}
+#| label: fig-Single_Rev_Path
+#| fig-cap: Revision paths across variables
+#| fig-width: 6.3
+#| fig-height: 5.75
+#| fig-align: center
+#| echo: false
+#| 
+setwd("../")
+targets::tar_read(plot_revision_paths)
+```
+
 <!-- \begin{figure}[H]
 \begin{centering}
 \caption{Revision paths across variables
