@@ -52,7 +52,7 @@ $$
                                         + \epsilon_{t,m}
 $$
 
-Table @tab-forecastability_AIC contains the results of the predictability investigation. In the second column the table contains the list of explanatory variables used in the complete model for each variable. The selection criterion particularly values the initial announcement and past revisions, which enter the complete model for nearly all variables. Also, we report the number of observations underlying each panel regression in the third column. 
+Table @tbl-forecastability_AIC contains the results of the predictability investigation. In the second column the table contains the list of explanatory variables used in the complete model for each variable. The selection criterion particularly values the initial announcement and past revisions, which enter the complete model for nearly all variables. Also, we report the number of observations underlying each panel regression in the third column. 
 
 The $p$-values of the joint significance test for nearly all variables are less than 1%, indicating that we can reject the null hypothesis even at the 99% significance level. The only variables, for which we are not able to reject the hypothesis at this significance level are total revenue, private consumption and government consumption. The test indicates these variables as the ones with little predictability. In general, the values of the *p*-statistic are so small that for the significance level of 95% the null hypothersis is rejected for all variables. 
 
@@ -93,40 +93,4 @@ kableExtra::kbl(table,
 
 ```
 
-<!-- \begin{table}[!htbp] \centering 
-   \begin{footnotesize}
-  \caption{Predictability of the revisions based on AIC} 
-  \label{tab:forecastability_AIC} 
-\scalebox{0.9}{ 
-   \begin{tabular}{l l l >{\centering}p{1cm} >{\centering}p{1cm} >{\centering}p{1cm} >{\centering}p{1cm} >{\centering}p{1cm} c} 
-   \\[-1.8ex]\hline 
-   \hline \\[-1.8ex] 
-   & \tiny{Expl. variables} & \tiny{N} & \tiny{F-value} & \tiny{Compl/ Naive} & \tiny{Intrm1/ Naive} & \tiny{Intrm2/ Naive} & \tiny{Intrm3/ Naive} & \tiny{Intrm4/ Naive} \\ 
-   \hline \\[-1.8ex] 
-   \scriptsize{Total revenue} & $\mathds{1}_{\left[t\geq2014Q2\right]}$, $x_{t,m}^{1}$                                                                                  & 384 & 0.01 & 0.99 & 0.99 & 0.99 & 1.00 & 1.00 \\ 
-   \scriptsize{Direct taxes} & $\sum\limits_{j=1}^{4}Q_{t}^{j}$, $x_{t,m}^{1}$, $R_{t-2,m}$                                                                            & 402 & 0.00 & 0.97 & 0.98 & 0.99 & 0.99 & 1.00 \\ 
-   \scriptsize{Indirect taxes} &  $\mathds{1}_{\left[t\geq2014Q2\right]}$, $x_{t,m}^{1}$, $R_{t-2,m}$, $R_{t-4,m}$                                                  & 402 & 0.00 & 0.98 & 0.99 & 1.00 & 1.00 & 1.00 \\ 
-   \scriptsize{Social contributions} & $\sum\limits_{m=1}^{10}C_{m}$, $x_{t,m}^{1}$, $R_{t-1,m}$                                                                                  & 384 & 0.00 & 0.95 & 0.96 & 0.98 & 0.98 & 0.98 \\ 
-   \hline \\[-1.8ex] 
-   \scriptsize{Total expenditure} & $\sum\limits_{j=1}^{4}Q_{t}^{j}$, $x_{t,m}^{1}$, $R_{t-1,m}$, $R_{t-5,m}$                                                        & 384 & 0.00 & 0.96 & 0.97 & 0.98 & 0.98 & 1.00 \\ 
-   \scriptsize{Social transfers} & $\sum\limits_{m=1}^{10}C_{m}$, $\mathds{1}_{\left[t\geq2014Q2\right]}$, $x_{t,m}^{1}$, $R_{t-2,m}$                                 & 402 & 0.00 & 0.91 & 0.92 & 0.97 & 0.97 & 0.97 \\ 
-   \scriptsize{Purchases} &        $\sum\limits_{m=1}^{10}C_{m}$, $\mathds{1}_{\left[t\geq2014Q2\right]}$, $x_{t,m}^{1}$, $R_{t-2,m}$, $R_{t-4,m}$                  & 384 & 0.00 & 0.84 & 0.86 & 0.98 & 0.98 & 0.98 \\
-   \scriptsize{Gov. compensation} & $\sum\limits_{j=1}^{4}Q_{t}^{j}$, $x_{t,m}^{1}$, $R_{t-4,m}$, $R_{t-5,m}$                                                        & 384 & 0.00 & 0.95 & 0.96 & 0.99 & 0.99 & 1.00 \\ 
-   \scriptsize{Gov. investment} & $\sum\limits_{m=1}^{10}C_{m}$, $\mathds{1}_{\left[t\geq2014Q2\right]}$, $x_{t,m}^{1}$, $R_{t-1,m}$, $R_{t-5,m}$                   & 384 & 0.00 & 0.94 & 0.95 & 0.96 & 0.97 & 0.97 \\ 
-   \hline \\[-1.8ex] 
-   \scriptsize{GDP} & $\sum\limits_{m=1}^{10}C_{m}$, $\mathds{1}_{\left[t\geq2014Q2\right]}$, $x_{t,m}^{1}$, $\sum\limits_{i=1}^{4}R_{t-i,m}$                         & 444 & 0.00 & 0.95 & 0.96 & 0.96 & 0.97 & 0.97 \\ 
-   \scriptsize{Private consumption} & $\mathds{1}_{\left[t\geq2014Q2\right]}$, $x_{t,m}^{1}$                                                                            & 442 & 0.01 & 0.99 & 0.99 & 1.00 & 1.00 & 1.00 \\ 
-   \scriptsize{Total investment} &  $\mathds{1}_{\left[t\geq2014Q2\right]}$, $x_{t,m}^{1}$, $\sum\limits_{i=2}^{5}R_{t-i,m}$                                          & 443 & 0.00 & 0.94 & 0.97 & 1.00 & 1.00 & 1.00 \\
-   \scriptsize{Exports} & $\sum\limits_{m=1}^{10}C_{m}$, $R_{t-2,m}$, $R_{t-4,m}$                                                                              & 437 & 0.00 & 0.87 & 0.89 & 0.89 & 0.89 & 0.89 \\ 
-   \scriptsize{Gov. consumption} & $x_{t,m}^{1}$, $R_{t-4,m}$                                                                                                      & 428 & 0.03 & 0.99 & 1.00 & 1.00 & 1.00 & 1.00 \\
-   \scriptsize{Wages and salaries} & $\sum\limits_{m=1}^{10}C_{m}$,$\mathds{1}_{\left[t\geq2014Q2\right]}$, $x_{t,m}^{1}$, $R_{t-1,m}$, $R_{t-2,m}$                 & 420 & 0.00 & 0.91 & 0.92 & 0.92 & 0.92 & 0.92 \\ 
-   \hline 
-   \hline \\[-1.8ex] 
-   \end{tabular} 
-}
-\end{footnotesize}
-\desc{$R_{t-i,m}$ in the specification of explanatory variables are past revisions defined by $R_{t-i,m}=\left(x_{t-i,m}^{i+1}-x_{t-i,m}^{1}\right)$, as introduced in the equation of the complete model.}
-\end{table}  -->
-
-
-As we rely only on AIC a question may arise whether the findings are robust to other information criteria. Given the general conclusion on the presence of predictability, the question, however, is not very relevant for our application. In our exercise it is sufficient to find one model for which we reject the joint significance hypothesis or which is superior in terms of predictive power to the naive model. Other selection criteria that are more restrictive than AIC, for instance Schwartz Information Criterion (SIC), could prevent us from finding such a model and point towards no predictability in the revisions. In fact, this is what happens when the predictability exercise is recalculated with SIC (see Table @tab-forecastability_SIC in the online appendix). Given the AIC-based results pointing to predictability, any findings based on a more restrictive criterion would not change our conclusions. On the other hand, findings based on a looser criterion than AIC, which would allow even more information to enter the complete model, could only validate, or even strengthen, our conclusions.
+As we rely only on AIC a question may arise whether the findings are robust to other information criteria. Given the general conclusion on the presence of predictability, the question, however, is not very relevant for our application. In our exercise it is sufficient to find one model for which we reject the joint significance hypothesis or which is superior in terms of predictive power to the naive model. Other selection criteria that are more restrictive than AIC, for instance Schwartz Information Criterion (SIC), could prevent us from finding such a model and point towards no predictability in the revisions. In fact, this is what happens when the predictability exercise is recalculated with SIC (see Table @tbl-forecastability_SIC in the online appendix). Given the AIC-based results pointing to predictability, any findings based on a more restrictive criterion would not change our conclusions. On the other hand, findings based on a looser criterion than AIC, which would allow even more information to enter the complete model, could only validate, or even strengthen, our conclusions.
