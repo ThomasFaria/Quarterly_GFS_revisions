@@ -2,6 +2,18 @@ Intermediate revisions are changes that take place between subsequent releases, 
 
 Intuitively, each release should bring the data closer to its final value as gradually with time more information becomes available to data compilers (see the right-hand-side chart in Figure @fig-dataoverview1 where most of the intermediate revisions go in the direction of the final revisions). In practice, however, it occurs that some releases go into the opposite direction and increase the distance to the final value compared to a previous release. Figure @fig-single_rev_example provides an example of a data point where the initial release was closer to the final value than subsequent releases (see the case of Austria). If such cases are frequent our findings based on final revisions may considerably change (as demonstrated with a single calculation on Figure @fig-single_rev_example), which we verify in this section.^[If all intermediate revisions went towards a final value (i.e. are of the same sign as a final revision) intermediate revisions would not bring any additional information to the summary statistics calculated based on final revisions. MAR, for instance, would be just lower by a certain factor because final revisions could be divided into smaller pieces constituting intermediate revisions.]
 
+```{r}
+#| label: fig-single_rev_example
+#| fig-cap: Revisions to the growth rate of 2016Q3 social contributions
+#| fig-width: 6.3
+#| fig-height: 2.75
+#| fig-align: center
+#| echo: false
+#| 
+setwd("../")
+targets::tar_read(plot_single_rev_example)
+```
+
 <!-- \begin{figure}[H]
 \begin{centering}
 \caption{Revisions to the growth rate of 2016Q3 social contributions \label{fig:single_rev_example}}

@@ -502,6 +502,103 @@ Plot_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
   return(plot)
 }
 
+Data_SingleVSTotal <- function(data, Countries, Items, MeasureUsed, TypeOfRevision, UpDate, LowDate) {
+  data <- preprocess_revision_db(data)
+  
+  sample <- data[(Country_code %in% Countries) &
+                   (Variable_code %in% Items) &
+                   (Measure == MeasureUsed) &
+                   (Date %between% c(LowDate, UpDate))][
+                     RevisionPlace == 3, RevisionPlace_renamed := "January 2017"
+                   ][
+                     RevisionPlace == 4, RevisionPlace_renamed := "April 2017"
+                   ][
+                     RevisionPlace == 5, RevisionPlace_renamed := "July 2017"
+                   ][
+                     RevisionPlace == 6, RevisionPlace_renamed := "October 2017"
+                   ][
+                     , .(RevisionPlace_renamed, Country_code, Type_revision, Value)
+                   ]
+  
+  sample <- rbindlist(list(
+    sample[Type_revision %in% TypeOfRevision][, Type := "Plot"],
+    sample[(RevisionPlace_renamed == "January 2017") & (Type_revision == "Final") | (Type_revision == "Intermediate"),
+           .(Value = mean(abs(Value), na.rm = TRUE)),
+           by = .(Type_revision, Country_code)
+    ][
+      Type_revision == "Final", Type_revision := "MAR (Final)"
+    ][
+      Type_revision == "Intermediate", Type_revision := "MAR (Interm.)"
+    ][
+      , c("Type", "RevisionPlace_renamed") := list("Table", "PLACEHOLDER")
+    ]
+  ), use.names = TRUE)
+  
+  sample[, c("Country_code", "RevisionPlace_renamed") := list(factor(Country_code, levels = c("AT", "FR", "FI")), factor(RevisionPlace_renamed, levels = c("January 2017", "April 2017", "July 2017", "October 2017")))]
+  
+  return(sample)
+}
+
+Plot_SingleVSTotal <- function(data) {
+  table <- data[(Type == "Table")][, Value := round(Value, 2)] |>
+    dcast(Type_revision ~ Country_code, value.var = "Value")
+  
+  sample <- data[(Type == "Plot")][, .(RevisionPlace_renamed, Country_code, Value)][
+    , Date := RevisionPlace_renamed
+  ]
+  
+  
+  ##### Creating the table #####
+  cols <- matrix("black", nrow(table), ncol(table))
+  cols[1:2, 2] <- rep(ECB_col[1], 2)
+  cols[1:2, 3] <- rep(ECB_col[2], 2)
+  cols[1:2, 4] <- rep(ECB_col[3], 2)
+  
+  
+  theme_table <- gridExtra::ttheme_minimal(
+    base_size = 8,
+    core = list(
+      fg_params = list(col = cols, fontface = matrix(c(rep(2, 2), rep(1, 6)), 2, 4)),
+      bg_params = list(col = NA)
+    ),
+    rowhead = list(bg_params = list(col = NA)),
+    colhead = list(bg_params = list(col = NA))
+  )
+  
+  Table2plot <- gridExtra::tableGrob(table, rows = NULL, theme = theme_table)
+  
+  Table2plot <- gtable::gtable_add_grob(Table2plot,
+                                        grobs = grid::grid.segments( # line across the bottom
+                                          x0 = unit(0, "npc"),
+                                          y0 = unit(0, "npc"),
+                                          x1 = unit(1, "npc"),
+                                          y1 = unit(0, "npc"),
+                                          gp = grid::gpar(lwd = 1.0)
+                                        ),
+                                        t = 1, b = 1, l = 1, r = ncol(Table2plot)
+  )
+  ##### Creating labels#####
+  data_starts <- sample[(Date == "January 2017")][, Value := round(Value, 2)]
+  
+  
+  ##### Plotting #####
+  plot <- ggplot(data = sample, aes(x = Date, y = Value, color = Country_code, group = Country_code)) +
+    ggtitle("") +
+    geom_line(stat = "summary", fun = sum, linewidth = 1.25) +
+    stat_summary(fun = sum, geom = "line") +
+    annotate("text", x = 0.85, y = data_starts[Country_code == "AT", Value], label = as.character(data_starts[Country_code == "AT", Value]), color = ECB_col[1]) +
+    annotate("text", x = 0.85, y = data_starts[Country_code == "FR", Value], label = as.character(data_starts[Country_code == "FR", Value]), color = ECB_col[2]) +
+    annotate("text", x = 0.85, y = data_starts[Country_code == "FI", Value], label = as.character(data_starts[Country_code == "FI", Value]), color = ECB_col[3]) +
+    theme_ECB() +
+    scale_color_manual(values = ECB_col)
+  
+  plot <- plot + annotation_custom(Table2plot,
+                                   xmin = 3, ymin = -1.1,
+                                   xmax = 4, ymax = -1.0
+  )
+  return(plot)
+}
+
 theme_ECB <- function() {
   dark_grey <- rgb(83, 83, 83, maxColorValue = 255)
   light_grey <- rgb(217, 217, 217, maxColorValue = 255)

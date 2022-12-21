@@ -99,5 +99,11 @@ list(
                               "Final", "GRate", c(1), 
                               as.Date("2020-01-01"), as.Date("2013-12-31"), scales_Big9),
     format = "rds"
+  ),
+  tar_target(
+    name = plot_single_rev_example,
+    command = Plot_SingleVSTotal(Data_SingleVSTotal(RevisionDB, c("FR", "AT", "FI"), "SCT", "GRate", "Final",
+                                                    as.Date("2016-07-02"), as.Date("2016-06-30"))),
+    format = "rds"
   )
 )
