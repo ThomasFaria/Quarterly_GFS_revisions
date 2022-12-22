@@ -77,3 +77,9 @@ format:
 \newpage{}
 
 # References {-}
+
+<!-- TODO:
+- check missing data for IE
+- notes after charts
+- fine tunning charts
+- cross-ref -->
