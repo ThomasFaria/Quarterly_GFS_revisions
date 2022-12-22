@@ -46,3 +46,6 @@ vignettes/*.pdf
 *.csv
 *.parquet
 /.luarc.json
+
+/.quarto/
+_freeze/

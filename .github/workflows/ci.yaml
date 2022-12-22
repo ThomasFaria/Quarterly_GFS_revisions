@@ -1,12 +1,12 @@
-name: ci
-
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'main'
     tags:
       - "*"
-  workflow_dispatch:
+
+name: ci
 
 jobs:
   docker:
