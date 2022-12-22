@@ -40,3 +40,9 @@ vignettes/*.pdf
 
 # Pdfs
 *.pdf
+*.fdb_latexmk
+
+# Data
+*.csv
+*.parquet
+/.luarc.json
