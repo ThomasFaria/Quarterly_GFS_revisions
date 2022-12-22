@@ -48,4 +48,3 @@ vignettes/*.pdf
 /.luarc.json
 
 /.quarto/
-_freeze/
