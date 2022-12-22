@@ -37,5 +37,5 @@ When contrasted with macro revisions, fiscal revisions are quite comparable. Bot
 
 <!-- 6. Road map -->
 
-The paper is organised as follows. Section @sec-Real-time-quarterly-fiscal describes the construction of the real-time quarterly fiscal database, which constitutes the basis for the analysis.
-Section @sec-Magnitude-of-total analyses unconditional properties of final revisions, which enables to assess the bias and dispersion. Section @sec-Predictability, in turn, investigates the degree of predictability of the revisions, which completes the assessment of the three criteria for well-behaved revisions. Any additional information contained in the intermediate revisions is discussed in Section @sec-Intermediate-revisions. Finally, Section @sec-Conclusions concludes.
+The paper is organised as follows. @sec-Real-time-quarterly-fiscal describes the construction of the real-time quarterly fiscal database, which constitutes the basis for the analysis.
+@sec-Magnitude-of-total analyses unconditional properties of final revisions, which enables to assess the bias and dispersion. @sec-Predictability, in turn, investigates the degree of predictability of the revisions, which completes the assessment of the three criteria for well-behaved revisions. Any additional information contained in the intermediate revisions is discussed in @sec-Intermediate-revisions. Finally, @sec-Conclusions concludes.
