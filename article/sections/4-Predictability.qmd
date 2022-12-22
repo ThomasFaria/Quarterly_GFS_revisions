@@ -52,7 +52,7 @@ $$
                                         + \epsilon_{t,m}
 $$
 
-Table @tbl-forecastability_AIC contains the results of the predictability investigation. In the second column the table contains the list of explanatory variables used in the complete model for each variable. The selection criterion particularly values the initial announcement and past revisions, which enter the complete model for nearly all variables. Also, we report the number of observations underlying each panel regression in the third column. 
+@tbl-forecastability_AIC contains the results of the predictability investigation. In the second column the table contains the list of explanatory variables used in the complete model for each variable. The selection criterion particularly values the initial announcement and past revisions, which enter the complete model for nearly all variables. Also, we report the number of observations underlying each panel regression in the third column. 
 
 The $p$-values of the joint significance test for nearly all variables are less than 1%, indicating that we can reject the null hypothesis even at the 99% significance level. The only variables, for which we are not able to reject the hypothesis at this significance level are total revenue, private consumption and government consumption. The test indicates these variables as the ones with little predictability. In general, the values of the *p*-statistic are so small that for the significance level of 95% the null hypothersis is rejected for all variables. 
 
