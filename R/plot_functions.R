@@ -279,15 +279,13 @@ Data_revisions_across_countries <- function(data, Countries, Items, TypeOfRevisi
   temp <- sample[, .(N = sum(!is.na(Value))), by = Country_code][
     ,
     Country_code := factor(Country_code, levels = Countries)
-  ][order(Country_code)]
+  ][order(Country_code)][,
+                         N := paste0("NULL[(~",N,")]")
+  ]
   
-  NewTitle <- paste0(temp$Country_code, "\n (", temp$N, ")")
-  names(NewTitle) <- temp$Country_code
+  sample <- merge(sample, temp, by="Country_code")
+  sample[, Variable_long := factor(Variable_long, levels = c("Total revenue", "Total expenditure", "GDP"))]
   
-  sample[, Country_code := dplyr::recode(Country_code, !!!NewTitle)][, c("Country_code", "Variable_long") := list(
-    factor(Country_code, levels = NewTitle),
-    factor(Variable_long, levels = c("Total revenue", "Total expenditure", "GDP"))
-  )]
   return(sample)
 }
 
@@ -300,7 +298,7 @@ Plot_revisions_across_countries <- function(sample) {
     ) +
     geom_point(data = sample, aes(x = Date, y = Value, color = Variable_long), size = 1, shape = 16, alpha = 0.75) +
     coord_flip() +
-    facet_wrap(. ~ Country_code, ncol = 1, strip.position = "left") +
+    facet_wrap(. ~ Country_code + N, ncol = 1, strip.position = "left", labeller = label_parsed) +
     theme_ECB() +
     scale_color_manual(values = ECB_col) +
     scale_fill_manual(values = rgb(230, 230, 230, maxColorValue = 255), guide = "none") +
