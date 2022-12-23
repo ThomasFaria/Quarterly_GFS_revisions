@@ -34,6 +34,11 @@ jobs:
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore()
           
+      - name: Generate data
+        run: |
+          source("run.R")
+        shell: Rscript {0} 
+
       # - name: Set up Quarto
       #   uses: quarto-dev/quarto-actions/setup@v2
 
