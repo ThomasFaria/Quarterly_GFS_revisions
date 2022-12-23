@@ -12,11 +12,16 @@ tar_source("R/functions.R")
 tar_source("R/plot_functions.R")
 
 list(
-  tar_target(
+  tarchetypes::tar_download(
     name = file,
-    command = "https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv",
-    format = "file"
-  ),  
+    urls = c("https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv"),
+    paths = "data/RealTimeDatabase.csv"
+  ),
+  # tar_target(
+  #   name = file,
+  #   command = "data/RealTimeDatabase.csv",
+  #   format = "file"
+  # ),
   tar_target(
     name = RTDB,
     command = get_RTDB(file),
@@ -52,14 +57,14 @@ list(
   ),
   tar_target(
     name = plot_revisions_across_variables,
-    command = Plot_all_revisions(Data_all_revisions(RevisionDB, 
-                                                    c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 
+    command = Plot_all_revisions(Data_all_revisions(RevisionDB,
+                                                    c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
                                                     "Final", 1,"GRate")),
     format = "rds"
   ),
   tar_target(
     name = plot_revisions_across_countries,
-    command = Plot_revisions_across_countries(Data_revisions_across_countries(RevisionDB, 
+    command = Plot_revisions_across_countries(Data_revisions_across_countries(RevisionDB,
                                                                               c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
                                                                               c("TOR", "TOE", "YEN"),
                                                                               "Final", 1, "GRate")),
@@ -67,54 +72,54 @@ list(
   ),
   tar_target(
     name = plot_revisions_across_time,
-    command = Plot_revisions_across_time(Data_revisions_across_time(RevisionDB, 
-                                                                    c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), 
-                                                                    c("YEN", "TOE", "TOR"), 
+    command = Plot_revisions_across_time(Data_revisions_across_time(RevisionDB,
+                                                                    c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
+                                                                    c("YEN", "TOE", "TOR"),
                                                                     "Final", 1, "GRate")),
     format = "rds"
   ),
   tar_target(
     name = plot_statistics_full_sample,
-    command = Plot_STATISTICS(RevisionDB, Final_values, 
-                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), 
-                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), 
-                              "Final", "GRate", c(1), 
+    command = Plot_STATISTICS(RevisionDB, Final_values,
+                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
+                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
+                              "Final", "GRate", c(1),
                               as.Date("2020-01-01"), as.Date("2006-01-01"), scales_final_rev),
     format = "rds"
   ),
   tar_target(
     name = plot_statistics_pre2014,
-    command = Plot_STATISTICS(RevisionDB, Final_values, 
-                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), 
-                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), 
-                              "Final", "GRate", c(1), 
+    command = Plot_STATISTICS(RevisionDB, Final_values,
+                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
+                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
+                              "Final", "GRate", c(1),
                               as.Date("2013-12-31"), as.Date("2006-01-01"), scales_final_rev),
     format = "rds"
   ),
   tar_target(
     name = plot_statistics_post2014,
-    command = Plot_STATISTICS(RevisionDB, Final_values, 
-                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), 
-                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), 
-                              "Final", "GRate", c(1), 
+    command = Plot_STATISTICS(RevisionDB, Final_values,
+                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
+                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
+                              "Final", "GRate", c(1),
                               as.Date("2020-01-01"), as.Date("2013-12-31"), scales_final_rev),
     format = "rds"
   ),
   tar_target(
     name = plot_statistics_interm_pre2014,
-    command = Plot_STATISTICS(RevisionDB, Final_values, 
-                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), 
-                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), 
-                              "Intermediate", "GRate", c(1), 
+    command = Plot_STATISTICS(RevisionDB, Final_values,
+                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
+                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
+                              "Intermediate", "GRate", c(1),
                               as.Date("2013-12-31"), as.Date("2006-01-01"), scales_interm_rev),
     format = "rds"
   ),
   tar_target(
     name = plot_statistics_interm_post2014,
-    command = Plot_STATISTICS(RevisionDB, Final_values, 
-                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"), 
-                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), 
-                              "Intermediate", "GRate", c(1), 
+    command = Plot_STATISTICS(RevisionDB, Final_values,
+                              c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
+                              c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
+                              "Intermediate", "GRate", c(1),
                               as.Date("2020-01-01"), as.Date("2013-12-31"), scales_interm_rev),
     format = "rds"
   ),
@@ -127,8 +132,8 @@ list(
   tar_target(
     name = plot_revision_paths,
     command = Plot_PATHS(Data_PATHS(RevisionDB,
-                                    c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT"), 
-                                    c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), 
+                                    c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT"),
+                                    c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
                                     "Final", "GRate", as.Date("2020-01-01"), as.Date("2006-01-01"))),
     format = "rds"
   )

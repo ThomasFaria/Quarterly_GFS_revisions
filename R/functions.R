@@ -220,35 +220,6 @@ preprocess_raw_db <- function(data) {
   return(data)
 }
 
-preprocess_final_values_db <- function(data) {
-  data[
-    ,
-    Variable_long := .(fcase(
-      Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("DTX"), "Direct taxes",
-      Variable_code %in% c("TIN"), "Indirect taxes",
-      Variable_code %in% c("SCT"), "Social contributions",
-      Variable_code %in% c("TOE"), "Total expenditure",
-      Variable_code %in% c("THN"), "Social transfers",
-      Variable_code %in% c("PUR"), "Purchases",
-      Variable_code %in% c("COE"), "Gov. compensation",
-      Variable_code %in% c("GIN"), "Gov. investment",
-      Variable_code %in% c("YEN"), "GDP",
-      Variable_code %in% c("PCN"), "Private consumption",
-      Variable_code %in% c("ITN"), "Total investment",
-      Variable_code %in% c("EXN"), "Exports",
-      Variable_code %in% c("GCN"), "Gov. consumption",
-      Variable_code %in% c("WGS"), "Wages and salaries",
-      Variable_code %in% c("OCR"), "Other current revenue",
-      Variable_code %in% c("KTR"), "Capital revenue",
-      Variable_code %in% c("INP"), "Interest payments",
-      Variable_code %in% c("OCE"), "Other current expenditure",
-      Variable_code %in% c("OKE"), "Other capital expenditure"
-    ))
-  ]
-  return(data)
-}
-
 preprocess_growth_rate_db <- function(data) {
   data[, Group := .(fcase(
     Variable_code %in% c("TOR", "DTX", "TIN", "SCT"), "Revenue",
@@ -581,9 +552,9 @@ get_final_values <- function(raw_data, growth_rate_data) {
   FinalValues <- rbindlist(list(
     growth_rate_data[(Is_final_value)][, Measure := "GRate"],
     raw_data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Value", "Country_code", "Variable_code", "ECB_vintage", "Is_final_value", "Measure")]
-  ))
+  ), fill=TRUE)
 
-  return(preprocess_final_values_db(FinalValues))
+  return(FinalValues)
 }
 
 get_RTDB <- function(file) {
