@@ -8,7 +8,7 @@ name: Quarto Publish
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    container: thomasfaria/quarterly-gfs-revision:latest
+    container: thomasfaria/quarterly_gfs_revisions:latest
 
     permissions:
       contents: write
