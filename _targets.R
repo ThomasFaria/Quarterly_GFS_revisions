@@ -14,7 +14,7 @@ tar_source("R/plot_functions.R")
 list(
   tar_target(
     name = file,
-    command = "data/RealTimeDatabase.csv",
+    command = "https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv",
     format = "file"
   ),  
   tar_target(
