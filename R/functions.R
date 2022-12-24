@@ -562,7 +562,7 @@ get_RTDB <- function(file) {
   return(preprocess_raw_db(data))
 }
 
-create_regression_db <- function(revision_data, gr_data, final_values) {
+create_regression_db <- function(revision_data, gr_data) {
   DateRange <- seq(as.Date("2006-07-01"), as.Date("2019-10-01"), by = "quarter")
 
   VintageList <- unique(gr_data[, ECB_vintage])
