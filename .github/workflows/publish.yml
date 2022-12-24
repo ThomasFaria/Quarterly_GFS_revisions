@@ -30,6 +30,9 @@ jobs:
       - name: Install libcurl4
         run:  sudo apt install libcurl4-openssl-dev
 
+      - name: Install Latex
+        run:  sudo apt install tex-live-latex-extra
+
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
         with:
