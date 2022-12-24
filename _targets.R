@@ -15,7 +15,7 @@ list(
   tarchetypes::tar_download(
     name = file,
     urls = c("https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv"),
-    paths = "data/RealTimeDatabase.csv"
+    paths = "RealTimeDatabase.csv"
   ),
   # tar_target(
   #   name = file,

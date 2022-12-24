@@ -34,7 +34,7 @@ jobs:
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore()
           
-      - name: Generate data
+      - name: Run Pipeline
         run: |
           source("run.R")
         shell: Rscript {0} 
