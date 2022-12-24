@@ -19,14 +19,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Cache packages
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
-
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
@@ -38,16 +30,10 @@ jobs:
       - name: Install libcurl4
         run:  sudo apt install libcurl4-openssl-dev
 
-      - name: Restore packages
-        shell: Rscript {0}
-        run: |
-          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
-          renv::restore()
-
-      # - name: Install R Dependencies
-      #   uses: r-lib/actions/setup-renv@v2
-      #   with:
-      #     cache-version: 1
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
 
       - name: Run Pipeline
         run: |
