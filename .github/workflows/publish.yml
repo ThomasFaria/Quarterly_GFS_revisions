@@ -27,32 +27,32 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-renv-
 
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.1'
+
+      - name: Install libcurl4
+        run:  sudo apt install libcurl4-openssl-dev
+
       - name: Restore packages
         shell: Rscript {0}
         run: |
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore()
-          
-      - name: Run Pipeline
-        run: |
-          source("run.R")
-        shell: Rscript {0} 
-
-      # - name: Set up Quarto
-      #   uses: quarto-dev/quarto-actions/setup@v2
-
-      # - name: Install R
-      #   uses: r-lib/actions/setup-r@v2
-      #   with:
-      #     r-version: '4.2.1'
-
-      # - name: Install libcurl4
-      #   run:  sudo apt install libcurl4-openssl-dev
 
       # - name: Install R Dependencies
       #   uses: r-lib/actions/setup-renv@v2
       #   with:
       #     cache-version: 1
+
+      - name: Run Pipeline
+        run: |
+          source("run.R")
+        shell: Rscript {0} 
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
