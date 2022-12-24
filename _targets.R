@@ -40,7 +40,7 @@ list(
   ),
   tar_target(
     name = RegressionDB,
-    command = create_regression_db(RTDB, RevisionDB, GRateDB, Final_values),
+    command = create_regression_db(RevisionDB, GRateDB),
   ),
   tar_target(
     name = Regressions,
