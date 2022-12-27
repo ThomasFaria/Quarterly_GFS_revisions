@@ -56,14 +56,6 @@ format:
 
 \newpage{}
 
-```{r}
-#| echo: false
-
-setwd("../")
-source("run.R")
-```
-
-
 # Introduction
 {{< include sections/1-Introduction.qmd >}}
 

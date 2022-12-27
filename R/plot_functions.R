@@ -796,8 +796,8 @@ scales_interm_rev <- list(
     )
 )
 
-## Customize ECB palette
 rgb2hex <- function(x) rgb(x[1], x[2], x[3], maxColorValue = 255)
+
 ECB_col <- sapply(list(
   c(0, 50, 153),
   c(255, 180, 0),
