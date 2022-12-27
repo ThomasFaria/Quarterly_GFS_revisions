@@ -1,15 +1,13 @@
 library(targets)
-library(tarchetypes)
 
 tar_option_set(
-  packages = c("data.table", "xts", "lubridate", "rmarkdown", "ggplot2"),
+  packages = c("tarchetypes", "data.table", "xts", "lubridate", "rmarkdown", "ggplot2"),
   format = "parquet",
   memory = "transient",
   garbage_collection = TRUE
 )
-# Run the R scripts in the R/ folder with your custom functions:
-tar_source("R/functions.R")
-tar_source("R/plot_functions.R")
+
+tar_source(files = "R")
 
 list(
   tarchetypes::tar_download(

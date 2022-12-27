@@ -1,2 +1,0 @@
-linters: linters_with_tags(c("best_practices", "common_mistakes", "correctness", "efficiency", "readability", "style"))
-encoding: "UTF-8"
