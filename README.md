@@ -71,11 +71,11 @@ All functions used in the project are organized by theme in the ```R/``` folder 
 
 ```
 Quarterly_GFS_Revisions
-└───R
-    │   data_functions.R
-    │   plot_functions.R
-    │   preprocessing_functions.R
-    │   regression_functions.R
+└─── R
+     │ data_functions.R
+     │ plot_functions.R
+     │ preprocessing_functions.R
+     │ regression_functions.R
 
 ```
 

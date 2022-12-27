@@ -64,7 +64,7 @@ Plot_TOTAL_REV_DECOMP <- function(sample, Legend) {
 
     # makes the bar and format
     geom_bar(data = sample[(Type == "Revision")], aes(x = Date, y = Value, fill = Revision_nb), stat = "identity") +
-    geom_point(data = SumData, aes(x = Date, y = Sum, color = FinalRev), shape = "-", size = 6, stroke = 7) +
+    geom_point(data = SumData, aes(x = Date, y = Sum, color = FinalRev), shape = "-", size = 3, stroke = 3) +
     geom_line(data = sample[(Type == "Data")], aes(x = Date, y = Value, linetype = Type)) +
     scale_x_date(date_breaks = "2 years", date_labels = "%Y") +
     # set general theme
@@ -421,7 +421,7 @@ SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y) {
     theme_ECB() +
     theme(
       plot.title = element_text(size = 9, face = "plain", colour = "black"),
-      strip.text.y = element_text(hjust = 0)
+      axis.text.y = element_text(hjust = 0.5)
     ) +
     {
       if (rlang::is_empty(scales_y)) {
@@ -570,7 +570,7 @@ Plot_SingleVSTotal <- function(data) {
   ##### Plotting #####
   plot <- ggplot(data = sample, aes(x = Date, y = Value, color = Country_code, group = Country_code)) +
     ggtitle("") +
-    geom_line(stat = "summary", fun = sum, linewidth = 1.25) +
+    geom_line(stat = "summary", fun = sum) +
     stat_summary(fun = sum, geom = "line") +
     annotate("text", x = 0.85, y = data_starts[Country_code == "AT", Value], label = as.character(data_starts[Country_code == "AT", Value]), color = ECB_col[1]) +
     annotate("text", x = 0.85, y = data_starts[Country_code == "FR", Value], label = as.character(data_starts[Country_code == "FR", Value]), color = ECB_col[2]) +
@@ -638,18 +638,18 @@ Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
         ggtitle("")
       }
     } +
-
-    # makes the bar and format
     geom_line(stat = "summary", fun = sum) +
     stat_summary(fun = sum, geom = "line") +
     theme_ECB() +
     theme(
       axis.text.x = element_text(size = 6),
       plot.title = element_text(size = 10),
+      axis.title.y = element_blank()
     ) +
     {
       if (Q == 1 | Q == 3) {
-        theme(axis.title.y = element_text(size = 10, angle = 90, color = rgb(83, 83, 83, maxColorValue = 255)))
+        theme(axis.title.y = element_text(size = 10, angle = 90, margin = margin(r = 10),
+                                          color = rgb(83, 83, 83, maxColorValue = 255)))
       }
     } +
     {
@@ -684,11 +684,7 @@ Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
       }
     } +
 
-    # set colors and name of data
-
     scale_color_manual("", values = ECB_col)
-
-  # plot <- last_plot() + aes(group=rev(Item))
 
   return(plot)
 }
