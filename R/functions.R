@@ -10,78 +10,76 @@ get_reference_year <- function(vintage) {
   return(reference_year)
 }
 
-calcs_revisions <- function(dt, vintage, VintageList, country, variable) {
-  case <- substr(vintage, 1, 1)
-
-  i <- match(vintage, VintageList)
+calcs_revisions <- function(dt, index_vintage, VintageList, date, country, variable) {
+  case <- substr(VintageList[[index_vintage]], 1, 1)
 
   switch(case,
     G = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
-        (ECB_vintage %in% VintageList[i:(i + 2)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+        (ECB_vintage %in% VintageList[index_vintage:(index_vintage + 2)]) &
+        (Date == date), Value, ECB_vintage]
 
-      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 2)]), on = .(ECB_vintage)]
-      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 2)], 1)), Value]
+      revs <- revs[data.table(ECB_vintage = VintageList[index_vintage:(index_vintage + 2)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[index_vintage:(index_vintage + 2)], 1)), Value]
 
       if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
-        revs <- setNames(rep(NA, length(i:(i + 2))), VintageList[i:(i + 2)])
+        revs <- setNames(rep(NA, length(index_vintage:(index_vintage + 2))), VintageList[index_vintage:(index_vintage + 2)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(final_value - revs[, Value], VintageList[i:(i + 2)])
+        revs <- setNames(final_value - revs[, Value], VintageList[index_vintage:(index_vintage + 2)])
       }
     },
     W = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
-        (ECB_vintage %in% VintageList[i:(i + 3)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+        (ECB_vintage %in% VintageList[index_vintage:(index_vintage + 3)]) &
+        (Date == date), Value, ECB_vintage]
 
-      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 3)]), on = .(ECB_vintage)]
-      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 3)], 1)), Value]
+      revs <- revs[data.table(ECB_vintage = VintageList[index_vintage:(index_vintage + 3)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[index_vintage:(index_vintage + 3)], 1)), Value]
 
       if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
-        revs <- setNames(rep(NA, length(i:(i + 3))), VintageList[i:(i + 3)])
+        revs <- setNames(rep(NA, length(index_vintage:(index_vintage + 3))), VintageList[index_vintage:(index_vintage + 3)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(final_value - revs[, Value], VintageList[i:(i + 3)])
+        revs <- setNames(final_value - revs[, Value], VintageList[index_vintage:(index_vintage + 3)])
       }
     },
     A = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
-        (ECB_vintage %in% VintageList[i:(i + 4)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+        (ECB_vintage %in% VintageList[index_vintage:(index_vintage + 4)]) &
+        (Date == date), Value, ECB_vintage]
 
-      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 4)]), on = .(ECB_vintage)]
-      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 4)], 1)), Value]
+      revs <- revs[data.table(ECB_vintage = VintageList[index_vintage:(index_vintage + 4)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[index_vintage:(index_vintage + 4)], 1)), Value]
 
       if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
-        revs <- setNames(rep(NA, length(i:(i + 4))), VintageList[i:(i + 4)])
+        revs <- setNames(rep(NA, length(index_vintage:(index_vintage + 4))), VintageList[index_vintage:(index_vintage + 4)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(final_value - revs[, Value], VintageList[i:(i + 4)])
+        revs <- setNames(final_value - revs[, Value], VintageList[index_vintage:(index_vintage + 4)])
       }
     },
     S = {
       revs <- dt[(Country_code == country) &
         (Variable_code == variable) &
-        (ECB_vintage %in% VintageList[i:(i + 5)]) &
-        (Date == vintage_to_date[[VintageList[i]]]), Value, ECB_vintage]
+        (ECB_vintage %in% VintageList[index_vintage:(index_vintage + 5)]) &
+        (Date == date), Value, ECB_vintage]
 
-      revs <- revs[data.table(ECB_vintage = VintageList[i:(i + 5)]), on = .(ECB_vintage)]
-      final_value <- revs[(ECB_vintage == tail(VintageList[i:(i + 5)], 1)), Value]
+      revs <- revs[data.table(ECB_vintage = VintageList[index_vintage:(index_vintage + 5)]), on = .(ECB_vintage)]
+      final_value <- revs[(ECB_vintage == tail(VintageList[index_vintage:(index_vintage + 5)], 1)), Value]
 
       if (is.na(final_value)) {
         # Removing intermediate revisions when final revision doesn't exist
-        revs <- setNames(rep(NA, length(i:(i + 5))), VintageList[i:(i + 5)])
+        revs <- setNames(rep(NA, length(index_vintage:(index_vintage + 5))), VintageList[index_vintage:(index_vintage + 5)])
       } else {
         # Compute the revisions by substracting the last value
-        revs <- setNames(final_value - revs[, Value], VintageList[i:(i + 5)])
+        revs <- setNames(final_value - revs[, Value], VintageList[index_vintage:(index_vintage + 5)])
       }
     },
     stop("Unknown vintage abbreviation. It should start by G, W, A or S")
@@ -156,7 +154,17 @@ preprocess_revision_db <- function(data) {
       Variable_code %in% c("OCE"), "Other current expenditure",
       Variable_code %in% c("OKE"), "Other capital expenditure"
     ))
-  ]
+  ][, Group3 := .(fcase(
+    Group %in% c("Revenue", "Expenditure"), "Fiscal",
+    Group %in% c("Macro"), "Macro",
+    !(Group %in% c("Macro", "Revenue", "Expenditure")), "Others"
+  ))][, IsREA := .(fcase(
+    Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 1,
+    !(Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT")), 0
+  ))][, IsEA := .(fcase(
+    Country_code %in% c("EA"), 1,
+    !(Country_code %in% c("EA")), 0
+  ))]
   return(data)
 }
 
@@ -187,35 +195,6 @@ preprocess_raw_db <- function(data) {
     ,
     Variable_long := .(fcase(
       Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("DTX"), "Direct taxes",
-      Variable_code %in% c("TIN"), "Indirect taxes",
-      Variable_code %in% c("SCT"), "Social contributions",
-      Variable_code %in% c("TOE"), "Total expenditure",
-      Variable_code %in% c("THN"), "Social transfers",
-      Variable_code %in% c("PUR"), "Purchases",
-      Variable_code %in% c("COE"), "Gov. compensation",
-      Variable_code %in% c("GIN"), "Gov. investment",
-      Variable_code %in% c("YEN"), "GDP",
-      Variable_code %in% c("PCN"), "Private consumption",
-      Variable_code %in% c("ITN"), "Total investment",
-      Variable_code %in% c("EXN"), "Exports",
-      Variable_code %in% c("GCN"), "Gov. consumption",
-      Variable_code %in% c("WGS"), "Wages and salaries",
-      Variable_code %in% c("OCR"), "Other current revenue",
-      Variable_code %in% c("KTR"), "Capital revenue",
-      Variable_code %in% c("INP"), "Interest payments",
-      Variable_code %in% c("OCE"), "Other current expenditure",
-      Variable_code %in% c("OKE"), "Other capital expenditure"
-    ))
-  ]
-  return(data)
-}
-
-preprocess_final_values_db <- function(data) {
-  data[
-    ,
-    Variable_long := .(fcase(
       Variable_code %in% c("TOR"), "Total revenue",
       Variable_code %in% c("DTX"), "Direct taxes",
       Variable_code %in% c("TIN"), "Indirect taxes",
@@ -506,13 +485,13 @@ run_regression <- function(data, list_models, variables) {
   return(top_models)
 }
 
-get_regression_table <- function(data, criterion) {
+get_regression_table <- function(data, criterion, variables) {
   table <- data[Criterion == criterion][,
     c("Compl/Naive", "Intrm1/Naive", "Intrm2/Naive", "Intrm3/Naive", "Intrm4/Naive") := lapply(.SD, function(rmse) round(rmse / get("RMSE_interm_5"), 2)),
     .SDcols = c("RMSE", "RMSE_interm_1", "RMSE_interm_2", "RMSE_interm_3", "RMSE_interm_4")
   ][
     ,
-    Variable := factor(Variable, levels = Variables)
+    Variable := factor(Variable, levels = variables)
   ][
     ,
     c("F-value", "Expl. variable") := list(round(p.value, 2), Model_specification)
@@ -529,5 +508,199 @@ get_regression_table <- function(data, criterion) {
       "Country_DE\\+Country_ES\\+Country_FR\\+Country_IT\\+Country_NL\\+Country_BE\\+Country_AT\\+Country_FI\\+Country_PT\\+Country_REA" = "Country"
     ))
   ]
+
+  table <- rename_to_latex(table)
+  return(table)
+}
+
+produce_regressions <- function(data, variables, criterion) {
+  RegressionDB <- preprocess_regression_db(data)
+  List_models <- get_list_models(c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"))
+  results <- run_regression(RegressionDB, List_models, variables)
+  return(results)
+}
+
+compute_growth_rate <- function(data) {
+  GRateDB <- data.table()
+  vintage_list <- unique(data[, ECB_vintage])
+  for (vintage in vintage_list) {
+    xts_data <- data[ECB_vintage %in% vintage, c("Date", "Variable_code", "Country_code", "Value")] |>
+      dcast(Date ~ paste0(Country_code, "_", Variable_code), value.var = "Value") |>
+      as.xts.data.table()
+
+    xts_growth_rate <- (log(xts_data / stats::lag(xts_data, 4)) * 100)["1999-01-01/"] |>
+      as.data.table() |>
+      melt(measure.vars = patterns("(.)_(.)"), value.name = "Value")
+    xts_growth_rate[, c("Country_code", "Variable_code") := tstrsplit(variable, "_", fixed = TRUE)][, "ECB_vintage" := vintage][, variable := NULL]
+    GRateDB <- rbindlist(list(GRateDB, xts_growth_rate))
+  }
+  setnames(GRateDB, "index", "Date")
+
+  return(preprocess_growth_rate_db(GRateDB))
+}
+
+get_final_values <- function(raw_data, growth_rate_data) {
+  vintage_list <- unique(raw_data[, ECB_vintage])
+  Final_vintages <- vintage_list[startsWith(vintage_list, "A")]
+  reference_years <- sapply(Final_vintages, get_reference_year, simplify = FALSE, USE.NAMES = TRUE)
+
+  for (final_vintage in c(Final_vintages)) {
+    growth_rate_data[(ECB_vintage %in% final_vintage) & (Date %between% reference_years[[final_vintage]]), Is_final_value := T]
+    raw_data[(ECB_vintage %in% final_vintage) & (Date %between% reference_years[[final_vintage]]), Is_final_value := T]
+  }
+
+  FinalValues <- rbindlist(list(
+    growth_rate_data[(Is_final_value)][, Measure := "GRate"],
+    raw_data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Value", "Country_code", "Variable_code", "ECB_vintage", "Is_final_value", "Measure")]
+  ), fill = TRUE)
+
+  return(FinalValues)
+}
+
+get_RTDB <- function(file) {
+  data <- data.table(arrow::read_csv_arrow(file))
+  return(preprocess_raw_db(data))
+}
+
+create_regression_db <- function(revision_data, gr_data) {
+  DateRange <- seq(as.Date("2006-07-01"), as.Date("2019-10-01"), by = "quarter")
+
+  VintageList <- unique(gr_data[, ECB_vintage])
+  date_to_vintage <- setNames(as.list(VintageList[1:length(as.list(DateRange))]), DateRange)
+  Countries <- unique(revision_data$Country_code)
+  Variables <- unique(revision_data$Variable_code)
+
+  RegressionDB <- data.table()
+  for (country in Countries) {
+    revision_data_cropped <- revision_data[(Country_code %in% country)]
+    for (variable in Variables) {
+      cat(country, variable, "\n")
+      gr_data_cropped <- gr_data[(Country_code %in% country) & (Variable_code %in% variable)]
+      for (obs_date in as.character(DateRange)) {
+        obs_date <- as.Date(obs_date)
+
+        FinalRevision <- revision_data_cropped[(Country_code %in% country) & (Variable_code %in% variable) &
+          (Date %in% obs_date) & (Revision_nb == 1) &
+          (Type_revision == "Final")][, Value]
+
+        FirstAnnounGr <- gr_data_cropped[(Country_code %in% country) & (Variable_code %in% variable) &
+          (Date %in% obs_date) & (ECB_vintage %in% date_to_vintage[[as.character(obs_date)]])][, Value]
+
+        past_revisions <- unlist(sapply(1:5, get_past_revisions,
+          data = gr_data_cropped,
+          country = country,
+          variable = variable,
+          obs_date = obs_date,
+          date_to_vintage = date_to_vintage
+        ))
+
+        revisions_macro <- revision_data_cropped[(Country_code %in% country) &
+          (Variable_code %in% c("YEN", "ITN", "EXN", "GCN", "WGS", "PCN")) &
+          (Date %in% obs_date) & (Revision_nb == 1) &
+          (Type_revision == "Final")][, .(Variable_code, Value)][
+          ,
+          Variable_code := factor(Variable_code, levels = c("YEN", "ITN", "EXN", "GCN", "WGS", "PCN"))
+        ][
+          order(Variable_code)
+        ][, Value]
+
+        new_line <- data.table(
+          Date = obs_date,
+          Country_code = country,
+          Variable_code = variable,
+          Final_revision = FinalRevision,
+          First_announcement = FirstAnnounGr,
+          Rev_lag1 = past_revisions[1],
+          Rev_lag2 = past_revisions[2],
+          Rev_lag3 = past_revisions[3],
+          Rev_lag4 = past_revisions[4],
+          Rev_lag5 = past_revisions[5],
+          Rev_YEN = revisions_macro[1],
+          Rev_ITN = revisions_macro[2],
+          Rev_EXN = revisions_macro[3],
+          Rev_GCN = revisions_macro[4],
+          Rev_WGS = revisions_macro[5],
+          Rev_PCN = revisions_macro[6]
+        )
+
+        RegressionDB <- rbindlist(list(RegressionDB, new_line))
+      }
+    }
+  }
+
+  return(RegressionDB)
+}
+
+compute_revisions <- function(data) {
+  VintageList <- unique(data[, ECB_vintage])
+  Countries <- unique(data$Country_code)
+  Variables <- unique(data$Variable_code)
+  DateRange <- seq(as.Date("2006-07-01"), as.Date("2019-10-01"), by = "quarter")
+
+  vintage_to_date <- setNames(as.list(DateRange), VintageList[1:length(as.list(DateRange))])
+
+  RevisionDB <- data.table()
+  for (vintage in names(vintage_to_date)) {
+    index_vintage <- match(vintage, VintageList)
+    date <- vintage_to_date[[VintageList[index_vintage]]]
+
+    for (country in Countries) {
+      cat(vintage, "-", country, "\n")
+
+      for (variable in Variables) {
+        revs <- calcs_revisions(data, index_vintage, VintageList, date, country, variable)
+
+        if (is.na(revs[[1]])) {
+          revs[1:length(revs)] <- NA
+        }
+
+        # Add final revisions
+        final_rev <- data.table(Vintage_base = names(revs), Value = revs)[ , Type_revision := "Final",
+        ][ , Vintage_comp := tail(names(revs),1),
+        ][ , Date := date,
+        ][ , Country_code := country,
+        ][ , Variable_code := variable,
+        ][ , Revision_nb := 1:length(revs),
+        ]
+        
+        # Add intermediate revisions
+        interm_rev <- data.table(Vintage_comp = names(diff(revs)), Value = diff(revs) * -1)[ , Type_revision := "Intermediate",
+        ][ , Vintage_base := names(revs)[1:(length(revs)-1)],
+        ][ , Date := date,
+        ][ , Country_code := country,
+        ][ , Variable_code := variable,
+        ][ , Revision_nb := 1:(length(revs)-1),
+        ]
+        
+        RevisionDB <- rbindlist(list(RevisionDB, final_rev, interm_rev), use.names = TRUE)
+      }
+    }
+  }
+
+  return(preprocess_revision_db(RevisionDB))
+}
+
+rename_to_latex <- function(table) {
+  table[, `Expl. variable` := stringr::str_replace_all(
+    `Expl. variable`,
+    c(
+      "ESA2010" = "\\\\mathds{1}_{\\\\left[t\\\\geq2014Q2\\\\right]}",
+      "Country" = "\\\\sum\\\\limits_{m=1}^{10}C_{m}",
+      "\\bQ\\b" = "\\\\sum\\\\limits_{j=1}^{4}Q_{t}^{j}",
+      "x1" = "x_{t,m}^{1}",
+      "R_1\\+R_2\\+R_3\\+R_4" = "\\\\sum\\\\limits_{i=1}^{4}R_{t-i,m}",
+      "R_2\\+R_3\\+R_4\\+R_5" = "\\\\sum\\\\limits_{i=2}^{5}R_{t-i,m}",
+      "R_1" = "R_{t-1,m}",
+      "R_2" = "R_{t-2,m}",
+      "R_3" = "R_{t-3,m}",
+      "R_4" = "R_{t-4,m}",
+      "R_5" = "R_{t-5,m}",
+      "^0" = ""
+    )
+  )][
+    ,
+    `Expl. variable` := paste0("$", `Expl. variable`, "$")
+  ]
+
   return(table)
 }

@@ -37,3 +37,14 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Pdfs
+*.pdf
+*.fdb_latexmk
+
+# Data
+*.csv
+*.parquet
+/.luarc.json
+
+/.quarto/
