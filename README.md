@@ -5,10 +5,11 @@
 
 Repository replicating the results presented in our paper [Krzysztof Bańkowski](https://www.ecb.europa.eu/pub/research/authors/profiles/krzysztof-bankowski.fr.html), [Thomas Faria](https://www.ecb.europa.eu/pub/research/authors/profiles/thomas-faria.fr.html), [Robert Schall](https://www.ecb.europa.eu/pub/research/authors/profiles/robert-schall.fr.html) (2022) ["How well-behaved are revisions to quarterly fiscal data in the euro area?"](https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp2676~65f27f7ac1.fr.pdf?7f2b353ebef0e876f2feb488dbea1079).
 
-## Set-up
+## Getting Started
 
 The repository is accompanied by its [docker image](https://hub.docker.com/r/thomasfaria/quarterly_gfs_revisions) to ensure full reproducibility of the results.
-If you are familiar with docker you can directly pull the image using the following command:
+If you are familiar with docker you can directly pull the image using the following command in your terminal:
+
 ```
 docker pull thomasfaria/quarterly_gfs_revisions
 ```
@@ -26,7 +27,7 @@ All necessary packages have been already installed in the docker image and depen
 
 One major contribution of our paper is the construction of a **real-time fiscal dataset** for the euro area. The dataset is stored on MinIO, and is made available via this [url](https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv).
 
-The dataset contains published releases from 2006Q3 to 2019Q4[^1] for several fiscal and macroeconomic series as specified in the following table:
+The dataset contains published releases from 2006Q3 to 2022Q3[^1] for several fiscal and macroeconomic series as specified in the following table:
 
 | Name      | Retrieval code |
 | ----------- | ----------- |
@@ -50,13 +51,30 @@ Interest (**Interest payments**) | GFS.Q.N.cc.W0.S13.S1.C.D.D41._Z._Z._T.XDC._Z.
 |**Exports** |MNA.Q.N.cc.W1.S1.S1.D.P6._Z._Z._Z.EUR.V.N|
 |**Gov. consumption**| MNA.Q.N.cc.W0.S13.S1.D.P3._Z._Z._T.EUR.V.N|
 |**Wages and salaries** |MNA.Q.N.cc.W2.S1.S1.D.D1._Z._T._Z.EUR.V.N|
-[^1]: The dataset will soon be extended until 2022Q3 and be automatically updated later on. 
+
+[^1]: The dataset will be automatically updated with future releases.
 
 <!-- TODO: describe the variables in the database -->
 
 ## Codes
 
-<!-- The structure of the repo will be changed, I will adjust this part later. -->
+The project is based on the [target package](https://books.ropensci.org/targets/), which is a tool for creating and running reproducible pipelines in R. target is particularly useful for managing large or complex data sets, as it allows you to define each task in a pipeline as a separate function, and then run the pipeline by calling the ```target()``` function. This ensures that tasks are run in the correct order, and can save time by only running tasks that are out of date or have not been run before.
+
+To reproduce the results of the paper, simply run the ```run.R``` script at the root of the project. This will retrieve the real-time fiscal database and produce the necessary computations following the pipeline defined in the ```_targets.R``` file.
+
+Once the pipeline has been run, you can access the target object using the ```tar_read()``` function. For example, you can view the real-time database by running ```View(tar_read(RTDB))```.
+
+All functions used in the project are organized by theme in the ```R/``` folder :
+
+```
+Quarterly_GFS_Revisions
+└───R
+    │   data_functions.R
+    │   plot_functions.R
+    │   preprocessing_functions.R
+    │   regression_functions.R
+
+```
 
 ## Licence
 
