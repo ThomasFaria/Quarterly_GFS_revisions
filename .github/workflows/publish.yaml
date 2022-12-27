@@ -1,12 +1,9 @@
 on:
   workflow_dispatch:
   push:
-    branches: 4-implement-target-pipelines
+    branches: main
 
 name: Quarto Publish
-
-env:
-  RENV_PATHS_ROOT: ~/.local/share/renv
 
 jobs:
   build-deploy:

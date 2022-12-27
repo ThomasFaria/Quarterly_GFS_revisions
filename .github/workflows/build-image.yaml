@@ -6,7 +6,7 @@ on:
     tags:
       - "*"
 
-name: ci
+name: Image Build
 
 jobs:
   docker:
