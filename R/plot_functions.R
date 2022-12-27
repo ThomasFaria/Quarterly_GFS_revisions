@@ -1,5 +1,4 @@
 Data_TOTAL_REV <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber) {
-
   sample <- rbindlist(list(
     data_rev[(Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -37,7 +36,6 @@ Plot_TOTAL_REV <- function(sample, Legend) {
 }
 
 Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed) {
-
   sample <- rbindlist(list(
     data_rev[(Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -127,7 +125,6 @@ Plot_TOTAL_REVISION <- function(data_rev, data_final, Countries, Items, MeasureU
 }
 
 Data_all_revisions <- function(data, Countries, TypeOfRevision, RevisionNb, MeasureUsed) {
-
   sample <- data[
     (Country_code %in% Countries) &
       (Type_revision %in% TypeOfRevision) &
@@ -254,7 +251,6 @@ Plot_all_revisions <- function(sample) {
 }
 
 Data_revisions_across_countries <- function(data, Countries, Items, TypeOfRevision, RevisionNb, MeasureUsed) {
-
   sample <- data[
     (Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -268,18 +264,19 @@ Data_revisions_across_countries <- function(data, Countries, Items, TypeOfRevisi
     ,
     .(Date, Variable_long, Variable_code, Country_code, Group, IsREA, Value)
   ]
-  
-  
+
+
   temp <- sample[, .(N = sum(!is.na(Value))), by = Country_code][
     ,
     Country_code := factor(Country_code, levels = Countries)
-  ][order(Country_code)][,
-                         N := paste0("NULL[(~",N,")]")
+  ][order(Country_code)][
+    ,
+    N := paste0("NULL[(~", N, ")]")
   ]
-  
-  sample <- merge(sample, temp, by="Country_code")
+
+  sample <- merge(sample, temp, by = "Country_code")
   sample[, Variable_long := factor(Variable_long, levels = c("Total revenue", "Total expenditure", "GDP"))]
-  
+
   return(sample)
 }
 
@@ -307,12 +304,11 @@ Plot_revisions_across_countries <- function(sample) {
       panel.background = element_rect(fill = NA),
       panel.ontop = TRUE
     )
-  
+
   return(plot)
 }
 
 Data_revisions_across_time <- function(data, Countries, Items, TypeOfRevision, RevisionNb, MeasureUsed) {
-
   sample <- data[
     (Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -326,7 +322,7 @@ Data_revisions_across_time <- function(data, Countries, Items, TypeOfRevision, R
     ,
     .(Date, ObsY, Variable_long, Variable_code, Group, Value)
   ]
-  
+
   sample[, Variable_long := factor(Variable_long, levels = c("Total revenue", "Total expenditure", "GDP"))]
   return(sample)
 }
@@ -338,7 +334,7 @@ Plot_revisions_across_time <- function(sample) {
   ),
   by = .(Variable_long, ObsY)
   ][, ObsY := as.Date(paste0(ObsY, "-07-01"))]
-  
+
   plot <- ggplot() +
     ggtitle("") +
     geom_ribbon(data = Bound, aes(xmin = q5, xmax = q95, y = ObsY, fill = Variable_long), alpha = 0.3) +
@@ -353,12 +349,11 @@ Plot_revisions_across_time <- function(sample) {
       panel.background = element_rect(fill = NA),
       panel.ontop = TRUE
     )
-  
+
   return(plot)
 }
 
 Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate) {
- 
   Final_values <- Finalvalues[
     (Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -367,7 +362,7 @@ Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
     .(SDF = sd(Value, na.rm = TRUE)),
     by = Variable_long
   ]
-  
+
   sample <- sample[
     (Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -387,7 +382,7 @@ Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
     by = .(Variable_long, Group)
   ] |>
     merge.data.table(Final_values)
-  
+
   sample[, N2S := SD / SDF]
   sample <- melt(sample, id.vars = c("Variable_long", "Group"), value.name = "Value", variable.name = "Statistic")
   return(sample[!(Statistic %in% c("SD", "SDF"))])
@@ -395,36 +390,38 @@ Data_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
 
 SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y) {
   sample <- sample[, c("Variable_long", "Group", "Statistic") := list(
-    factor(Variable_long, levels = c("Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
-                                     "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
-                                     "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+    factor(Variable_long, levels = c(
+      "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
+      "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
+      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
     )),
     factor(Group, levels = c("Revenue", "Expenditure", "Macro")),
     factor(Statistic, levels = c("N", "MR", "MIN", "MAX", "MAR", "RMSR", "N2S"))
   )][, Variable_long := forcats::fct_rev(Variable_long)]
-  
+
   temp <- sample[(Statistic == "N")][order(Variable_long)]
-  
+
   NewTitle <- paste0(temp$Variable_long, "\n(", temp$Value, ")")
   names(NewTitle) <- temp$Variable_long
-  
+
   sample <- sample[(Statistic != "N")][, Variable_long := factor(dplyr::recode(Variable_long, !!!NewTitle), levels = NewTitle)]
-  
+
   plot <- ggplot(data = subset(sample, Statistic == Statistics)) +
     ggtitle(Statistics) +
-    
+
     # makes the bar and format
     geom_bar(aes(x = Variable_long, y = Value, fill = Group), stat = "identity", position = "dodge", width = 0.8) +
     geom_hline(yintercept = 0) +
     coord_flip() +
-    
+
     # Add labels
     geom_text(aes(x = Variable_long, y = Value, hjust = ifelse(Value > 0, -0.2, 1.15), label = round(Value, 2)), size = 3) +
-    
+
     # set general theme
     theme_ECB() +
-    theme(plot.title = element_text(size = 9, face = "plain", colour = "black"),
-          strip.text.y = element_text(hjust = 0)
+    theme(
+      plot.title = element_text(size = 9, face = "plain", colour = "black"),
+      strip.text.y = element_text(hjust = 0)
     ) +
     {
       if (rlang::is_empty(scales_y)) {
@@ -456,7 +453,7 @@ SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y) {
     } +
     # set colors and name of data
     scale_fill_manual("", values = ECB_col)
-  
+
   return(plot)
 }
 
@@ -468,53 +465,52 @@ Plot_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevisio
   Plot4 <- SubPlot_STATISTICS(data, "MAR", F, F, scales_y)
   Plot5 <- SubPlot_STATISTICS(data, "RMSR", F, F, scales_y)
   Plot6 <- SubPlot_STATISTICS(data, "N2S", F, F, scales_y)
-  
-  
+
+
   legend <- cowplot::get_legend(
     # create some space to the left of the legend
     SubPlot_STATISTICS(Data_STATISTICS(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate), "MR", T, F, scales_y)
     + theme(legend.box.margin = margin(-15, 0, 0, 0))
   )
-  
+
   prow <- cowplot::plot_grid(Plot1 + theme(plot.margin = unit(c(0, -2.5, 0, 0.2), "cm")),
-                             Plot2 + theme(plot.margin = unit(c(0, -2, 0, 2.5), "cm")),
-                             Plot3 + theme(plot.margin = unit(c(0, -1.5, 0, 2), "cm")),
-                             Plot4 + theme(plot.margin = unit(c(0, -1, 0, 1.5), "cm")),
-                             Plot5 + theme(plot.margin = unit(c(0, -0.5, 0, 1), "cm")),
-                             Plot6 + theme(plot.margin = unit(c(0, 0, 0, 0.5), "cm")),
-                             align = "h", ncol = 6, vjust = -0.8
+    Plot2 + theme(plot.margin = unit(c(0, -2, 0, 2.5), "cm")),
+    Plot3 + theme(plot.margin = unit(c(0, -1.5, 0, 2), "cm")),
+    Plot4 + theme(plot.margin = unit(c(0, -1, 0, 1.5), "cm")),
+    Plot5 + theme(plot.margin = unit(c(0, -0.5, 0, 1), "cm")),
+    Plot6 + theme(plot.margin = unit(c(0, 0, 0, 0.5), "cm")),
+    align = "h", ncol = 6, vjust = -0.8
   )
-  
+
   plot <- cowplot::plot_grid(legend,
-                             prow + theme(plot.margin = unit(c(-0.5, 0, 0, 0), "cm")),
-                             ncol = 1, rel_heights = c(0.1, 1)
+    prow + theme(plot.margin = unit(c(-0.5, 0, 0, 0), "cm")),
+    ncol = 1, rel_heights = c(0.1, 1)
   )
-  
+
   return(plot)
 }
 
 Data_SingleVSTotal <- function(data, Countries, Items, MeasureUsed, TypeOfRevision, UpDate, LowDate) {
-
   sample <- data[(Country_code %in% Countries) &
-                   (Variable_code %in% Items) &
-                   (Measure == MeasureUsed) &
-                   (Date %between% c(LowDate, UpDate))][
-                     RevisionPlace == 3, RevisionPlace_renamed := "January 2017"
-                   ][
-                     RevisionPlace == 4, RevisionPlace_renamed := "April 2017"
-                   ][
-                     RevisionPlace == 5, RevisionPlace_renamed := "July 2017"
-                   ][
-                     RevisionPlace == 6, RevisionPlace_renamed := "October 2017"
-                   ][
-                     , .(RevisionPlace_renamed, Country_code, Type_revision, Value)
-                   ]
-  
+    (Variable_code %in% Items) &
+    (Measure == MeasureUsed) &
+    (Date %between% c(LowDate, UpDate))][
+    RevisionPlace == 3, RevisionPlace_renamed := "January 2017"
+  ][
+    RevisionPlace == 4, RevisionPlace_renamed := "April 2017"
+  ][
+    RevisionPlace == 5, RevisionPlace_renamed := "July 2017"
+  ][
+    RevisionPlace == 6, RevisionPlace_renamed := "October 2017"
+  ][
+    , .(RevisionPlace_renamed, Country_code, Type_revision, Value)
+  ]
+
   sample <- rbindlist(list(
     sample[Type_revision %in% TypeOfRevision][, Type := "Plot"],
     sample[(RevisionPlace_renamed == "January 2017") & (Type_revision == "Final") | (Type_revision == "Intermediate"),
-           .(Value = mean(abs(Value), na.rm = TRUE)),
-           by = .(Type_revision, Country_code)
+      .(Value = mean(abs(Value), na.rm = TRUE)),
+      by = .(Type_revision, Country_code)
     ][
       Type_revision == "Final", Type_revision := "MAR (Final)"
     ][
@@ -523,28 +519,28 @@ Data_SingleVSTotal <- function(data, Countries, Items, MeasureUsed, TypeOfRevisi
       , c("Type", "RevisionPlace_renamed") := list("Table", "PLACEHOLDER")
     ]
   ), use.names = TRUE)
-  
+
   sample[, c("Country_code", "RevisionPlace_renamed") := list(factor(Country_code, levels = c("AT", "FR", "FI")), factor(RevisionPlace_renamed, levels = c("January 2017", "April 2017", "July 2017", "October 2017")))]
-  
+
   return(sample)
 }
 
 Plot_SingleVSTotal <- function(data) {
   table <- data[(Type == "Table")][, Value := round(Value, 2)] |>
     dcast(Type_revision ~ Country_code, value.var = "Value")
-  
+
   sample <- data[(Type == "Plot")][, .(RevisionPlace_renamed, Country_code, Value)][
     , Date := RevisionPlace_renamed
   ]
-  
-  
+
+
   ##### Creating the table #####
   cols <- matrix("black", nrow(table), ncol(table))
   cols[1:2, 2] <- rep(ECB_col[1], 2)
   cols[1:2, 3] <- rep(ECB_col[2], 2)
   cols[1:2, 4] <- rep(ECB_col[3], 2)
-  
-  
+
+
   theme_table <- gridExtra::ttheme_minimal(
     base_size = 8,
     core = list(
@@ -554,23 +550,23 @@ Plot_SingleVSTotal <- function(data) {
     rowhead = list(bg_params = list(col = NA)),
     colhead = list(bg_params = list(col = NA))
   )
-  
+
   Table2plot <- gridExtra::tableGrob(table, rows = NULL, theme = theme_table)
-  
+
   Table2plot <- gtable::gtable_add_grob(Table2plot,
-                                        grobs = grid::grid.segments( # line across the bottom
-                                          x0 = unit(0, "npc"),
-                                          y0 = unit(0, "npc"),
-                                          x1 = unit(1, "npc"),
-                                          y1 = unit(0, "npc"),
-                                          gp = grid::gpar(lwd = 1.0)
-                                        ),
-                                        t = 1, b = 1, l = 1, r = ncol(Table2plot)
+    grobs = grid::grid.segments( # line across the bottom
+      x0 = unit(0, "npc"),
+      y0 = unit(0, "npc"),
+      x1 = unit(1, "npc"),
+      y1 = unit(0, "npc"),
+      gp = grid::gpar(lwd = 1.0)
+    ),
+    t = 1, b = 1, l = 1, r = ncol(Table2plot)
   )
   ##### Creating labels#####
   data_starts <- sample[(Date == "January 2017")][, Value := round(Value, 2)]
-  
-  
+
+
   ##### Plotting #####
   plot <- ggplot(data = sample, aes(x = Date, y = Value, color = Country_code, group = Country_code)) +
     ggtitle("") +
@@ -581,16 +577,15 @@ Plot_SingleVSTotal <- function(data) {
     annotate("text", x = 0.85, y = data_starts[Country_code == "FI", Value], label = as.character(data_starts[Country_code == "FI", Value]), color = ECB_col[3]) +
     theme_ECB() +
     scale_color_manual(values = ECB_col)
-  
+
   plot <- plot + annotation_custom(Table2plot,
-                                   xmin = 3, ymin = -1.1,
-                                   xmax = 4, ymax = -1.0
+    xmin = 3, ymin = -1.1,
+    xmax = 4, ymax = -1.0
   )
   return(plot)
 }
 
 Data_PATHS <- function(data, Countries, Items, TypeOfRevision, MeasureUsed, UpDate, LowDate) {
-
   sample <- data[
     (Country_code %in% Countries) &
       (Variable_code %in% Items) &
@@ -613,7 +608,7 @@ Data_PATHS <- function(data, Countries, Items, TypeOfRevision, MeasureUsed, UpDa
     RevisionPlace == 5, "Jul (T+1)",
     RevisionPlace == 6, "Oct (T+1)"
   ))]
-  
+
   return(sample)
 }
 
@@ -623,12 +618,15 @@ Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
   } else {
     colnames(sample) <- c("Item", "ObsQ", "Group", "Revision", "Raw", "value", "NotSelected")
   }
-  
-  sample <- sample[(ObsQ == Q)][, 
-                                Revision := factor(Revision, levels = c("Jul (T)", "Oct (T)", "Jan (T+1)", "Apr (T+1)", "Jul (T+1)", "Oct (T+1)"))
-  ][,
-    Group := factor(Group, levels = c("Revenue", "Expenditure", "Macro", "Others"))]
-  
+
+  sample <- sample[(ObsQ == Q)][
+    ,
+    Revision := factor(Revision, levels = c("Jul (T)", "Oct (T)", "Jan (T+1)", "Apr (T+1)", "Jul (T+1)", "Oct (T+1)"))
+  ][
+    ,
+    Group := factor(Group, levels = c("Revenue", "Expenditure", "Macro", "Others"))
+  ]
+
   plot <- ggplot(data = sample, aes(x = Revision, y = value, color = Group, group = Item)) +
     {
       if (Typevalue == "Raw") {
@@ -640,7 +638,7 @@ Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
         ggtitle("")
       }
     } +
-    
+
     # makes the bar and format
     geom_line(stat = "summary", fun = sum) +
     stat_summary(fun = sum, geom = "line") +
@@ -685,47 +683,47 @@ Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
         guides(color = guide_legend(nrow = 1))
       }
     } +
-    
+
     # set colors and name of data
-    
+
     scale_color_manual("", values = ECB_col)
-  
+
   # plot <- last_plot() + aes(group=rev(Item))
-  
+
   return(plot)
 }
 
 Plot_PATHS <- function(sample) {
   plotQ1B <- Subplot_PATHS(sample, "Normalised", F, 1)
   plotQ1A <- Subplot_PATHS(sample, "Raw", F, 1)
-  
+
   plotQ2B <- Subplot_PATHS(sample, "Normalised", F, 2)
   plotQ2A <- Subplot_PATHS(sample, "Raw", F, 2)
-  
+
   plotQ3B <- Subplot_PATHS(sample, "Normalised", F, 3)
   plotQ3A <- Subplot_PATHS(sample, "Raw", F, 3)
-  
+
   plotQ4B <- Subplot_PATHS(sample, "Normalised", F, 4)
   plotQ4A <- Subplot_PATHS(sample, "Raw", F, 4)
-  
-  
+
+
   prow <- cowplot::plot_grid(plotQ1A + theme(plot.margin = unit(c(0, 0, 0.05, 0), "cm")), plotQ2A + theme(plot.margin = unit(c(0, 0.2, 0.05, -0.2), "cm")),
-                             plotQ1B + theme(plot.margin = unit(c(-0.15, 0, 0, 0), "cm")), plotQ2B + theme(plot.margin = unit(c(-0.15, 0.2, 0, -0.2), "cm")),
-                             plotQ3A + theme(plot.margin = unit(c(0, 0, 0.05, 0), "cm")), plotQ4A + theme(plot.margin = unit(c(0, 0.2, 0.05, -0.2), "cm")),
-                             plotQ3B + theme(plot.margin = unit(c(-0.15, 0, 0, 0), "cm")), plotQ4B + theme(plot.margin = unit(c(-0.15, 0.2, 0, -0.2), "cm")),
-                             align = "v", ncol = 2, vjust = -0.8
+    plotQ1B + theme(plot.margin = unit(c(-0.15, 0, 0, 0), "cm")), plotQ2B + theme(plot.margin = unit(c(-0.15, 0.2, 0, -0.2), "cm")),
+    plotQ3A + theme(plot.margin = unit(c(0, 0, 0.05, 0), "cm")), plotQ4A + theme(plot.margin = unit(c(0, 0.2, 0.05, -0.2), "cm")),
+    plotQ3B + theme(plot.margin = unit(c(-0.15, 0, 0, 0), "cm")), plotQ4B + theme(plot.margin = unit(c(-0.15, 0.2, 0, -0.2), "cm")),
+    align = "v", ncol = 2, vjust = -0.8
   )
-  
+
   prow
-  
-  legend <-  cowplot::get_legend(
+
+  legend <- cowplot::get_legend(
     # create some space to the left of the legend
     Subplot_PATHS(sample, "Normalised", T, 1) + theme(legend.box.margin = margin(-18, 0, 0, 0))
   )
-  
-  plot <-  cowplot::plot_grid(legend,
-                              prow + theme(plot.margin = unit(c(-0.75, 0, 0, 0), "cm")),
-                              ncol = 1, rel_heights = c(.1, 1)
+
+  plot <- cowplot::plot_grid(legend,
+    prow + theme(plot.margin = unit(c(-0.75, 0, 0, 0), "cm")),
+    ncol = 1, rel_heights = c(.1, 1)
   )
   return(plot)
 }
