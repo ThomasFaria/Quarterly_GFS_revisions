@@ -17,22 +17,14 @@ The MR statistic will help us assess whether revisions are biased. Other metrics
 #| fig-width: 6.3
 #| fig-height: 4.75
 #| fig-align: center
-#| echo: false
-#| 
-setwd("../")
+
 targets::tar_read(plot_statistics_full_sample)
 ```
 
-<!-- \begin{figure}[H]
-\begin{centering}
-\caption{Summary statistics of final revisions in the entire sample \label{fig:FinRevGItems}}
-\par\end{centering}
-\centering
-\input{figures/Tikz/Statistics_GR_Final_BIG6}
-
+<!-- 
 \source{Real-time quarterly fiscal dataset and own calculations.}
 \desc{The numbers in parentheses next to variable names denote the number of revisions underpinning the calculation of the summary statistics.}
-\end{figure} -->
+-->
 
 The first column of @fig-FinRevGItems reports the mean
 revision (MR), which is informative about the bias. The results point
@@ -102,9 +94,7 @@ The analysis presented above indicated that fiscal revisions exhibit considerabl
 #| fig-width: 6.3
 #| fig-height: 4.75
 #| fig-align: center
-#| echo: false
-#| 
-setwd("../")
+
 targets::tar_read(plot_statistics_pre2014) -->
 
 
@@ -118,36 +108,19 @@ targets::tar_read(plot_statistics_pre2014) -->
 #| fig-width: 8
 #| fig-height: 5
 #| layout-nrow: 2
-#| echo: false
 
-setwd("../")
 targets::tar_read(plot_statistics_pre2014)
 targets::tar_read(plot_statistics_post2014)
 ```
 
 
 <!-- \newgeometry{tmargin=0.5cm,bmargin=0.5cm,lmargin=2.5cm,rmargin=2.5cm}
-\begin{figure}
-     \centering
-     \caption{Summary statistics of final revisions in the two subsamples \label{fig:RevGItems_prepost2014}}
-     \begin{subfigure}[b]{\textwidth}
-         \centering
-         \caption{pre-2014Q2}         
-            \input{figures/Tikz/Statistics_GR_Final_BIG6_1Part}  
-     \end{subfigure}
-     \vfill
-     \begin{subfigure}[b]{\textwidth}
-         \centering
-         \caption{post-2014Q2}
-            \input{figures/Tikz/Statistics_GR_Final_BIG6_2Part}  
-     \end{subfigure}
-     \source{Real-time quarterly fiscal dataset and own calculations.}
-     \desc{The numbers in parentheses next to variable names denote the number of revisions underpinning the calculation of the summary statistics.}
-    \end{figure}
+\source{Real-time quarterly fiscal dataset and own calculations.}
+\desc{The numbers in parentheses next to variable names denote the number of revisions underpinning the calculation of the summary statistics.}
 \restoregeometry -->
 
 
-A close look at Figure @fig-RevGItems_prepost2014 reveals that summary statistics in the two periods differ considerably for fiscal variables. While the MR metric points to a positive bias of a comparable magnitude in the both subsamples the differences for statistics representing dispersion are stark. Just to start with, the MIN-MAX interval reported in the second and third column of Figure @fig-RevGItems_prepost2014 shrinks significantly for fiscal variables in the post 2014Q2 subsample. In the same vein, the variables in the second subsample are associated with considerably lower (i.e. around half for most of the items) MAR compared to the first subsample. As easy to anticipate, the same applies to the RMSR measure. 
+A close look at @fig-RevGItems_prepost2014 reveals that summary statistics in the two periods differ considerably for fiscal variables. While the MR metric points to a positive bias of a comparable magnitude in the both subsamples the differences for statistics representing dispersion are stark. Just to start with, the MIN-MAX interval reported in the second and third column of @fig-RevGItems_prepost2014 shrinks significantly for fiscal variables in the post 2014Q2 subsample. In the same vein, the variables in the second subsample are associated with considerably lower (i.e. around half for most of the items) MAR compared to the first subsample. As easy to anticipate, the same applies to the RMSR measure. 
 
 No similar reduction in the statistics measuring the dispersion of the revisions is visible for the macro variables. The MAR statistic, which we regard as the most illustrative, remains broadly the same between the two subsamples. Even though the values differ slightly, no systematic reduction in the metric is visible in the post-2014Q2 subsample.
 

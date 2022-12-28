@@ -52,9 +52,16 @@ format:
       - packages.tex
     # lof: true
     # lot: true
+execute:
+  warning: false
+  echo: false
 ---
 
 \newpage{}
+
+```{r}
+knitr::opts_knit$set(root.dir = "../")
+```
 
 # Introduction
 {{< include sections/1-Introduction.qmd >}}
@@ -76,10 +83,8 @@ format:
 
 \newpage{}
 
-# References {-}
-
 <!-- TODO:
 - check missing data for IE
 - notes after charts
 - fine tunning charts
-- cross-ref -->
+- cross-ref appendix -->
