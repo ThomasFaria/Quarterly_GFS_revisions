@@ -23,16 +23,10 @@ setwd("../")
 targets::tar_read(plot_statistics_full_sample)
 ```
 
-<!-- \begin{figure}[H]
-\begin{centering}
-\caption{Summary statistics of final revisions in the entire sample \label{fig:FinRevGItems}}
-\par\end{centering}
-\centering
-\input{figures/Tikz/Statistics_GR_Final_BIG6}
-
+<!-- 
 \source{Real-time quarterly fiscal dataset and own calculations.}
 \desc{The numbers in parentheses next to variable names denote the number of revisions underpinning the calculation of the summary statistics.}
-\end{figure} -->
+-->
 
 The first column of @fig-FinRevGItems reports the mean
 revision (MR), which is informative about the bias. The results point
@@ -127,23 +121,8 @@ targets::tar_read(plot_statistics_post2014)
 
 
 <!-- \newgeometry{tmargin=0.5cm,bmargin=0.5cm,lmargin=2.5cm,rmargin=2.5cm}
-\begin{figure}
-     \centering
-     \caption{Summary statistics of final revisions in the two subsamples \label{fig:RevGItems_prepost2014}}
-     \begin{subfigure}[b]{\textwidth}
-         \centering
-         \caption{pre-2014Q2}         
-            \input{figures/Tikz/Statistics_GR_Final_BIG6_1Part}  
-     \end{subfigure}
-     \vfill
-     \begin{subfigure}[b]{\textwidth}
-         \centering
-         \caption{post-2014Q2}
-            \input{figures/Tikz/Statistics_GR_Final_BIG6_2Part}  
-     \end{subfigure}
-     \source{Real-time quarterly fiscal dataset and own calculations.}
-     \desc{The numbers in parentheses next to variable names denote the number of revisions underpinning the calculation of the summary statistics.}
-    \end{figure}
+\source{Real-time quarterly fiscal dataset and own calculations.}
+\desc{The numbers in parentheses next to variable names denote the number of revisions underpinning the calculation of the summary statistics.}
 \restoregeometry -->
 
 

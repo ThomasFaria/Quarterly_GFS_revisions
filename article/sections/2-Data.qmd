@@ -101,25 +101,16 @@ The sum of intermediate revisions to a given quarterly value amounts to a final 
 #| fig-height: 3.5
 #| fig-align: center
 #| echo: false
-#| 
+
 setwd("../")
 targets::tar_read(plot_total_revision)
-# out-width: 50%
 
 ```
 
-
- <!-- \begin{figure}[H]
- \begin{centering}
- \caption{Revisions to the growth rate of gov. compensation in the Netherlands\label{fig:dataoverview1}}
- \par\end{centering}
- \begin{centering}
- \centering
- \input{figures/Tikz/Total_Revision}
- \par\end{centering}
+<!-- 
  \source{Real-time quarterly fiscal dataset and own calculations.}
  \desc{The final data series are annual percentage growth rates. Final revisions are differences between the final and initial releases.}
- \end{figure} -->
+-->
 
 ## Data scope
 
@@ -163,11 +154,8 @@ targets::tar_read(plot_revisions_across_variables)
 
 ```
 
- <!-- \begin{figure}[H]
- \centering{}\caption{Final revisions across fiscal and macro variables \label{fig:revisions_across_variables}}
- \centering
- \includegraphics[width=1\textwidth]{figures/Pdfs/RevisionsAcrossItem.pdf}
- \source{Real-time quarterly fiscal dataset and own calculations.}
+ <!-- 
+\source{Real-time quarterly fiscal dataset and own calculations.}
  \desc{The shaded variables are not individually considered in our analysis on account of their exceptional volatility (see Figure \ref{fig:mean_standard-deviation_values}) and large revisions associated with these variables. We made an exception to this rule for government investment, which is also relatively heavily revised, given that the variable plays a key role as a fiscal policy instrument. The country order in the figure follows the size of the government sector as measured by total spending with the euro area added at the end. The figures in parentheses next to variable names denote the number of observations for each variable.}
  \end{figure} -->
 
@@ -189,17 +177,10 @@ targets::tar_read(plot_revisions_across_countries)
 
 ```
 
- <!-- \begin{figure}[H]
- \begin{centering}
- \caption{Final revisions across countries \label{fig:revisions_exmample}}
- \par\end{centering}
- \begin{centering}
- \centering
- \input{figures/Tikz/Outliers_Aggreg}
- \par\end{centering}
- \source{Real-time quarterly fiscal dataset and own calculations.}
- \desc{The shaded countries are not individually considered in our analysis on account of their exceptional volatility and data quality issues (see Figures \ref{fig_app: total_revenue}-\ref{fig_app:wages_and_salaries} in the online appendix). They comprise instead the rest of the euro area region (REA). The figures in parentheses next to country labels denote the number of observations for each country.}
- \end{figure} -->
+ <!-- 
+\source{Real-time quarterly fiscal dataset and own calculations.}
+\desc{The shaded countries are not individually considered in our analysis on account of their exceptional volatility and data quality issues (see Figures \ref{fig_app: total_revenue}-\ref{fig_app:wages_and_salaries} in the online appendix). They comprise instead the rest of the euro area region (REA). The figures in parentheses next to country labels denote the number of observations for each country.}
+-->
 
 Our dataset consists of 59 quarterly GFS vintages taking place since January 2007 to July 2021. The selection of the first vintage is dictated by the moment in which quarterly GFS data started being stored in an organised and complete manner.^[The development work on Government Finance Statistics took place since 2002. Only in 2007 the data were considered to be of sufficient quality and complete enough to be used in economic analysis at the ECB.] Admittedly, it took until October 2014 before the reporting of the GFS data became compulsory and complete. Notwithstanding this, even well before October 2014 the GFS data were published regularly by most of the euro area countries on voluntary basis.^[Our fiscal real-time dataset contains some missing values due to data unavailability before October 2014. Most notably, Germany and France published the GFS data only in October once per year rather than on quarterly basis.] The last vintage is simply the release containing final values for 2019, which is the last year unaffected by the COVID-19 crisis.
 
@@ -214,14 +195,10 @@ Our dataset consists of 59 quarterly GFS vintages taking place since January 200
 setwd("../")
 targets::tar_read(plot_revisions_across_time)
 ```
- <!-- \begin{figure}[H]
- \begin{centering}
- \caption{Final revisions across time \label{fig: revisions_over_time}}
- \par\end{centering}
- \centering
- \input{figures/Tikz/RevisionsOverTime}
- \source{Real-time quarterly fiscal dataset and own calculations.}
+
+ <!--
+\source{Real-time quarterly fiscal dataset and own calculations.}
  \desc{The figure illustrates the revisions for the nine largest countries in terms of total expenditure and the euro area rest, which are the geographical regions considered in our analysis. The bands represent 5%-95% interval calculated for each year.}
- \end{figure} -->
+-->
 
 A look at the data over time reveals that the dispersion of the fiscal revisions dropped significantly in 2014. @fig-revisions_over_time illustrates that the 5-95% interval calculated for each year narrows down noticeably in 2014 for total revenue and total expenditure. The shrinkage clearly stands out when the two fiscal variables are compared to GDP. The width of the interval for the latter stays remarkably constant over the entire period 2007-19 except for 2015 influenced by the extraordinarily high revisions to Irish GDP. By contrast, the width of the interval for the fiscal series has been exceeding the one of GDP by a wide margin only until 2014. After 2014, however, the bands of the fiscal series become much more aligned compared to  GDP. The change could be related to the introduction of ESA 2010 in October 2014 and to the fact that the reporting of the quarterly fiscal data became compulsory  at the time. While determining the exact reason is outside the scope of our paper we will bear this fact in mind when analysing the data.
