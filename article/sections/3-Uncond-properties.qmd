@@ -18,8 +18,7 @@ The MR statistic will help us assess whether revisions are biased. Other metrics
 #| fig-height: 4.75
 #| fig-align: center
 #| echo: false
-#| 
-setwd("../")
+
 targets::tar_read(plot_statistics_full_sample)
 ```
 
@@ -97,8 +96,7 @@ The analysis presented above indicated that fiscal revisions exhibit considerabl
 #| fig-height: 4.75
 #| fig-align: center
 #| echo: false
-#| 
-setwd("../")
+
 targets::tar_read(plot_statistics_pre2014) -->
 
 
@@ -114,7 +112,6 @@ targets::tar_read(plot_statistics_pre2014) -->
 #| layout-nrow: 2
 #| echo: false
 
-setwd("../")
 targets::tar_read(plot_statistics_pre2014)
 targets::tar_read(plot_statistics_post2014)
 ```

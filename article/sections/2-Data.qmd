@@ -102,7 +102,6 @@ The sum of intermediate revisions to a given quarterly value amounts to a final 
 #| fig-align: center
 #| echo: false
 
-setwd("../")
 targets::tar_read(plot_total_revision)
 
 ```
@@ -148,8 +147,7 @@ We regard this set of variables as a reliable benchmark for assessing fiscal rev
 #| fig-height: 8
 #| fig-align: center
 #| echo: false
-#| 
-setwd("../")
+
 targets::tar_read(plot_revisions_across_variables)
 
 ```
@@ -171,8 +169,7 @@ Giving the small and volatile countries a prominent role in forming conclusions 
 #| fig-height: 8
 #| fig-align: center
 #| echo: false
-#| 
-setwd("../")
+
 targets::tar_read(plot_revisions_across_countries)
 
 ```
@@ -191,8 +188,7 @@ Our dataset consists of 59 quarterly GFS vintages taking place since January 200
 #| fig-height: 8
 #| fig-align: center
 #| echo: false
-#| 
-setwd("../")
+
 targets::tar_read(plot_revisions_across_time)
 ```
 

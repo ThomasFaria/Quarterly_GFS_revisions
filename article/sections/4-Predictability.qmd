@@ -70,7 +70,6 @@ To sum up, the results reveal that fiscal revisions in general are to some degre
 #| tbl-height: 4.75
 #| echo: false
 
-setwd("../")
 table <- targets::tar_read(table_AIC)
 kableExtra::kbl(table,
               col.names = c("",
