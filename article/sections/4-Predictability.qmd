@@ -68,7 +68,6 @@ To sum up, the results reveal that fiscal revisions in general are to some degre
 #| tbl-cap: Predictability of the revisions based on AIC
 #| tbl-width: 8
 #| tbl-height: 4.75
-#| echo: false
 
 table <- targets::tar_read(table_AIC)
 kableExtra::kbl(table,

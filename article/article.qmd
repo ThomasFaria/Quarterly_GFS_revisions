@@ -54,6 +54,7 @@ format:
     # lot: true
 execute:
   warning: false
+  echo: false
 ---
 
 \newpage{}
@@ -81,8 +82,6 @@ knitr::opts_knit$set(root.dir = "../")
 {{< include sections/6-Conclusion.qmd >}}
 
 \newpage{}
-
-# References {-}
 
 <!-- TODO:
 - check missing data for IE

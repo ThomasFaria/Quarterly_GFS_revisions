@@ -180,7 +180,7 @@ Subplot_all_revision <- function(sample, variable, x_lab, grey_bg, Legend) {
       }
     } +
     theme(
-      axis.title.y = element_text(),
+      axis.title.y = element_text(size = 7),
       axis.text.y = element_blank(),
       axis.ticks.y = element_blank(),
       panel.spacing = unit(0, "cm"),

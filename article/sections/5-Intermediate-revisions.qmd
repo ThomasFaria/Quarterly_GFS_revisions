@@ -8,7 +8,6 @@ Intuitively, each release should bring the data closer to its final value as gra
 #| fig-width: 6.3
 #| fig-height: 2.75
 #| fig-align: center
-#| echo: false
 
 targets::tar_read(plot_single_rev_example)
 ```
@@ -40,7 +39,6 @@ Notwithstanding these undesirable releases, intermediate revisions point to the 
 #| fig-width: 8
 #| fig-height: 5
 #| layout-nrow: 2
-#| echo: false
 
 targets::tar_read(plot_statistics_interm_pre2014)
 targets::tar_read(plot_statistics_interm_post2014)
@@ -70,7 +68,6 @@ upwards are visible (see @fig-Single_Rev_Path). This only re-affirms that  cases
 #| fig-width: 6.3
 #| fig-height: 5.75
 #| fig-align: center
-#| echo: false
 
 targets::tar_read(plot_revision_paths)
 ```
