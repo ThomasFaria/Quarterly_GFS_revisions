@@ -86,5 +86,8 @@ knitr::opts_knit$set(root.dir = "../")
 <!-- TODO:
 - check missing data for IE
 - notes after charts
-- fine tunning charts
-- cross-ref appendix -->
+- cross-ref appendix 
+- csv to parquet
+- add last vintages
+- enhance raw db
+-->

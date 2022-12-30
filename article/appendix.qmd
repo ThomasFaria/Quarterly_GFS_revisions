@@ -31,6 +31,7 @@ keywords:
 date: last-modified
 format:
   pdf:
+    number-sections: true
     keep-tex: false
     journal:
       name: International Journal of Central Banking
@@ -42,7 +43,6 @@ format:
     include-in-header:
       - packages.tex
     fig-pos: 'H'
-    tbl-pos: 'H'
 execute:
   warning: false
   echo: false
@@ -53,6 +53,14 @@ execute:
 ```{r}
 knitr::opts_knit$set(root.dir = "../")
 ```
+
+\appendix
+
+\renewcommand{\thesection}{\Alph{section}} 
+\renewcommand{\thefigure}{\Alph{section}.\arabic{figure}} 
+\renewcommand{\thetable}{\Alph{section}.\arabic{table}}
+\setcounter{figure}{0} 
+\setcounter{table}{0}
 
 # Graphical illustration of the revisions {#sec-Revisions-illustration}
 {{< include sections/A-Graphs-revisions.qmd >}}

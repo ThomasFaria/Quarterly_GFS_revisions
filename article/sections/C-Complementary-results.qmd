@@ -1,3 +1,5 @@
+\floatplacement{table}{!htbp}
+
 ```{r}
 #| label: tbl-forecastability_SIC
 #| tbl-cap: Predictability of the revisions based on SIC
