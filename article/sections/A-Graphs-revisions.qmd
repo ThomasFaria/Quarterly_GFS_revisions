@@ -1,5 +1,7 @@
 All final revisions to variables considered (but not necessarily included) in the analysis are illustrated in this appendix section with the twofold objective. First, the graphs are useful for illustrating the magnitude of the revisions across variables and countries. Second, the plots are indispensable to potentially identify any issues with the dataset that could impair our analysis (e.g. excessive values or lack of revisions). Section @sec-code-retrieval of the online appendix provides statistical codes used to retrieve the data.
 
+\pagebreak
+
 ## Fiscal revenue variables
 ```{r}
 #| fig-cap: Final revisions to total revenue
@@ -9,6 +11,7 @@ All final revisions to variables considered (but not necessarily included) in th
 
 targets::tar_read(plot_revision_TOR)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to direct taxes
@@ -18,6 +21,7 @@ targets::tar_read(plot_revision_TOR)
 
 targets::tar_read(plot_revision_DTX)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to indirect taxes
@@ -27,6 +31,7 @@ targets::tar_read(plot_revision_DTX)
 
 targets::tar_read(plot_revision_TIN)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to social contributions
@@ -36,6 +41,7 @@ targets::tar_read(plot_revision_TIN)
 
 targets::tar_read(plot_revision_SCT)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to other current revenue
@@ -45,6 +51,7 @@ targets::tar_read(plot_revision_SCT)
 
 targets::tar_read(plot_revision_OCR)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to capital revenue
@@ -54,6 +61,7 @@ targets::tar_read(plot_revision_OCR)
 
 targets::tar_read(plot_revision_KTR)
 ```
+\pagebreak
 
 ## Fiscal spending variables
 
@@ -65,6 +73,7 @@ targets::tar_read(plot_revision_KTR)
 
 targets::tar_read(plot_revision_TOE)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to social transfers
@@ -83,6 +92,7 @@ targets::tar_read(plot_revision_THN)
 
 targets::tar_read(plot_revision_PUR)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to interest payments
@@ -92,6 +102,7 @@ targets::tar_read(plot_revision_PUR)
 
 targets::tar_read(plot_revision_INP)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to gov. compensation
@@ -101,6 +112,7 @@ targets::tar_read(plot_revision_INP)
 
 targets::tar_read(plot_revision_COE)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to other current expenditure
@@ -110,6 +122,7 @@ targets::tar_read(plot_revision_COE)
 
 targets::tar_read(plot_revision_OCE)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to gov. investment
@@ -119,6 +132,7 @@ targets::tar_read(plot_revision_OCE)
 
 targets::tar_read(plot_revision_GIN)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to other capital expenditure
@@ -128,6 +142,7 @@ targets::tar_read(plot_revision_GIN)
 
 targets::tar_read(plot_revision_OKE)
 ```
+\pagebreak
 
 ## Macro variables
 
@@ -139,6 +154,7 @@ targets::tar_read(plot_revision_OKE)
 
 targets::tar_read(plot_revision_YEN)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to private consumption
@@ -148,6 +164,7 @@ targets::tar_read(plot_revision_YEN)
 
 targets::tar_read(plot_revision_PCN)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to total investment
@@ -157,6 +174,7 @@ targets::tar_read(plot_revision_PCN)
 
 targets::tar_read(plot_revision_ITN)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to exports
@@ -166,6 +184,7 @@ targets::tar_read(plot_revision_ITN)
 
 targets::tar_read(plot_revision_EXN)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to gov. consumption
@@ -175,6 +194,7 @@ targets::tar_read(plot_revision_EXN)
 
 targets::tar_read(plot_revision_GCN)
 ```
+\pagebreak
 
 ```{r}
 #| fig-cap: Final revisions to wages and salaries
@@ -184,3 +204,4 @@ targets::tar_read(plot_revision_GCN)
 
 targets::tar_read(plot_revision_WGS)
 ```
+\pagebreak

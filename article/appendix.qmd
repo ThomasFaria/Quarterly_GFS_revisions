@@ -41,7 +41,8 @@ format:
     toc-title: Contents
     include-in-header:
       - packages.tex
-    fig-pos: 'h'
+    fig-pos: 'H'
+    tbl-pos: 'H'
 execute:
   warning: false
   echo: false
