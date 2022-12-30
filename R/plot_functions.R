@@ -681,9 +681,9 @@ Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
     {
       if (Typevalue == "Normalised") {
         if (Q == 1 | Q == 3) {
-          scale_y_continuous(Typevalue)
+          scale_y_continuous(Typevalue, labels = scales::percent)
         } else {
-          scale_y_continuous("")
+          scale_y_continuous("", labels = scales::percent)
         }
       }
     } +
