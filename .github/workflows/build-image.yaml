@@ -2,7 +2,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - fix-extension
+      - main
     tags:
       - "*"
 
@@ -23,7 +23,7 @@ jobs:
           images: thomasfaria/quarterly_gfs_revisions
           tags: |
             # set latest tag for main branch
-            type=ref,event=branch
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
             # propagate valid semver tags
             type=semver,pattern={{raw}}
       -
