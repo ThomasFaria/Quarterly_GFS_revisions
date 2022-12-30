@@ -1,7 +1,7 @@
 library(targets)
 
 tar_option_set(
-  packages = c("tarchetypes", "data.table", "xts", "lubridate", "rmarkdown", "markdown", "ggplot2"),
+  packages = c("tarchetypes", "data.table", "xts", "lubridate", "rmarkdown", "ggplot2"),
   format = "parquet",
   memory = "transient",
   garbage_collection = TRUE
