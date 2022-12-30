@@ -1,0 +1,95 @@
+```{=latex}
+\begin{table}[H]
+\caption{ECB's SDW codes for data retrieval (fiscal series) \label{tab-Code_series_fiscal}}
+\scalebox{0.9}{
+\hspace*{0.9cm}
+\centering
+\par
+\begin{tabular}{|>{\centering}p{5cm}|>{\centering}p{9.5cm}|}
+\hline 
+Name & Retrieval code\tabularnewline
+\hline 
+\hline 
+\textbf{\footnotesize{}Total revenue} & \texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.P.C.OTR.\_Z.\_Z.\_Z.XDC.\_Z.S.V.N.\_T}\tabularnewline
+\hline 
+{\footnotesize{}Current taxes on income, wealth, etc. (}\textbf{\footnotesize{}Direct
+taxes}{\footnotesize{})} & \texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.C.D5.\_Z.\_Z.\_Z.XDC.\_Z.S.V.N.\_T}\tabularnewline
+\hline 
+{\footnotesize{}Taxes on production and imports (}\textbf{\footnotesize{}Indirect
+taxes}{\footnotesize{})} & \texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.C.D2.\_Z.\_Z.\_Z.XDC.\_Z.S.V.N.\_T }\tabularnewline
+\hline 
+{\footnotesize{}Net social contributions (}\textbf{\footnotesize{}Social
+contributions}{\footnotesize{})} & \texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.C.D61.\_Z.\_Z.\_Z.XDC.\_Z.S.V.N.\_T }\tabularnewline
+\hline 
+\textbf{\textcolor{brown}{\footnotesize{}Other current revenue}}\textcolor{brown}{\footnotesize{}
+= Market output, output for own final use and payments for other non-market
+output + Other subsidies on production + Property income + Other current
+transfers} & \texttt{\textcolor{brown}{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.C.P1O.\_Z.\_Z.\_Z.XDC.\_Z.S.V.N.\_T
++ GFS.Q.N.cc.W0.S13.S1.N.C.D39.\_Z.\_Z.\_Z.XDC.\_Z.S.V.N.\_T + GFS.Q.N.cc.W0.S13.S1.P.C.D4.\_Z.\_Z.\_Z.XDC.\_Z.S.V.N.\_T
++ GFS.Q.N.cc.W0.S13.S1.P.C.D7.\_Z.\_Z.\_Z.XDC.\_Z.S.V.N.\_T}}\tabularnewline
+\hline 
+\textcolor{brown}{{\footnotesize{}Capital transfers (}\textbf{\footnotesize{}Capital revenue}{\footnotesize{})}} & \texttt{\textcolor{brown}{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.P.C.D9.\_Z.\_Z.\_Z.XDC.\_Z.S.V.N.\_T }}\tabularnewline
+\hline 
+\hline 
+\textbf{\footnotesize{}Total expenditure} & \texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.P.D.OTE.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T}\tabularnewline
+\hline 
+{\footnotesize{}Social benefits other than social transfers in kind
+(}\textbf{\footnotesize{}Social transfers}{\footnotesize{})} & \texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.D.D62.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T }\tabularnewline
+\hline 
+\textbf{\footnotesize{}Purchases}{\footnotesize{} = Social transfers
+in kind - purchased market production + Intermediate consumption} & \texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.D.D632.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T
++ GFS.Q.N.cc.W0.S13.S1.N.D.P2.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T }\tabularnewline
+\hline 
+\textcolor{brown}{{\footnotesize{}Interest (}\textbf{\footnotesize{}Interest payments}{\footnotesize{})}} & \textcolor{brown}{\texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.C.D.D41.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T }}\tabularnewline
+\hline 
+{\footnotesize{}Compensation of employees (}\textbf{\footnotesize{}Gov.
+compensation}{\footnotesize{})} & \texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.D.D1.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T }\tabularnewline
+\hline 
+\textbf{\textcolor{brown}{\footnotesize{}Other current expenditure}}\textcolor{brown}{\footnotesize{}
+= Property income other than interest + Other taxes on production
++ Current taxes on income, wealth, etc. + Other current transfers
++ Adjustment for the change in pension entitlements} & \texttt{\textcolor{brown}{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.D.D4N.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T
++ GFS.Q.N.cc.W0.S13.S1.N.D.D29.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T + GFS.Q.N.cc.W0.S13.S1.N.D.D5.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T
++ GFS.Q.N.cc.W0.S13.S1.P.D.D7.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T + GFS.Q.N.cc.W0.S13.S1.N.D.D8.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T}}\tabularnewline
+\hline 
+{\footnotesize{}Gross fixed capital formation (}\textbf{\footnotesize{}Gov.
+investment}{\footnotesize{})} & \texttt{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.D.P51G.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T }\tabularnewline
+\hline 
+\textbf{\textcolor{brown}{\footnotesize{}Other capital expenditure}}\textcolor{brown}{\footnotesize{}
+= Changes in inventories and acquisition less disposals of valuables
++ Acquisitions less disposals of non-produced assets + Capital transfers} & \texttt{\textcolor{brown}{\footnotesize{}GFS.Q.N.cc.W0.S13.S1.N.D.P5M.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T
++ GFS.Q.N.cc.W0.S13.S1.N.D.NP.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T + GFS.Q.N.cc.W0.S13.S1.C.D.D9.\_Z.\_Z.\_T.XDC.\_Z.S.V.N.\_T }}\tabularnewline
+\hline 
+\end{tabular}
+}
+\bigskip{}
+\desc{The items in brown are not explicitly considered in our analysis, as justified in Section \ref{sec:Real-time-quarterly-fiscal}.}
+\end{table}
+
+\begin{table}
+\par
+\begin{centering}
+\caption{ECB's SDW codes for data retrieval (macro series) \label{tab-Code_series_macro}}
+\par
+\end{centering}
+\centering{}%
+\begin{tabular}{|>{\centering}p{5cm}|c|}
+\hline 
+Name & Retrieval code\tabularnewline
+\hline 
+\hline 
+{\footnotesize{}GDP} & \texttt{\footnotesize{}MNA.Q.N.cc.W2.S1.S1.B.B1GQ.\_Z.\_Z.\_Z.EUR.V.N}\tabularnewline
+\hline 
+{\footnotesize{}Private consumption} & \texttt{\footnotesize{}MNA.Q.N.cc.W0.S1M.S1.D.P31.\_Z.\_Z.\_T.EUR.V.N}\tabularnewline
+\hline 
+{\footnotesize{}Total investment} & \texttt{\footnotesize{}MNA.Q.N.cc.W0.S1.S1.D.P5.N1G.\_T.\_Z.EUR.V.N}\tabularnewline
+\hline 
+{\footnotesize{}Exports} & \texttt{\footnotesize{}MNA.Q.N.cc.W1.S1.S1.D.P6.\_Z.\_Z.\_Z.EUR.V.N}\tabularnewline
+\hline 
+{\footnotesize{}Gov. consumption} & \texttt{\footnotesize{}MNA.Q.N.cc.W0.S13.S1.D.P3.\_Z.\_Z.\_T.EUR.V.N}\tabularnewline
+\hline 
+{\footnotesize{}Wages and salaries} & \texttt{\footnotesize{}MNA.Q.N.cc.W2.S1.S1.D.D1.\_Z.\_T.\_Z.EUR.V.N}\tabularnewline
+\hline 
+\end{tabular}
+\end{table}
+```
