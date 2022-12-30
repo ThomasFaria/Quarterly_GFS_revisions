@@ -219,7 +219,8 @@ get_regression_table <- function(data, criterion, variables) {
       "Country_DE\\+Country_ES\\+Country_FR\\+Country_IT\\+Country_NL\\+Country_BE\\+Country_AT\\+Country_FI\\+Country_PT\\+Country_REA" = "Country"
     ))
   ]
-
+  table[, `F-value` := as.character(`F-value`)][is.na(table$`F-value`), "F-value" := "-"]
+  
   table <- rename_to_latex(table)
   return(table)
 }

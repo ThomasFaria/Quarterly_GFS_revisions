@@ -24,8 +24,13 @@ preprocess_revision_db <- function(data) {
       Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "Macro"
     ))
   ][
-    Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"),
-    ToShade := "TRUE"
+    ,
+    ToShade := .(fcase(
+      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "TRUE",
+      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR",
+                           "TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE",
+                           "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "FALSE"
+    ))
   ][
     ,
     Variable_long := .(fcase(
@@ -86,8 +91,13 @@ preprocess_raw_db <- function(data) {
       Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "Macro"
     ))
   ][
-    Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"),
-    ToShade := "TRUE"
+    ,
+    ToShade := .(fcase(
+      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "TRUE",
+      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR",
+                           "TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE",
+                           "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "FALSE"
+    ))
   ][
     ,
     Variable_long := .(fcase(
@@ -131,8 +141,13 @@ preprocess_growth_rate_db <- function(data) {
       Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "Macro"
     ))
   ][
-    Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"),
-    ToShade := "TRUE"
+    ,
+    ToShade := .(fcase(
+      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "TRUE",
+      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR",
+                           "TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE",
+                           "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "FALSE"
+    ))
   ][
     ,
     Variable_long := .(fcase(

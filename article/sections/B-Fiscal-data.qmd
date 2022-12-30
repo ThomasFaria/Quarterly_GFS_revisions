@@ -1,0 +1,26 @@
+```{r}
+#| fig-cap: Average percentage GDP shares across variables
+#| fig-width: 6.3
+#| fig-height: 3.75
+#| fig-align: center
+
+targets::tar_read(plot_share_GDP)
+```
+
+```{r}
+#| fig-cap: Mean and standard deviation of growth rates across variables
+#| fig-width: 6.3
+#| fig-height: 4.75
+#| fig-align: center
+
+targets::tar_read(plot_mean_sd)
+```
+
+```{r}
+#| fig-cap: Average percentage shares of total expenditure in the euro area
+#| fig-width: 6.3
+#| fig-height: 3.75
+#| fig-align: center
+
+targets::tar_read(plot_share_TOE)
+```

@@ -1,3 +1,29 @@
+theme_ECB <- function() {
+  dark_grey <- rgb(83, 83, 83, maxColorValue = 255)
+  light_grey <- rgb(217, 217, 217, maxColorValue = 255)
+  ECB_blue <- "#003299"
+    theme_minimal() %+replace%
+      theme(
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.title = element_blank(),
+        axis.ticks = element_line(color = dark_grey),
+        axis.ticks.length = unit(5, "pt"),
+        legend.position = "top",
+        strip.text.x = element_text(size = 10),
+        strip.text.y = element_text(size = 10),
+        legend.text = element_text(size = 10),
+        plot.caption = element_text(hjust = 0, size = 8, colour = ECB_blue),
+        plot.subtitle = element_text(size = 10, colour = ECB_blue),
+        plot.title = element_text(size = 14, face = "bold", colour = ECB_blue),
+        panel.background = element_rect(colour = light_grey),
+        axis.line = element_line(color = dark_grey),
+        legend.margin = margin(t = -0.1, b = -0.1, unit = "cm"),
+        legend.key.size = unit(0.2, "cm"),
+        legend.key.width = unit(0.4, "cm")
+      )
+}
+
 Data_TOTAL_REV <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber) {
   sample <- rbindlist(list(
     data_rev[(Country_code %in% Countries) &
@@ -655,9 +681,9 @@ Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
     {
       if (Typevalue == "Normalised") {
         if (Q == 1 | Q == 3) {
-          scale_y_continuous(Typevalue)
+          scale_y_continuous(Typevalue, labels = scales::percent)
         } else {
-          scale_y_continuous("")
+          scale_y_continuous("", labels = scales::percent)
         }
       }
     } +
@@ -710,8 +736,6 @@ Plot_PATHS <- function(sample) {
     align = "v", ncol = 2, vjust = -0.8
   )
 
-  prow
-
   legend <- cowplot::get_legend(
     # create some space to the left of the legend
     Subplot_PATHS(sample, "Normalised", T, 1) + theme(legend.box.margin = margin(-18, 0, 0, 0))
@@ -724,31 +748,264 @@ Plot_PATHS <- function(sample) {
   return(plot)
 }
 
-theme_ECB <- function() {
-  dark_grey <- rgb(83, 83, 83, maxColorValue = 255)
-  light_grey <- rgb(217, 217, 217, maxColorValue = 255)
-  ECB_blue <- "#003299"
-  theme_minimal() %+replace%
-    theme(
-      axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
-      legend.title = element_blank(),
-      axis.ticks = element_line(color = dark_grey),
-      axis.ticks.length = unit(5, "pt"),
-      legend.position = "top",
-      strip.text.x = element_text(size = 10),
-      strip.text.y = element_text(size = 10),
-      legend.text = element_text(size = 10),
-      plot.caption = element_text(hjust = 0, size = 8, colour = ECB_blue),
-      plot.subtitle = element_text(size = 10, colour = ECB_blue),
-      plot.title = element_text(size = 14, face = "bold", colour = ECB_blue),
-      panel.background = element_rect(colour = light_grey),
-      axis.line = element_line(color = dark_grey),
-      legend.margin = margin(t = -0.1, b = -0.1, unit = "cm"),
-      legend.key.size = unit(0.2, "cm"),
-      legend.key.width = unit(0.4, "cm")
-    )
+#### APPENDIX ####
+Data_revisions_per_variable <- function(data, Countries, variable, TypeOfRevision, RevisionNb, MeasureUsed) {
+  sample <- data[
+    (Country_code %in% Countries) &
+      (Variable_code %in% variable) &
+      (Type_revision %in% TypeOfRevision) &
+      (Revision_nb == RevisionNb) &
+      (Measure == MeasureUsed)
+  ][
+    ,
+    Country_code := factor(Country_code, levels = Countries)
+  ][
+    ,
+    .(Date, Variable_long, Variable_code, Country_code, Group, IsREA, Value)
+  ]
+  
+  
+  temp <- sample[, .(N = sum(!is.na(Value))), by = Country_code][
+    ,
+    Country_code := factor(Country_code, levels = Countries)
+  ][order(Country_code)][
+    ,
+    N := paste0("NULL[(~", N, ")]")
+  ]
+  
+  sample <- merge(sample, temp, by = "Country_code")
+
+  return(sample)
 }
+
+Plot_revisions_per_variable <- function(sample) {
+  plot <- ggplot() +
+    ggtitle("") +
+    geom_rect(
+      data = sample[(IsREA == 1)], aes(fill = as.factor(IsREA)), xmin = -Inf, xmax = Inf,
+      ymin = -Inf, ymax = Inf, alpha = 0.3
+    ) +
+    geom_point(data = sample, aes(x = Date, y = Value), color = ECB_col[1], size = 1, shape = 16, alpha = 0.5) +
+    coord_flip() +
+    facet_wrap(. ~ Country_code + N, ncol = 1, strip.position = "left", labeller = label_parsed) +
+    theme_ECB() +
+    scale_fill_manual(values = rgb(230, 230, 230, maxColorValue = 255), guide = "none") +
+    theme(
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      panel.spacing = unit(0, "cm"),
+      strip.placement = "outside",
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      panel.background = element_rect(fill = NA),
+      panel.ontop = TRUE
+    )
+  #+labs(x = aVar)
+  return(plot)
+}
+
+Data_Share_GDP <- function(data, Countries, Items, Vintages) {
+  sample <- data[
+    (Variable_code %in% Items) &
+      (Country_code %in% Countries) &
+      (Date > as.Date("1998-12-31")) &
+      (ECB_vintage %in% Vintages),
+    .(Value = mean(Value, na.rm = TRUE)),
+    by = .(Variable_long, Group2, ToShade)
+  ][
+    , Share := Value / max(Value) * 100
+  ]
+  return(sample)
+}
+
+Plot_Share_GDP <- function(sample) {
+  sample[, c("Variable_long", "Group2") := list(
+    factor(Variable_long, levels = c(
+      "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
+      "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
+      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+    )), 
+    factor(Group2, levels = c(
+    "Revenue",
+    "Expenditure",
+    "Macro",
+    "Others"
+  )))]
+  
+  
+  plot <- ggplot(data = sample) +
+    ggtitle("") +
+    
+    # makes the bar and format
+    geom_bar(aes(x = Variable_long, y = Share / 100, fill = Group2, alpha = ToShade), stat = "identity", position = "dodge", width = 0.8) +
+    
+    # Add labels
+    geom_text(aes(x = Variable_long, y = Share / 100, vjust = ifelse(Share > 0, -0.2, 1.15), label = round(Share, 2)), size = 3, color = rgb(83, 83, 83, maxColorValue = 255)) +
+    
+    # set general theme
+    theme_ECB() +
+    theme(axis.text.x = element_text(size = 10, angle = 90)) +
+    scale_y_continuous(labels = scales::percent) +
+    expand_limits(y = 1.02) +
+    # set colors and name of data
+    scale_fill_manual("", values = c(ECB_col)) +
+    scale_alpha_manual("", values = c(1, 0.4), guide = "none")
+  
+  return(plot)
+}
+
+Data_Mean_SD <- function(data, Countries, Items, Vintages, MeasureUsed, UpDate, LowDate) {
+  sample <- data[
+    (Variable_code %in% Items) &
+      (Country_code %in% Countries) &
+      (ECB_vintage %in% Vintages) &
+      (Date %between% c(LowDate, UpDate)),
+    .(
+      Mean = mean(Value, na.rm = TRUE),
+      SD = sd(Value, na.rm = TRUE)
+    ),
+    by = .(Variable_long, Group2, ToShade)
+  ] |>
+    melt(id.vars = c("Variable_long", "Group2", "ToShade"), value.name = "Value", variable.name = "Statistic")
+  
+  return(sample)
+}
+
+SubPlot_Mean_SD <- function(sample, Statistics, Legend, Ylabs, scales_y) {
+  sample[, c("Variable_long", "Group2", "Statistic") := list(factor(Variable_long, levels = c(
+    "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
+    "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
+    "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+  )),
+                                                             factor(Group2, levels = c("Revenue", "Expenditure", "Macro", "Others")),
+                                                             Statistic = factor(Statistic, levels = c("Mean", "SD", "Share"))
+  )][
+    , Variable_long := forcats::fct_rev(Variable_long)
+  ]
+  
+  plot <- ggplot(data = sample[Statistic == Statistics]) +
+    ggtitle(ifelse(Statistics == "SD", "Standard deviation", Statistics)) +
+    
+    # makes the bar and format
+    geom_bar(aes(x = Variable_long, y = Value, fill = Group2, alpha = ToShade), stat = "identity", position = "dodge", width = 0.8) +
+    geom_hline(yintercept = 0) +
+    coord_flip() +
+    
+    # Add labels
+    {
+      if (Statistics == "Share") {
+        geom_text(aes(x = Variable_long, y = Value, hjust = ifelse(Value > 0, -0.2, 1.15), label = round(Value * 100, 2)), size = 3)
+      }
+    } +
+    {
+      if (Statistics != "Share") {
+        geom_text(aes(x = Variable_long, y = Value, hjust = ifelse(Value > 0, -0.2, 1.15), label = round(Value, 2)), size = 3)
+      }
+    } +
+    
+    # set general theme
+    theme_ECB() +
+    theme(plot.title = element_text(size = 9, face = "plain", colour = "black")) +
+    {
+      if (rlang::is_empty(scales_y)) {
+        scale_y_continuous(expand = c(1, 0))
+      }
+    } +
+    {
+      if (!rlang::is_empty(scales_y$Scale)) {
+        scales_y$Scale[[Statistics]]
+      }
+    } +
+    {
+      if (!rlang::is_empty(scales_y$Expand)) {
+        scales_y$Expand[[Statistics]]
+      }
+    } +
+    {
+      if (!Legend) {
+        theme(legend.position = "none")
+      }
+    } +
+    {
+      if (!Ylabs) {
+        theme(
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank()
+        )
+      }
+    } +
+    # set colors and name of data
+    scale_fill_manual("", values = ECB_col) +
+    scale_alpha_manual("", values = c(1, 0.4), guide = "none")
+  
+  return(plot)
+}
+
+Plot_Mean_SD <- function(sample, scales_y) {
+  Plot1 <- SubPlot_Mean_SD(sample, "Mean", F, T, scales_y)
+  Plot2 <- SubPlot_Mean_SD(sample, "SD", F, F, scales_y)
+  
+  legend <- cowplot::get_legend(
+    # create some space to the left of the legend
+    SubPlot_Mean_SD(sample, "Mean", T, F, scales_y)
+    + theme(legend.box.margin = margin(-15, 0, 0, 0))
+  )
+  
+  prow <- cowplot::plot_grid(Plot1 + theme(plot.margin = unit(c(0, -1.7, 0, 0.1), "cm")),
+                    Plot2 + theme(plot.margin = unit(c(0, 0.2, 0, 1.8), "cm")),
+                    align = "h", ncol = 2, vjust = -0.8
+  )
+  
+  
+  plot <- cowplot::plot_grid(legend,
+                    prow + theme(plot.margin = unit(c(-0.5, 0, 0, 0.2), "cm")),
+                    ncol = 1, rel_heights = c(0.1, 1)
+  )
+  
+  return(plot)
+}
+
+Data_Ranking <- function(data, Items, Vintages, ObsYear) {
+  sample <- data[
+    (Variable_code %in% Items) &
+      (ECB_vintage %in% Vintages) &
+      (year(Date) %in% ObsYear),
+    .(Value = sum(Value, na.rm = TRUE)),
+    by = .(Country_code)
+  ][
+    , Share := Value / max(Value)
+  ][!(Country_code %in% c("EA", "I8"))][
+    , Country_code := factor(Country_code, levels = c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"))
+  ][, Group := .(fcase(
+    Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), "Others",
+    Country_code %in% c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT"), "Big 9",
+    Country_code %in% ("REA"), "Rest of EA"
+  ))]
+  return(sample)
+}
+
+Plot_Ranking <- function(sample) {
+  plot <- ggplot(data = sample) +
+    ggtitle("") +
+    
+    # makes the bar and format
+    geom_bar(aes(x = Country_code, y = Share, fill = Group), stat = "identity", position = "dodge", width = 0.8) +
+    
+    # Add labels
+    geom_text(aes(x = Country_code, y = Share, vjust = ifelse(Share > 0, -0.2, 1.15), label = round(Share * 100, 2)), size = 3, color = rgb(83, 83, 83, maxColorValue = 255)) +
+    
+    # set general theme
+    theme_ECB() +
+    scale_y_continuous(labels = scales::percent) +
+    expand_limits(y = 0.3) +
+    # set colors and name of data
+    scale_fill_manual("", values = c(ECB_col[1], ECB_col[9], ECB_col[3]))
+  
+  return(plot)
+}
+
+#### PARAMETERS ####
 
 scales_final_rev <- list(
   "Scale" =
@@ -792,6 +1049,18 @@ scales_interm_rev <- list(
     )
 )
 
+scales_Mean_SD <- list(
+  "Scale" =
+    list(
+      "Mean" = ggplot2::scale_y_continuous(limits = c(NA, NA), breaks = seq(0, 6, 3)),
+      "SD" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 90, 45))
+    ),
+  "Expand" =
+    list(
+      "Mean" = ggplot2::expand_limits(y = c(-1, 7.2)),
+      "SD" = ggplot2::expand_limits(y = 120)
+    )
+)
 rgb2hex <- function(x) rgb(x[1], x[2], x[3], maxColorValue = 255)
 
 ECB_col <- sapply(list(

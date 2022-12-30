@@ -1,7 +1,7 @@
 library(targets)
 
 tar_option_set(
-  packages = c("tarchetypes", "data.table", "xts", "lubridate", "rmarkdown", "ggplot2"),
+  packages = c("tarchetypes", "data.table", "xts", "lubridate", "rmarkdown", "markdown", "ggplot2"),
   format = "parquet",
   memory = "transient",
   garbage_collection = TRUE
@@ -147,6 +147,253 @@ list(
       c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT"),
       c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
       "Final", "GRate", as.Date("2020-01-01"), as.Date("2006-01-01")
+    )),
+    format = "rds"
+  ),
+  # APPENDIX
+  tar_target(
+    name = plot_revision_TOR,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "TOR",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_DTX,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "DTX",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_TIN,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "TIN",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_SCT,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "SCT",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_OCR,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "OCR",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_KTR,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "KTR",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_TOE,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "TOE",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_THN,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "THN",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_PUR,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "PUR",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_INP,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "INP",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_COE,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "COE",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_OCE,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "OCE",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_GIN,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "GIN",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_OKE,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "OKE",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_YEN,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "YEN",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_PCN,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "PCN",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_ITN,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "ITN",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_EXN,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "EXN",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_GCN,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "GCN",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_WGS,
+    command = Plot_revisions_per_variable(Data_revisions_per_variable(
+      RevisionDB,
+      c("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+      "WGS",
+      "Final", 1, "GRate"
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_share_GDP,
+    command = Plot_Share_GDP(Data_Share_GDP(RTDB, 
+                                            c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 
+                                            c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS", "KTR", "OCR", "OCE", "OKE", "INP"),
+                                            "S21")
+    ),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_mean_sd,
+    command = Plot_Mean_SD(Data_Mean_SD(GRateDB, 
+                                        c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"),
+                                        c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS", "KTR", "OCR", "OCE", "OKE", "INP"),
+                                        "S21", "GRate", as.Date("2019-12-31"), as.Date("2006-01-01")), scales_Mean_SD),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_share_TOE,
+    command = Plot_Ranking(Data_Ranking(RTDB, "TOE", "S21", 2019)),
+    format = "rds"
+  ),
+  tar_target(
+    name = table_BIC,
+    command = get_regression_table(Regressions, "BIC", c(c("TOR", "DTX", "TIN", "SCT"), c("TOE", "THN", "PUR", "COE", "GIN"), c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS")))
+  ),
+  tar_target(
+    name = plot_revision_paths_pre2014,
+    command = Plot_PATHS(Data_PATHS(
+      RevisionDB,
+      c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT"),
+      c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
+      "Final", "GRate", as.Date("2013-12-31"), as.Date("2006-01-01")
+    )),
+    format = "rds"
+  ),
+  tar_target(
+    name = plot_revision_paths_post2014,
+    command = Plot_PATHS(Data_PATHS(
+      RevisionDB,
+      c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT"),
+      c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
+      "Final", "GRate", as.Date("2020-01-01"), as.Date("2013-12-31")
     )),
     format = "rds"
   )

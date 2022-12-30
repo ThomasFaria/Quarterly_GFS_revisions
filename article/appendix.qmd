@@ -1,0 +1,67 @@
+---
+title: "Online Appendix: How bad are fiscal revisions in the euro area?"
+author:
+  - name: Krzysztof Bankowski
+    email: krzysztof.bankowski@europa.ecb.eu
+    affiliations: 
+        - id: ECB
+          name: European Central Bank
+          department: Fiscal Policies Division
+          city: Frankfurt
+          postal-code: 60314
+  - name: Thomas Faria
+    email: thomas.faria@insee.fr
+    affiliations:
+        - id: Insee
+          name: Institut national de la statistique et des études économiques
+          department: SSP Lab
+          city: Montrouge
+          postal-code: 92541
+  - name: Robert Schall
+    email: robert.schall@eui.eu
+    affiliations:
+        - id: EUI
+          name: European University Institute
+          city: Fiesole
+          postal-code: 50014
+keywords: 
+  - Fiscal policy
+  - real-time data
+  - data revisions
+date: last-modified
+format:
+  pdf:
+    keep-tex: false
+    journal:
+      name: International Journal of Central Banking
+      formatting: preprint
+      model: 3p
+      cite-style: authoryear
+    toc: true
+    toc-title: Contents
+    include-in-header:
+      - packages.tex
+    fig-pos: 'H'
+    tbl-pos: 'H'
+execute:
+  warning: false
+  echo: false
+---
+
+\newpage{}
+
+```{r}
+knitr::opts_knit$set(root.dir = "../")
+```
+
+# Graphical illustration of the revisions {#sec-Revisions-illustration}
+{{< include sections/A-Graphs-revisions.qmd >}}
+
+# Selected data characteristics {#sec-fiscal-data-characteristics}
+{{< include sections/B-Fiscal-data.qmd >}}
+
+# Complementing results {#sec-complementing-results}
+{{< include sections/C-Complementary-results.qmd >}}
+
+# Data codes for retrieval {#sec-code-retrieval}
+{{< include sections/D-Codes-retrieval.qmd >}}
