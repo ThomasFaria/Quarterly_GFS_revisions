@@ -116,7 +116,7 @@ list(
       RevisionDB, Final_values,
       c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
       c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
-      "Intermediate", "GRate", c(1),
+      "Intermediate", "GRate", 1:5,
       as.Date("2014-03-01"), as.Date("2006-01-01"), scales_interm_rev
     ),
     format = "rds"
@@ -127,7 +127,7 @@ list(
       RevisionDB, Final_values,
       c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
       c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
-      "Intermediate", "GRate", c(1),
+      "Intermediate", "GRate", 1:5,
       as.Date("2020-01-01"), as.Date("2014-03-01"), scales_interm_rev
     ),
     format = "rds"
