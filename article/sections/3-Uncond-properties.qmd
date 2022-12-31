@@ -33,7 +33,7 @@ The interpretation of these results is that statistical agencies tend
 to initially underestimate fiscal figures. Regarding the size, MR
 for most of the variable falls into the interval of 0.1-0.3 percentage
 points. Given that the average growth rate for most of the variables
-in the sample is slightly above 4% (see Figure @fig-mean_standard-deviation_values)
+in the sample is slightly above 4% (see Figure [B.22](@fig-mean_standard-deviation_values))
 the revision bias is non-negligible, albeit not large. 
 While GDP and private consumption appear to be unbiased other macro
 variables have a positive MR, like the fiscal
@@ -61,7 +61,7 @@ variables (i.e. output, private consumption and wages and salaries) amounting to
 around 0.5 percentage points, which are by no means small. MAR statistics
 for the remaining fiscal variables are even higher with government
 investment being characterised by the largest figure (almost 5 percentage
-points, which even exceeds the average growth rate of this variable below 4%, as can be seen in Figure @fig-mean_standard-deviation_values).
+points, which even exceeds the average growth rate of this variable below 4%, as can be seen in Figure [B.22](@fig-mean_standard-deviation_values)).
 
 The fifth column of @fig-FinRevGItems reports the
 root-mean-square revision (RMSR). Compared to MAR, this statistics penalises
@@ -72,7 +72,7 @@ government investment, which stands out even by a wider margin than in the case 
 
 Finally, in the last column we report the noise-to-signal ratio (N2S), which compared to RMSR takes into account the volatility of
 a variable itself. This measure brings the fiscal variables closer to the macro variables.
-Since fiscal categories tend to be more volatile compared to the macro variables (see Figure @fig-mean_standard-deviation_values) it is natural that they are more heavily revised. The N2S statistic reflects upon  this consideration. Judging by this measure direct taxes turn out to be the variable with the smallest relative revisions. Moreover, the heavily revised government investment 
+Since fiscal categories tend to be more volatile compared to the macro variables (see Figure [B.22](@fig-mean_standard-deviation_values)) it is natural that they are more heavily revised. The N2S statistic reflects upon  this consideration. Judging by this measure direct taxes turn out to be the variable with the smallest relative revisions. Moreover, the heavily revised government investment 
 do not appear so exceptional any longer compared to other variables.
 
 To sum up the results of @fig-FinRevGItems, it turns out

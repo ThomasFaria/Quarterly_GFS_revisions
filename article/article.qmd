@@ -84,10 +84,7 @@ knitr::opts_knit$set(root.dir = "../")
 \newpage{}
 
 <!-- TODO:
-- check missing data for IE
 - notes after charts
 - cross-ref appendix 
 - csv to parquet
-- add last vintages
-- enhance raw db
 -->
