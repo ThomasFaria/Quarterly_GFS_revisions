@@ -1,3 +1,5 @@
+\floatplacement{table}{}
+
 ```{=latex}
 \begin{table}[H]
 \caption{ECB's SDW codes for data retrieval (fiscal series) \label{tab-Code_series_fiscal}}
