@@ -11,52 +11,7 @@ preprocess_revision_db <- function(data) {
     startsWith(Vintage_base, "G"), paste0(stringr::str_replace(Vintage_base, "G", "20"), "-04-01"),
     startsWith(Vintage_base, "S"), paste0(stringr::str_replace(Vintage_base, "S", "20"), "-07-01"),
     startsWith(Vintage_base, "A"), paste0(stringr::str_replace(Vintage_base, "A", "20"), "-10-01")
-  ))][, Group := .(fcase(
-    Variable_code %in% c("TOR", "DTX", "TIN", "SCT"), "Revenue",
-    Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN"), "Expenditure",
-    Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "Macro",
-    Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "Others"
-  ))][
-    ,
-    Group2 := .(fcase(
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR"), "Revenue",
-      Variable_code %in% c("TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE"), "Expenditure",
-      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "Macro"
-    ))
-  ][
-    ,
-    ToShade := .(fcase(
-      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "TRUE",
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR",
-                           "TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE",
-                           "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "FALSE"
-    ))
-  ][
-    ,
-    Variable_long := .(fcase(
-      Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("DTX"), "Direct taxes",
-      Variable_code %in% c("TIN"), "Indirect taxes",
-      Variable_code %in% c("SCT"), "Social contributions",
-      Variable_code %in% c("TOE"), "Total expenditure",
-      Variable_code %in% c("THN"), "Social transfers",
-      Variable_code %in% c("PUR"), "Purchases",
-      Variable_code %in% c("COE"), "Gov. compensation",
-      Variable_code %in% c("GIN"), "Gov. investment",
-      Variable_code %in% c("YEN"), "GDP",
-      Variable_code %in% c("PCN"), "Private consumption",
-      Variable_code %in% c("ITN"), "Total investment",
-      Variable_code %in% c("EXN"), "Exports",
-      Variable_code %in% c("GCN"), "Gov. consumption",
-      Variable_code %in% c("WGS"), "Wages and salaries",
-      Variable_code %in% c("OCR"), "Other current revenue",
-      Variable_code %in% c("KTR"), "Capital revenue",
-      Variable_code %in% c("INP"), "Interest payments",
-      Variable_code %in% c("OCE"), "Other current expenditure",
-      Variable_code %in% c("OKE"), "Other capital expenditure"
-    ))
-  ][, Group3 := .(fcase(
+  ))][, Group3 := .(fcase(
     Group %in% c("Revenue", "Expenditure"), "Fiscal",
     Group %in% c("Macro"), "Macro",
     !(Group %in% c("Macro", "Revenue", "Expenditure")), "Others"
@@ -98,114 +53,12 @@ preprocess_raw_db <- function(data) {
                            "TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE",
                            "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "FALSE"
     ))
-  ][
-    ,
-    Variable_long := .(fcase(
-      Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("DTX"), "Direct taxes",
-      Variable_code %in% c("TIN"), "Indirect taxes",
-      Variable_code %in% c("SCT"), "Social contributions",
-      Variable_code %in% c("TOE"), "Total expenditure",
-      Variable_code %in% c("THN"), "Social transfers",
-      Variable_code %in% c("PUR"), "Purchases",
-      Variable_code %in% c("COE"), "Gov. compensation",
-      Variable_code %in% c("GIN"), "Gov. investment",
-      Variable_code %in% c("YEN"), "GDP",
-      Variable_code %in% c("PCN"), "Private consumption",
-      Variable_code %in% c("ITN"), "Total investment",
-      Variable_code %in% c("EXN"), "Exports",
-      Variable_code %in% c("GCN"), "Gov. consumption",
-      Variable_code %in% c("WGS"), "Wages and salaries",
-      Variable_code %in% c("OCR"), "Other current revenue",
-      Variable_code %in% c("KTR"), "Capital revenue",
-      Variable_code %in% c("INP"), "Interest payments",
-      Variable_code %in% c("OCE"), "Other current expenditure",
-      Variable_code %in% c("OKE"), "Other capital expenditure"
-    ))
-  ]
-  return(data)
-}
-
-preprocess_growth_rate_db <- function(data) {
-  data[, Group := .(fcase(
-    Variable_code %in% c("TOR", "DTX", "TIN", "SCT"), "Revenue",
-    Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN"), "Expenditure",
-    Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "Macro",
-    Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "Others"
-  ))][
-    ,
-    Group2 := .(fcase(
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR"), "Revenue",
-      Variable_code %in% c("TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE"), "Expenditure",
-      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "Macro"
-    ))
-  ][
-    ,
-    ToShade := .(fcase(
-      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "TRUE",
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR",
-                           "TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE",
-                           "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "FALSE"
-    ))
-  ][
-    ,
-    Variable_long := .(fcase(
-      Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("DTX"), "Direct taxes",
-      Variable_code %in% c("TIN"), "Indirect taxes",
-      Variable_code %in% c("SCT"), "Social contributions",
-      Variable_code %in% c("TOE"), "Total expenditure",
-      Variable_code %in% c("THN"), "Social transfers",
-      Variable_code %in% c("PUR"), "Purchases",
-      Variable_code %in% c("COE"), "Gov. compensation",
-      Variable_code %in% c("GIN"), "Gov. investment",
-      Variable_code %in% c("YEN"), "GDP",
-      Variable_code %in% c("PCN"), "Private consumption",
-      Variable_code %in% c("ITN"), "Total investment",
-      Variable_code %in% c("EXN"), "Exports",
-      Variable_code %in% c("GCN"), "Gov. consumption",
-      Variable_code %in% c("WGS"), "Wages and salaries",
-      Variable_code %in% c("OCR"), "Other current revenue",
-      Variable_code %in% c("KTR"), "Capital revenue",
-      Variable_code %in% c("INP"), "Interest payments",
-      Variable_code %in% c("OCE"), "Other current expenditure",
-      Variable_code %in% c("OKE"), "Other capital expenditure"
-    ))
   ]
   return(data)
 }
 
 preprocess_regression_db <- function(data) {
   data <- data[(Country_code %in% c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"))][
-    ,
-    Group := .(fcase(
-      Variable_code %in% c("TOR", "DTX", "TIN", "SCT"), "Revenue",
-      Variable_code %in% c("TOE", "THN", "PUR", "COE", "GIN"), "Expenditure",
-      Variable_code %in% c("YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "Macro",
-      Variable_code %in% c("KTR", "OCR", "OCE", "OKE", "INP"), "Others"
-    ))
-  ][
-    ,
-    Variable_long := .(fcase(
-      Variable_code %in% c("TOR"), "Total revenue",
-      Variable_code %in% c("DTX"), "Direct taxes",
-      Variable_code %in% c("TIN"), "Indirect taxes",
-      Variable_code %in% c("SCT"), "Social contributions",
-      Variable_code %in% c("TOE"), "Total expenditure",
-      Variable_code %in% c("THN"), "Social transfers",
-      Variable_code %in% c("PUR"), "Purchases",
-      Variable_code %in% c("COE"), "Gov. compensation",
-      Variable_code %in% c("GIN"), "Gov. investment",
-      Variable_code %in% c("YEN"), "GDP",
-      Variable_code %in% c("PCN"), "Private consumption",
-      Variable_code %in% c("ITN"), "Total investment",
-      Variable_code %in% c("EXN"), "Exports",
-      Variable_code %in% c("GCN"), "Gov. consumption",
-      Variable_code %in% c("WGS"), "Wages and salaries"
-    ))
-  ][
     ,
     ESA2010 := .(fcase(
       Date > as.Date("2014-03-01"), 1,

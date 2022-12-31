@@ -8,6 +8,7 @@ tar_option_set(
 )
 
 tar_source(files = "R")
+options(timeout = 5*60)
 
 list(
   tarchetypes::tar_download(

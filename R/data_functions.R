@@ -7,7 +7,7 @@ compute_growth_rate <- function(data) {
   GRateDB <- data.table()
   vintage_list <- unique(data[, ECB_vintage])
   for (vintage in vintage_list) {
-    xts_data <- data[ECB_vintage %in% vintage, c("Date", "Variable_code", "Country_code", "Value")] |>
+    xts_data <- data[ECB_vintage %in% vintage, c("Date", "Variable_code", "Variable_long", "Country_code", "Value")] |>
       dcast(Date ~ paste0(Country_code, "_", Variable_code), value.var = "Value") |>
       as.xts.data.table()
 
@@ -18,8 +18,13 @@ compute_growth_rate <- function(data) {
     GRateDB <- rbindlist(list(GRateDB, xts_growth_rate))
   }
   setnames(GRateDB, "index", "Date")
-
-  return(preprocess_growth_rate_db(GRateDB))
+  
+  join_table <- data[(ECB_vintage == vintage_list[1]) & (Country_code == "DE") & (Date == "1999-01-01"), 
+                     .(Variable_code, Variable_long, Group, Group2, ToShade)]
+  
+  GRateDB <- merge(GRateDB, join_table, by = "Variable_code")
+  
+  return(GRateDB)
 }
 
 get_reference_year <- function(vintage) {
@@ -44,7 +49,7 @@ get_final_values <- function(raw_data, growth_rate_data) {
 
   FinalValues <- rbindlist(list(
     growth_rate_data[(Is_final_value)][, Measure := "GRate"],
-    raw_data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Value", "Country_code", "Variable_code", "ECB_vintage", "Is_final_value", "Measure")]
+    raw_data[(Is_final_value)][, Measure := "Raw"][, c("Date", "Value", "Country_code", "Variable_code", "Variable_long", "ECB_vintage", "Group", "Group2", "ToShade", "Is_final_value", "Measure")]
   ), fill = TRUE)
 
   return(FinalValues)
@@ -160,6 +165,11 @@ compute_revisions <- function(data) {
     }
   }
 
+  join_table <- data[(ECB_vintage == names(vintage_to_date)[1]) & (Country_code == "DE") & (Date == "1999-01-01"), 
+                        .(Variable_code, Variable_long, Group, Group2, ToShade)]
+  
+  RevisionDB <- merge(RevisionDB, join_table, by = "Variable_code")
+  
   return(preprocess_revision_db(RevisionDB))
 }
 
@@ -241,6 +251,11 @@ create_regression_db <- function(revision_data, gr_data) {
       }
     }
   }
-
-  return(RegressionDB)
+  
+  join_table <- gr_data[(ECB_vintage == VintageList[1]) & (Country_code == "DE") & (Date == "1999-01-01"), 
+                     .(Variable_code, Variable_long, Group, Group2, ToShade)]
+  
+  RegressionDB <- merge(RegressionDB, join_table, by = "Variable_code")
+  
+  return(preprocess_regression_db(RegressionDB))
 }

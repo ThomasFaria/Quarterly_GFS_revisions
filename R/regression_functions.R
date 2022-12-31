@@ -144,9 +144,8 @@ run_regression <- function(data, list_models, variables) {
 }
 
 produce_regressions <- function(data, variables, criterion) {
-  RegressionDB <- preprocess_regression_db(data)
   List_models <- get_list_models(c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"))
-  results <- run_regression(RegressionDB, List_models, variables)
+  results <- run_regression(data, List_models, variables)
   return(results)
 }
 
