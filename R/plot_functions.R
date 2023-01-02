@@ -24,15 +24,17 @@ theme_ECB <- function() {
       )
 }
 
-Data_TOTAL_REV <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber) {
+Data_TOTAL_REV <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate) {
   sample <- rbindlist(list(
     data_rev[(Country_code %in% Countries) &
       (Variable_code %in% Items) &
       (Type_revision %in% TypeOfRevision) &
       (Revision_nb %in% RevisionNumber) &
+      (Date %between% c(LowDate, UpDate)) &
       (Measure == MeasureUsed)][, Type := "Revision"][, .(Date, Value, Type)],
     data_final[(Country_code %in% Countries) &
       (Variable_code %in% Items) &
+      (Date %between% c(LowDate, UpDate)) &
       (Measure == MeasureUsed)][, Type := "Data"][, .(Date, Value, Type)]
   ))
 
@@ -61,14 +63,16 @@ Plot_TOTAL_REV <- function(sample, Legend) {
   return(plot)
 }
 
-Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed) {
+Data_TOTAL_REV_DECOMP <- function(data_rev, data_final, Countries, Items, TypeOfRevision, MeasureUsed, UpDate, LowDate) {
   sample <- rbindlist(list(
     data_rev[(Country_code %in% Countries) &
       (Variable_code %in% Items) &
       (Type_revision %in% TypeOfRevision) &
+      (Date %between% c(LowDate, UpDate)) &
       (Measure == MeasureUsed)][, c("Type", "Revision_nb") := list("Revision", as.character(Revision_nb))][, .(Date, Value, Revision_nb, Type)],
     data_final[(Country_code %in% Countries) &
       (Variable_code %in% Items) &
+      (Date %between% c(LowDate, UpDate)) &
       (Measure == MeasureUsed)][, c("Type", "Revision_nb") := list("Data", NA)][, .(Date, Value, Revision_nb, Type)]
   ))
 
@@ -118,9 +122,9 @@ Plot_TOTAL_REV_DECOMP <- function(sample, Legend) {
   return(plot)
 }
 
-Plot_TOTAL_REVISION <- function(data_rev, data_final, Countries, Items, MeasureUsed) {
-  sample_rev <- Data_TOTAL_REV(data_rev, data_final, Countries, Items, "Final", MeasureUsed, 1)
-  sample_rev_decomp <- Data_TOTAL_REV_DECOMP(data_rev, data_final, Countries, Items, "Intermediate", MeasureUsed)
+Plot_TOTAL_REVISION <- function(data_rev, data_final, Countries, Items, MeasureUsed, UpDate, LowDate) {
+  sample_rev <- Data_TOTAL_REV(data_rev, data_final, Countries, Items, "Final", MeasureUsed, 1, UpDate, LowDate)
+  sample_rev_decomp <- Data_TOTAL_REV_DECOMP(data_rev, data_final, Countries, Items, "Intermediate", MeasureUsed, UpDate, LowDate)
   Plot1 <- Plot_TOTAL_REV(sample_rev, F)
   Plot2 <- Plot_TOTAL_REV_DECOMP(sample_rev_decomp, F)
 

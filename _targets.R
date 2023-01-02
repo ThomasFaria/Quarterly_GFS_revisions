@@ -46,7 +46,7 @@ list(
   ),
   tar_target(
     name = plot_total_revision,
-    command = Plot_TOTAL_REVISION(RevisionDB, Final_values, c("NL"), c("COE"), "GRate"),
+    command = Plot_TOTAL_REVISION(RevisionDB, Final_values, c("NL"), c("COE"), "GRate", as.Date("2019-01-01"), as.Date("2006-01-01")),
     format = "rds"
   ),
   tar_target(
