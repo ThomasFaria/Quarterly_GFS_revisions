@@ -1,4 +1,4 @@
-# Graphical illustration of the revisions {#sec-Revisions-illustration}
+# Graphical illustration of the revisions {#appendix-Revisions-illustration}
 
 All final revisions to variables considered (but not necessarily included) in the analysis are illustrated in this appendix section with the twofold objective. First, the graphs are useful for illustrating the magnitude of the revisions across variables and countries. Second, the plots are indispensable to potentially identify any issues with the dataset that could impair our analysis (e.g. excessive values or lack of revisions). @sec-code-retrieval of the online appendix provides statistical codes used to retrieve the data.
 
