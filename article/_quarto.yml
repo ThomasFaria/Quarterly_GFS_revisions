@@ -61,8 +61,18 @@ bibliography: bibliography.bib
 format:
   html:
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
+    
+  elsevier-pdf:
+    keep-tex: false
+    journal:
+      name: International Journal of Central Banking
+      formatting: preprint
+      model: 3p
+      cite-style: authoryear
+    toc: true
+    toc-title: Contents
+    include-in-header:
+      - packages.tex
 
 editor: visual
 
