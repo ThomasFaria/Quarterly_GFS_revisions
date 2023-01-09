@@ -1,0 +1,67 @@
+# Predictability final revisions {#sec-Predictability}
+
+After verifying the bias and the dispersion of the revisions we check in this section 
+whether revisions are predictable. Our approach in this regard follows the methodology applied in @aruoba2006ijcb.  Similarly, we estimate variable-specific models to verify whether the conditional mean of final revisions with respect to the information available at the time of the initial release equals zero. The condition, formally expressed as $E\left(r_{t,m}^f\middle|I_{t+2}\right)=0$, implies the lack of predictability.^[The information set $I_{t+2}$ consists of all information available at the time of the initial release. Since fiscal data for quarter *t* are published more than 90 days (around 110 days) after the end of quarter *t* we use $t+2$ time index for the timing of the release consistently across the paper.] Given that our analysis cover multiple countries, differently from @aruoba2006ijcb, we opt for panel regressions. This allows us to overcome the short length of the sample and still to obtain statistically meaningful results.
+
+To this end, we estimate the models of the following form:
+
+$$
+   \textrm{Complete model: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m} 
+                                        + \sum_{j=1}^{4} \gamma_{j}Q_{t}^{j} 
+                                        + \omega\mathds{1}_{\left[t\geq2014Q2\right]}
+                                        + \delta x_{t,m}^{1} 
+                                        + \sum_{i=1}^{S} \rho_{i}\left(x_{t-i,m}^{i+1}-x_{t-i,m}^{1}\right)
+                                        + \epsilon_{t,m}
+$$
+
+with the dependent variable $r_{t,m}^{f}$ being the final revision as defined in [Subsection -@sec-Structure-of-the-real-time-dataset]. The explanatory variables are: country-specific dummy variables $C_{m}$, quarterly dummy variables $Q_{t}^{j}$, a dummy variable for ESA 2010 (i.e. from 2014Q2 onwards, which are the quarters for which the initial releases followed ESA 2010), the initial release $x_{t,m}^{1}$ and the past final revisions $\left(x_{t-i}^{i+1}-x_{t-i}^{1}\right)$. We include country-specific dummy variables (i.e. country fixed effects) to account for the fact that euro area countries carry different characteristics that do not change over time. In the same vein, we use quarterly dummy variables on account of potential seasonality in the revisions. The ESA 2010 dummy should account for a difference existing between the two subsamples described in @sec-Magnitude-of-total without a necessity to split the sample. We also include the initial release as revisions can be preceded by unusual values published initially. Moreover, we introduce the past revisions to verify whether there is a persistency in revisions. We limit these revisions only to those available at the time of the initial release.^[At the time of the initial release of data for quarter *t* only the first revision of data for quarter $t-1$, the second revision of data for quarter $t-2$ and so on are available.] By ensuring that all explanatory variables in the model are known at the time of the initial release we make the prediction a valid forecasting exercise.^[Strictly speaking, an entirely complete forecasting exercise in real time requires that not only the predictors are these available at the time the forecast is performed but also the forecasting model is estimated in real time. @aruoba2006ijcb supplements his main analysis with a strictly real-time exercise only to confirm validity of the predictability property in macroeconomic revisions.]
+
+To select the exact specification of the complete model we rely on the Akaike Information Criterion (AIC). In this context, we estimate all combinations of regressors specified in the equation for the complete model (511 combinations).^[Since we consider the inclusion of 9 regressors (i.e. country dummy, quarter dummy, ESA 2010 dummy, initial announcement and 5 past revisions the exact number of combinations equals to $2^9-1$.)] Finally, we pick specifications with the lowest AIC score. Like in @aruoba2006ijcb our objective is not to find the best model explaining the revisions. The aim of the exercise is to verify whether any information available at the time of the initial release has predictive power. If confirmed we will be able to claim that revisions are predictable.
+
+Having selected the models, to assess predictability we conduct two tests. First, we test for a joint significance of all coefficients in the complete model. The null hypothesis is that all coefficients equal zero, which in turn implies zero conditional mean of final revisions and the lack of predictability. By the same token, a rejection of the hypothesis would point to predictability. Second, we assess the predictive power of the complete model by comparing it to the naive model, as specified below.
+
+$$
+   \textrm{Naive model: } r_{t,m}^{f} = \epsilon_{t,m}
+$$
+
+The naive model gives the revision forecast of $\hat{r}_{t,m}^{f} = 0$, which is consistent with no predictability of revisions (i.e. zero conditional mean). We check whether and to which extent the complete model outperforms the naive model by looking at the ratio of the root-mean-square errors (RMSE) associated with the two models. If revisions are not predictable adding additional predictors to the naive model will bring no benefit in terms of RMSE reduction, thereby leaving the ratio at unity.
+
+Furthermore, to see the contribution of single regressors to potential predictive power we construct a set of intermediate models spanning the range between the complete model and the naive model. Concretely, we downsize the complete model by gradually removing predictors until the point when we reach the naive model. If an explanatory variable does not enter the complete model based on the selection criterion the elimination step does not change the regression specification. To this end, we take out from the complete model past revisions (which brings us to Interm. model 1), the value of the initial release (which brings us to Interm. model 2), a dummy for the post-2014Q2 period (which brings us to Interm. model 3) and quarterly dummies (which brings us to Interm. model 4). With the elimination of country-specific dummies we reach the naive model. The below equations characterise the specification of all intermediate models.
+
+$$
+  \textrm{Interm. model 1: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m} 
+                                       + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j} 
+                                       + \omega\mathds{1}_{\left[t\geq2014Q2\right]}
+                                       + \delta x_{t,m}^{1} 
+                                       + \epsilon_{t,m}
+$$
+
+$$
+  \textrm{Interm. model 2: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m} 
+                                       + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j} 
+                                       + \omega\mathds{1}_{\left[t\geq2014Q2\right]}
+                                       + \epsilon_{t,m}
+$$
+
+$$
+   \textrm{Interm. model 3: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m} 
+                                        + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j} 
+                                        + \epsilon_{t,m}
+$$
+
+$$
+   \textrm{Interm. model 4: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m} 
+                                        + \epsilon_{t,m}
+$$
+
+@tbl-forecastability_AIC contains the results of the predictability investigation. In the second column the table contains the list of explanatory variables used in the complete model for each variable. The selection criterion particularly values the initial announcement and past revisions, which enter the complete model for nearly all variables. Also, we report the number of observations underlying each panel regression in the third column. 
+
+The $p$-values of the joint significance test for nearly all variables are less than 1%, indicating that we can reject the null hypothesis even at the 99% significance level. The only variables, for which we are not able to reject the hypothesis at this significance level are total revenue, private consumption and government consumption. The test indicates these variables as the ones with little predictability. In general, the values of the *p*-statistic are so small that for the significance level of 95% the null hypothersis is rejected for all variables. 
+
+The following columns report RMSEs ratios, where, as a reference in the denominator, we always take the naive model. The nominators instead are RMSE statistics corresponding to a particular model that is richer in predictors than the naive model. A reduction in RMSE for the complete model can be observed for all variables, although the magnitude for the three variables identified by the joint significance test is very small. For the majority of variables, however, the relative RMSE ratio equals to 0.95 or less. This points to material predictive power of information available at the time of the initial release, thereby contradicting the no-predictability hypothesis. Also, looking at the figures, both for the joint significance test and for the projection error reduction, fiscal variables do not appear to differ from macro variables in terms of predictability. Both are to a smaller or bigger degree predictable and badly-behaved in this sense.
+
+The inclusion of the intermediate models in the analysis enables us to determine the contribution of particular regressors to RMSE reductions. The decomposition demonstrates that the predictive information is spread across different predictors. Among dummy variables, country dummies bring the largest benefit in terms of predictability, which is particularly the case for macro variables. The regressor that comes with a sizeable prediction improvement among all variables is the initial announcement. Finally, past revisions further reduce RMSE, albeit by less than the initial announcement.
+
+To sum up, the results reveal that fiscal revisions in general are to some degree predictable. This is just another characteristic besides the positive bias and the large dispersion that speaks in favour of treating fiscal revisions as badly-behaved. Considering the predictability dimension fiscal revisions are quite similar to macro variables and they do not appear to be particularly 'misbehaved'.
+
+As we rely only on AIC a question may arise whether the findings are robust to other information criteria. Given the general conclusion on the presence of predictability, the question, however, is not very relevant for our application. In our exercise it is sufficient to find one model for which we reject the joint significance hypothesis or which is superior in terms of predictive power to the naive model. Other selection criteria that are more restrictive than AIC, for instance Schwartz Information Criterion (SIC), could prevent us from finding such a model and point towards no predictability in the revisions. In fact, this is what happens when the predictability exercise is recalculated with SIC (see Table [C.1](@tbl-forecastability_SIC) in the online appendix). Given the AIC-based results pointing to predictability, any findings based on a more restrictive criterion would not change our conclusions. On the other hand, findings based on a looser criterion than AIC, which would allow even more information to enter the complete model, could only validate, or even strengthen, our conclusions.

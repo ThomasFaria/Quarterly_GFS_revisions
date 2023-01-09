@@ -1,0 +1,50 @@
+# Introduction
+
+
+<!-- 1. Motivation -->
+
+Most macroeconomic data are revised after the initial release. Revisions originate from various sources with new information becoming available by the time of subsequent releases being the most obvious cause. Conceptual changes to statistical definitions and to compilation and estimation methods constitute another reason. In the case of intra-annual statistics that require seasonal adjustment the revisions may also originate from a re-estimation of seasonal factors. Finally, simple correction of errors and elimination of omissions that take place in the context of a data production process may also lead to data revisions.[^1-introduction-1]
+
+[^1-introduction-1]: @carson2004imf provides many useful clarifications on statistical revisions, including on typology and terminology.
+
+Whatever the source of the revisions given their common existence they should be taken as a fact of life. In this context, researchers and policy-makers have no choice rather than understanding them. Only a proper recognition of revisions enables the application of optimal statistical methods that lead to sound analytical conclusions.[^1-introduction-2] In the same vein, an acknowledgement of revisions is necessary to place an adequate trust in data available at the time when a policy decision is formed.[^1-introduction-3]
+
+[^1-introduction-2]: Multiple studies underline the usefulness of real-time fiscal data for fiscal forecasting, budgetary surveillance or identification of fiscal shocks (see, e.g. @Pedegral-Perez_2009_JIF, @Asimakopoulosetal2020_sje and @Cimadomo_2016_jes).
+
+[^1-introduction-3]: @Orphanides_2001_AER in its seminal contribution demonstrates the complexity of policy decision-making in real time. Most notably, the study emphasizes that policy recommendations obtained with real-time data are considerably different from these based on ex-post revised figures.
+
+<!-- 2. Reaserch question -->
+
+This paper analyses revisions to quarterly fiscal data in the euro area. Its main objective is to determine how well-behaved fiscal revisions are, especially by contrasting them with macro revisions. To this end, we check to which extent the properties of well-behaved revisions, as outlined by @aruoba2006ijcb, are fulfilled. The criteria are based on the following three characteristics: (1) zero bias, (2) little dispersion and (3) unpredictability given the information available at the time of the initial announcement.
+
+<!-- 3. Contributions -->
+
+<!-- 3b. Contributions/ study on the fiscal revisions -->
+
+The main contribution of this paper is to deliver a comprehensive analysis of revisions to quarterly fiscal data in the euro area. The literature studying revisions to quarterly macroeconomic data has been growing for decades and by now it is very rich (see a literature survey in @Croushore_JEL). A large bulk of the literature, like @Mankiw-Shapiro_1986_NBER, concentrates on the primary indicator of economic activity, which is GDP or GNP. Other papers suggest extensions along various dimensions. @Shrestha-Marini_2013_IMF, for example, investigate whether the magnitude of revisions to GDP differs during crisis episodes. Also, there are studies analysing revisions to a broader set of economic indicators going beyond the measures of output (see, e.g. @aruoba2006ijcb for the US, @Branchi-et-al_2007_ECB for the euro area, @Faust2005NewsAN} for G7 economies).
+
+According to our best knowledge, no study exists that analyses revisions to the euro area quarterly fiscal data in a comprehensive way. The literature on revisions to fiscal statistics established so far concentrates on annual data often with a view to shedding light on fiscal discipline and budgetary frameworks. @decastroetal2013_jmcb use real-time vintages of annual budget balance to evaluate the quality of initial data releases, on the basis of which compliance with the fiscal rules is assessed. @MaurerKeweloh2017_ecb-sps attempt to answer the question whether the quality of annual fiscal data provided in the context of the Excessive deficit procedure (EDP) improved over time in the EU. As far as we are aware, @Asimakopoulosetal2020_sje demonstrating usefulness of real-time fiscal data for forecasting purposes, is the only study that provides some limited characteristics of revisions to quarterly fiscal series for the biggest four euro area economies (i.e. Germany, France, Italy and Spain). As concluded in the literature survey on real-time data and fiscal policy analysis in @Cimadomo_2016_jes, "more work is needed in this field". With our analysis we try to fill the gap.
+
+<!-- 3b. Contributions/ creation of another real-time datasest -->
+
+Another significant contribution of our study is the creation a real-time fiscal quarterly dataset for the euro area countries. The ability of researchers to conduct real-time analysis depends on real-time datasets, which collect in one place data available at any point in the past. In the US two comprehensive real-time datasets exist next to each other, namely Real-Time Data Set for Macroeconomists by Federal Reserve Bank of Philadelphia (see @CROUSHORE2001111) and ArchivaL Federal Reserve Economic Data (ALFRED) by the Federal Reserve Bank of St. Louis (see @ALFRED). Also, significant efforts have been made to establish a real-time dataset for the euro area (see @Giannone-et-al_2010_RevEconStat). We contribute to this work by collecting all vintages of Government Finance Statistics for the euro area countries since their publication started in mid-2000s.
+
+<!-- Reference to Stierholz has no date but this is fine; the lack of date is abbreviated by n.d. both in the bibliography and as a reference. -->
+
+<!-- 4. Methods -->
+
+To answer our research question, we derive a broad set of statistics that allow us to assess all three requirements for well-behaved revisions. To this end, by calculating the mean of revisions we check the degree of a bias across fiscal variables. Moreover, we assess the extent of dispersion in revisions using several indicators. Finally, by running a set of regression models we verify whether revisions are predictable given available information at the time of the initial release. To put the results into perspective, we contrast fiscal revisions with macro revisions, which are significantly better understood in the economic literature.
+
+<!-- 5. Results -->
+
+Our investigation first concludes that fiscal revisions, like macro revisions, do not satisfy desirable properties expected from well-behaved revisions. This finding is not only relevant for final revisions but it also holds for intermediate revisions. Fiscal variables exhibit a positive bias since most of them grows in annual terms by 0.1-0.3 percentage points more compared to what is published initially. Given the average growth in the sample of around 4% the value of the bias is non-negligible.
+
+Second, the dispersion of fiscal revisions tends to be relatively sizable. Mean absolute revision - our most intuitive summary statistic - amounts to around 1 percentage point for the annual growth in the biggest and most stable categories. It reaches significantly higher values for small and volatile items, most notably government investment. Our analysis also indicates that fiscal revisions became significantly smaller since 2014, which is the moment of the ESA 2010 introduction. While the mean absolute revision for the biggest and most stable categories considerably exceeds 1 percentage point in the first subsample (up to 2014Q2) it is significantly lower than 1 percentage point in the second subsample.
+
+Third, fiscal revisions are in general predictable. While the degree of predictability varies significantly across the variables it is substantial for many of them. The conditional mean with respect to the information available at the time of the initial release is statistically different from zero. As such, revisions do not only reflect new incoming information but also the information known at the time of the initial publication. This feature also speaks in favour of treating fiscal revisions as 'badly' behaved.
+
+When contrasted with macro revisions, fiscal revisions are quite comparable. Both fiscal and macro revisions are associated with a positive bias of a similar order. At first sight, fiscal revisions appear to be significantly more dispersed than macro revisions, as measured by the mean absolute revision, for instance. We document, however, that since 2014, when the magnitude of fiscal revisions narrowed down considerably, both types are revisions are in the same ballpark. Also, the degree of predictability does not appear to differ between the two types of variables. In this context, we contradict the often heard view that fiscal data in general are subject to particularly large revisions (see, e.g. @Cimadomo_2016_jes).
+
+<!-- 6. Road map -->
+
+The paper is organised as follows. @sec-Real-time-quarterly-fiscal describes the construction of the real-time quarterly fiscal database, which constitutes the basis for the analysis. @sec-Magnitude-of-total analyses unconditional properties of final revisions, which enables to assess the bias and dispersion. @sec-Predictability, in turn, investigates the degree of predictability of the revisions, which completes the assessment of the three criteria for well-behaved revisions. Any additional information contained in the intermediate revisions is discussed in @sec-Intermediate-revisions. Finally, @sec-Conclusions concludes.

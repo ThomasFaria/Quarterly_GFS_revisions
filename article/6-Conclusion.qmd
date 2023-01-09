@@ -1,0 +1,7 @@
+# Conclusions {#sec-Conclusions}
+
+Our investigation concludes that fiscal revisions are badly-behaved. They fulfil none of the requirements for well-behaved revisions. More specifically, (1) fiscal revisions exhibit a positive bias, (2) they are characterised by a considerable dispersion and (3) they are in general predictable with the information available at the time of the initial release.
+
+While our analysis concludes that fiscal revisions are badly-behaved it is difficult to find support in the data that they are worse than macro revisions presently. Macro revisions are also badly-behaved, which has been already documented in the literature (see, e.g., @Faust2005NewsAN). The extent of this 'misbehaviour' is just similar for the two types of variables. Both macro and fiscal revisions exhibit similar bias and they are subject to a comparable dispersion, most notably since 2014 when fiscal revisions became more contained. Moreover, no major difference emerges in the analysis between the two types of revisions when it comes to predictability.
+
+Supplementing the analysis with the intermediate revisions leaves the conclusions unchanged. Notwithstanding this, intermediate revisions do bring additional information to the study. Most notably, they make clear that fiscal variables converge to final values differently from macro variables. While for the former the revisions tend to take place in April and October a more evenly distributed revision pattern is observed for the latter.
