@@ -3,6 +3,7 @@ project:
 
 book:
   repo-subdir: article
+  repo-url: https://github.com/ThomasFaria/Quarterly_GFS_revisions
   title: How bad are fiscal revisions in the euro area?
   author:
   - name: Krzysztof Bankowski
@@ -61,8 +62,11 @@ bibliography: bibliography.bib
 format:
   html:
     theme: cosmo
+    reference-location: margin
     
-  elsevier-pdf:
+  pdf:
+    documentclass: scrreprt
+    shift-heading-level-by: 1
     keep-tex: false
     journal:
       name: International Journal of Central Banking
@@ -81,3 +85,7 @@ knitr:
     root.dir: "../"
   opts_chunk:    
     cache: true
+
+execute:
+  warning: false
+  echo: false
