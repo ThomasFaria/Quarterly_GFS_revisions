@@ -8,7 +8,7 @@ To this end, we estimate the models of the following form:
 $$
    \textrm{Complete model: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m} 
                                         + \sum_{j=1}^{4} \gamma_{j}Q_{t}^{j} 
-                                        + \omega\mathds{1}_{\left[t\geq2014Q2\right]}
+                                        + \omega 1_{\left[t\geq2014Q2\right]}
                                         + \delta x_{t,m}^{1} 
                                         + \sum_{i=1}^{S} \rho_{i}\left(x_{t-i,m}^{i+1}-x_{t-i,m}^{1}\right)
                                         + \epsilon_{t,m}
@@ -31,7 +31,7 @@ Furthermore, to see the contribution of single regressors to potential predictiv
 $$
   \textrm{Interm. model 1: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m} 
                                        + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j} 
-                                       + \omega\mathds{1}_{\left[t\geq2014Q2\right]}
+                                       + \omega 1_{\left[t\geq2014Q2\right]}
                                        + \delta x_{t,m}^{1} 
                                        + \epsilon_{t,m}
 $$
@@ -39,7 +39,7 @@ $$
 $$
   \textrm{Interm. model 2: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m} 
                                        + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j} 
-                                       + \omega\mathds{1}_{\left[t\geq2014Q2\right]}
+                                       + \omega 1_{\left[t\geq2014Q2\right]}
                                        + \epsilon_{t,m}
 $$
 
