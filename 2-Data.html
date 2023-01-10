@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>How bad are fiscal revisions in the euro area? - 2&nbsp; Real-time quarterly fiscal dataset</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./3-Uncond-properties.html" rel="next">
+<link href="./1-Introduction.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Real-time quarterly fiscal dataset</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">How bad are fiscal revisions in the euro area?</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="" title="" id="sidebar-tool-dropdown-0" class="sidebar-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-save"></i></a>
+    <ul class="dropdown-menu" aria-labelledby="sidebar-tool-dropdown-0">
+        <li>
+          <a class="dropdown-item sidebar-tools-main-item" href="https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv">
+          Data CSV
+          </a>
+        </li>
+    </ul>
+    <a href="https://github.com/ThomasFaria/Quarterly_GFS_revisions/tree/main/article/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="./How-bad-are-fiscal-revisions-in-the-euro-area-.pdf" title="Download PDF" class="sidebar-tool px-1"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./1-Introduction.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-Data.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Real-time quarterly fiscal dataset</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./3-Uncond-properties.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unconditional properties of final revisions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./4-Predictability.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Predictability final revisions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./5-Intermediate-revisions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Properties of intermediate revisions</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./6-Conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusions</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-Graphs-revisions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Graphical illustration of the revisions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-Fiscal-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Selected data characteristics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-Complementary-results.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Complementing results</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./D-Codes-retrieval.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Data codes for retrieval</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-Structure-of-the-real-time-dataset" id="toc-sec-Structure-of-the-real-time-dataset" class="nav-link active" data-scroll-target="#sec-Structure-of-the-real-time-dataset"><span class="toc-section-number">2.1</span>  Structure of the real-time dataset</a></li>
+  <li><a href="#sec-final_intermediate_revisions" id="toc-sec-final_intermediate_revisions" class="nav-link" data-scroll-target="#sec-final_intermediate_revisions"><span class="toc-section-number">2.2</span>  Final and intermediate revisions</a></li>
+  <li><a href="#data-scope" id="toc-data-scope" class="nav-link" data-scroll-target="#data-scope"><span class="toc-section-number">2.3</span>  Data scope</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-Real-time-quarterly-fiscal" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Real-time quarterly fiscal dataset</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="page-columns page-full"><p>Fundamental to our analysis is the construction of a real-time quarterly fiscal dataset, which will serve as a basis for calculating the revisions. The dataset primarily relies on quarterly Government Finance Statistics (GFS) published by Eurostat.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> GFS data provide information on economic activities of governments in a harmonised and country-comparable manner.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> While the data spreads over both non-financial (i.e.&nbsp;revenue and expenditure) and financial (i.e.&nbsp;borrowing and lending) activities of the governments in the paper we only cover the former.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;A section dedicated to government finance statistics is available on Eurostat’s website (<a href="https://ec.europa.eu/eurostat/web/government-finance-statistics" class="uri">https://ec.europa.eu/eurostat/web/government-finance-statistics</a>).</p></li><li id="fn2"><p><sup>2</sup>&nbsp;European GFS are conceptually consistent with the European system of national and regional accounts in the European Union (referred to as ESA 2010). In fact, the GFS compilation is based on re-arranging transactions recorded in the various ESA accounts that are relevant for the government sector.</p></li><li id="fn3"><p><sup>3</sup>&nbsp;In addition to the ESA 2010 accounting framework published in the Official Journal on 26 June 2013 (<a href="https://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-/KS-02-13-269" class="uri">https://ec.europa.eu/eurostat/web/products-manuals-and-guidelines/-/KS-02-13-269</a>) and implemented in September 2014, Eurostat publishes the Manual on Government Deficit and Debt — ESA Implementation (the latest 2019 edition: <a href="https://ec.europa.eu/eurostat/documents/3859598/10042108/KS-GQ-19-007-EN-N.pdf/5d6fc8f4-58e3-4354-acd3-a29a66f2e00c" class="uri">https://ec.europa.eu/eurostat/documents/3859598/10042108/KS-GQ-19-007-EN-N.pdf/5d6fc8f4-58e3-4354-acd3-a29a66f2e00c</a>). The manual constitutes a complement to ESA 2010 by providing specific guidance on the treatment of statistical issues regarding government finance statistics.</p></li></div></div>
+<p>In addition, the dataset is supplemented with a limited set of variables from Main National Accounts (MNA) dataset, which are labelled as ‘macro variables’. They are used as a reference to assess the relative properties of the fiscal revisions. The MNA vintages take due consideration of the timing of the GFS vintages, even if the releases of the two datasets do not coincide. This means that to determine a relevant vintage of the MNA dataset we use only the information available at the time of the corresponding GFS data release.</p>
+<!-- Footnotes :  -->
+<section id="sec-Structure-of-the-real-time-dataset" class="level2 page-columns page-full" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-Structure-of-the-real-time-dataset"><span class="header-section-number">2.1</span> Structure of the real-time dataset</h2>
+<div class="page-columns page-full"><p>The structure of our real-time dataset follows a typical set-up, as presented in <span class="citation" data-cites="diebold_rudebusch">Diebold and Rudebusch (<a href="references.html#ref-diebold_rudebusch" role="doc-biblioref">1991</a>)</span> and as embedded in ECB’s Statistical Data Warehouse (SDW) (see a demonstration in Table <span class="math inline">\(\ref{chron}\)</span>). Each column represents a data release, which in the case of GFS data takes place four times per year (in January, April, July and October).<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Each row, in turn, represents a quarter for which the economic activity is measured. Data releases for a given quarter can be traced from left to right within the corresponding row. Differences between releases constitute intermediate revisions, which then make up final revisions (i.e.&nbsp;a difference between the final release and the first release).</p><div class="no-row-height column-margin column-container"><li id="fn4"><p><sup>4</sup>&nbsp;The data for a given quarter are compiled for the first time 90 days after the end of the quarter and are published after validation around 110 days after the end of the quarter.</p></li></div></div>
+<div class="page-columns page-full"><p>To define revisions it is necessary to take a stance which release constitutes a final value for a certain quarter. Treating the most recent available observations as final releases may be suboptimal because of benchmark revisions, which take place every several years and lead to revisions of not only the most recent quarters but also remote ones.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Against this background, the selection of a final value becomes a delicate balancing act between two objectives. On the one hand, there is a desire to incorporate as many releases as possible to reflect any new incoming information since the moment of the initial release. On the other hand, one should limit the number of releases to avoid as much as possible the undesirable contamination of the dataset with benchmark revisions. The notion of a final value in this situation becomes necessarily arbitrary. In addition, it should be recognised that fiscal data even though reported at quarterly frequency carry some characteristics of annual data, which reflects the annual nature of budgeting and reporting in the public sector.</p><div class="no-row-height column-margin column-container"><li id="fn5"><p><sup>5</sup>&nbsp;Statistical agencies occasionally adjust their methodologies, which leads to revisions of entire time series — the so-called benchmark revisions. In the European Union a harmonised European revision policy was put in place to ensure coordinated and consistent revisions (see <span class="citation" data-cites="ec_revision_guidelines">Eurostat (<a href="references.html#ref-ec_revision_guidelines" role="doc-biblioref">2019</a>)</span>). According to this policy, benchmark revisions should take place each five years, with implementation years ending with ‘4’ and ‘9’. Consequently, benchmark revisions for ESA 2010, which govern both GFS and MNA, were supposed to be implemented in 2014 (at the time of the ESA 2010 introduction) and 5 years later in 2019. In practice, however, not all countries followed the recommendations. Some Member States carried out benchmark revisions outside the benchmark years — before, after or even each year including during the benchmark years. The lack of regularity makes controlling for benchmark revisions in practice extremely challenging.</p></li></div></div>
+<div class="page-columns page-full"><p>In this paper we define the final value for any quarter of year <em>T</em> by the value released in October of the subsequent year <em>T+1</em>. The main motivation for our choice is to duly recognise that quarterly fiscal data are, at least to some degree, annual in nature. As documented in <a href="5-Intermediate-revisions.html"><span>Chapter&nbsp;5</span></a>, quarterly fiscal figures are revised mainly at the time of annual data releases (i.e.&nbsp;in April and October). In this context, we regard as final values the outcomes of the second annual EDP (Excessive deficit procedure) release.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> At the same time, by keeping a limited distance between a first and a final release we make the dataset as much as possible unaffected by benchmark revisions.</p><div class="no-row-height column-margin column-container"><li id="fn6"><p><sup>6</sup>&nbsp;As a part of the Excessive deficit procedure all EU member states are obliged to report their annual fiscal outturns before 1 April and 1 October each year.</p></li></div></div>
+<p>The set-up implies that different quarters within a year have a varying number of releases before the final value is determined (see Table <span class="math inline">\(\ref{chron}\)</span>). Q1 figures require six releases until they become final while Q4 only three. In other words, while for Q1 observations it takes 1 1/4 years to determine its final values it lasts only 1/2 year for Q4 observations. The property equally applies to all variables considered in the analysis therefore it does not affect comparability between them in any way.</p>
+<div class="page-columns page-full"><p>To analyse the revisions we transform the GFS data, expressed in EUR millions, into growth rates.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> In particular, we calculate annual growth rates with respect to the same quarter of a preceding year. By calculating this way, rather than with respect to a preceding quarter, we avoid a need for seasonal adjustment, which in the presence of updates to seasonal factors would add another source of revisions. Also, considering growth rates makes the analysis more robust to benchmark revisions than it would be the case for levels. Benchmark revisions often lead to level shift adjustments of all quarters, even those reaching far into the past, but leave the growth profile still largely unaffected. The average growth for most of the fiscal and macro series in the sample oscillates around 4% (see Figure <a href="@fig-mean_standard-deviation_values">B.22</a> in Section <a href="@sec_app-fiscal-data-characteristics">B</a> of the online appendix).</p><div class="no-row-height column-margin column-container"><li id="fn7"><p><sup>7</sup>&nbsp;To be precise, we approximate growth rates by log differences. The approximation leaves ordinary changes over time largely unaffected. However, it diminishes extraordinarily huge changes compared to the standard growth rate calculation.</p></li></div></div>
+</section>
+<section id="sec-final_intermediate_revisions" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-final_intermediate_revisions"><span class="header-section-number">2.2</span> Final and intermediate revisions</h2>
+<p>Final revisions are calculated as a difference between the final release (<span class="math inline">\(x_{t}^{f}\)</span>) for quarter <em>t</em> and the first release (<span class="math inline">\(x_{t}^{1}\)</span>) for the same quarter <span class="math inline">\(t\)</span> following the below equation:</p>
+<p><span class="math display">\[
+r_{t}^{f}=x_{t}^{f}-x_{t}^{1}
+\]</span></p>
+<p>The definition implies that a positive value is associated with an underestimation of a first release and the other way around (see the left-hand-side chart of <a href="#fig-dataoverview1">Figure&nbsp;<span>2.1</span></a> for illustration).</p>
+<p>Intermediate revisions are calculated as a difference between directly succeeding data releases as follows:</p>
+<p><span class="math display">\[
+r_{t}^{i}=x_{t}^{i+1}-x_{t}^{i}
+\]</span></p>
+<p>where <span class="math inline">\(x_{t}^{i}\)</span> is an <em>i</em>-th release for quarter <em>t</em>.</p>
+<p>The sum of intermediate revisions to a given quarterly value amounts to a final revision (see Table <span class="math inline">\(\ref{chron}\)</span> and the right-hand-side chart of <a href="#fig-dataoverview1">Figure&nbsp;<span>2.1</span></a> for illustration). In this context, intermediate revisions can be used to decompose final revisions — the aspect we explore in <a href="5-Intermediate-revisions.html"><span>Chapter&nbsp;5</span></a>. The varying distance between final and initial releases results in a different number of intermediate revisions depending on a quarter (see again Table <span class="math inline">\(\ref{chron}\)</span> for illustration).</p>
+<div class="cell" data-layout-align="center" data-hash="2-Data_cache/html/fig-dataoverview1_bdb79ca9792c91eebb49284c7bd96057">
+<div class="cell-output-display">
+<div id="fig-dataoverview1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="2-Data_files/figure-html/fig-dataoverview1-1.png" class="img-fluid figure-img" width="604"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.1: Revisions to the growth rate of gov. compensation in the Netherlands</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="data-scope" class="level2 page-columns page-full" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="data-scope"><span class="header-section-number">2.3</span> Data scope</h2>
+<p>Our real-time fiscal dataset contains all main categories provided in the GFS datasest. We look closely at the following 9 fiscal variables.</p>
+<ul>
+<li>Total revenue
+<ul>
+<li>Direct taxes</li>
+<li>Indirect taxes</li>
+<li>Social contributions</li>
+</ul></li>
+<li>Total expenditure
+<ul>
+<li>Social transfers</li>
+<li>Purchases</li>
+<li>Gov.&nbsp;compensation</li>
+<li>Gov.&nbsp;investment</li>
+</ul></li>
+</ul>
+<div class="page-columns page-full"><p>The set includes total revenue and total expenditure, as well as their main components. Table <a href="@tab-Code_series_fiscal">D.2</a> in the online appendix gives an overview of all variables together with their full statistical names and with series keys needed to download the data.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn8"><p><sup>8</sup>&nbsp;Only around 2/3 of the vintages in our real-time fiscal dataset are available through ECB’s SDW. Vintages published before 2010 even though public, have not been disseminated to SDW and they are based on snapshots of Eurostat data releases.</p></li></div></div>
+<p>We do not explicitly investigate minor fiscal categories, like capital revenue or subsides, on account of their extraordinary volatility. The only exception we make is government investment, which belongs to our particular interests as an important fiscal policy instrument and as a direct demand component. The excluded variables account only for a limited share of gov. revenue and expenditure, and as such, they are usually unable to drive the general picture on fiscal policy. Concretely, the minor items comprise 10% of total revenue and 7% of total spending in our dataset (see Figure <a href="@fig-ItemShareGDP">B.21</a>). At the same time, they are very volatile (see standard deviation in Figure <a href="@fig-mean_standard-deviation_values">B.22</a>) and they come with very large revisions (see <a href="#fig-revisions_across_variables">Figure&nbsp;<span>2.2</span></a> and Figures <a href="@fig_app-Other-revenue">A.5</a>, <a href="@fig_app-capital-transfers">A.6</a>, <a href="@fig_app-interest_payments">A.10</a>, <a href="@fig_app-Other-spending">A.12</a>, <a href="@fig_app-Other-capital-spending">A.14</a> in the online appendix). Notwithstanding this, the minor variables are captured in the analysis by being a part of total revenue and total expenditure. Consequently, they play a fair role in the analysis even without being considered individually.</p>
+<div class="page-columns page-full"><p>The dataset is supplemented with the selected following items from the MNA dataset.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn9"><p><sup>9</sup>&nbsp;To ensure comparability with fiscal data all macroeconomic variables are expressed in nominal terms, therefore they also contain the price component.</p></li></div></div>
+<ul>
+<li>GDP</li>
+<li>Private consumption</li>
+<li>Total investment</li>
+<li>Export</li>
+<li>Gov.&nbsp;consumption</li>
+<li>Wages and salaries</li>
+</ul>
+<p>We regard this set of variables as a reliable benchmark for assessing fiscal revisions. Similarly to the fiscal variables, the series keys needed for data retrieval are specified in the online appendix in Table <a href="@tab-Code_series_macro">D.3</a>.</p>
+<div class="cell" data-layout-align="center" data-hash="2-Data_cache/html/fig-revisions_across_variables_2f9b7f60b79a05db35e99b3aa76d975e">
+<div class="cell-output-display">
+<div id="fig-revisions_across_variables" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="2-Data_files/figure-html/fig-revisions_across_variables-1.png" class="img-fluid figure-img" width="604"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.2: Final revisions across fiscal and macro variables</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="page-columns page-full"><p>Regarding the country coverage, the dataset underlying the paper includes all 19 countries comprising currently the EMU, as well as the euro area aggregate.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> For the purpose of our analysis, however, we consider individually only 9 biggest (in terms government size as measured by total expenditure) countries. The remaining 10 countries account for only around 5.5% of the euro area government expenditure (see Figure <a href="@fig-share-TOE">B.23</a>) but exhibit extraordinarily high revisions (see <a href="#fig-revisions_across_countries">Figure&nbsp;<span>2.3</span></a>). Moreover, as can be seen in the single-variable revision plots (Figures <a href="@fig_app-total_revenue">A.1</a> - <a href="@fig_app-Other-spending">A.12</a>), there are instances when fiscal data for some of these small countries are not subject to any revisions. Zero revisions in these cases should not support a view about high data accuracy but rather raise concerns regarding the data quality.</p><div class="no-row-height column-margin column-container"><li id="fn10"><p><sup>10</sup>&nbsp;With the intention of saving space the following country abbreviations are used throughout the paper: BE (Belgium), DE (Germany), EE (Estonia), IE (Ireland), GR (Greece), ES (Spain), FR (France), IT (Italy), CY (Cyprus), LV (Latvia), LT (Lithuania), LU (Luxembourg), MT (Malta), NL (the Netherlands), AT (Austria), PT (Portugal), SI (Slovenia), SK (Slovakia), FI (Finland) and EA (the euro area).</p></li></div></div>
+<p>Giving the small and volatile countries a prominent role in forming conclusions on the euro area fiscal data would be misleading. The volatility and incompleteness exhibited by these countries does not influence the big picture on fiscal policy in the euro area simply because of the small size. For this reason we group the small volatile 10 countries into one geographical unit — the rest of the euro area (REA). By doing so we reduce the weight of these countries in the analysis even though we still cover them. In addition, we occasionally look at the euro area aggregate, especially with a view to putting the country fiscal data into perspective.</p>
+<div class="cell" data-layout-align="center" data-hash="2-Data_cache/html/fig-revisions_across_countries_6b1fef5c3c9362e55e176c0fc0d89990">
+<div class="cell-output-display">
+<div id="fig-revisions_across_countries" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="2-Data_files/figure-html/fig-revisions_across_countries-1.png" class="img-fluid figure-img" width="604"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.3: Final revisions across countries</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="page-columns page-full"><p>Our dataset consists of 59 quarterly GFS vintages taking place since January 2007 to July 2021. The selection of the first vintage is dictated by the moment in which quarterly GFS data started being stored in an organised and complete manner.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> Admittedly, it took until October 2014 before the reporting of the GFS data became compulsory and complete. Notwithstanding this, even well before October 2014 the GFS data were published regularly by most of the euro area countries on voluntary basis.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> The last vintage is simply the release containing final values for 2019, which is the last year unaffected by the COVID-19 crisis.</p><div class="no-row-height column-margin column-container"><li id="fn11"><p><sup>11</sup>&nbsp;The development work on Government Finance Statistics took place since 2002. Only in 2007 the data were considered to be of sufficient quality and complete enough to be used in economic analysis at the ECB.</p></li><li id="fn12"><p><sup>12</sup>&nbsp;Our fiscal real-time dataset contains some missing values due to data unavailability before October 2014. Most notably, Germany and France published the GFS data only in October once per year rather than on quarterly basis.</p></li></div></div>
+<div class="cell" data-layout-align="center" data-hash="2-Data_cache/html/fig-revisions_over_time_47af5a6f32ffedc67e82776abab57d90">
+<div class="cell-output-display">
+<div id="fig-revisions_over_time" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="2-Data_files/figure-html/fig-revisions_over_time-1.png" class="img-fluid figure-img" width="604"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.4: Final revisions across time</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A look at the data over time reveals that the dispersion of the fiscal revisions dropped significantly in 2014. <a href="#fig-revisions_over_time">Figure&nbsp;<span>2.4</span></a> illustrates that the 5-95% interval calculated for each year narrows down noticeably in 2014 for total revenue and total expenditure. The shrinkage clearly stands out when the two fiscal variables are compared to GDP. The width of the interval for the latter stays remarkably constant over the entire period 2007-19 except for 2015 influenced by the extraordinarily high revisions to Irish GDP. By contrast, the width of the interval for the fiscal series has been exceeding the one of GDP by a wide margin only until 2014. After 2014, however, the bands of the fiscal series become much more aligned compared to GDP. The change could be related to the introduction of ESA 2010 in October 2014 and to the fact that the reporting of the quarterly fiscal data became compulsory at the time. While determining the exact reason is outside the scope of our paper we will bear this fact in mind when analysing the data.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-diebold_rudebusch" class="csl-entry" role="doc-biblioentry">
+Diebold, Francis X., and Glenn D. Rudebusch. 1991. <span>“Forecasting Output with the Composite Leading Index: A Real-Time Analysis.”</span> <em>Journal of the American Statistical Association</em> 86 (415): 603–10.
+</div>
+<div id="ref-ec_revision_guidelines" class="csl-entry" role="doc-biblioentry">
+Eurostat. 2019. <span>“Practical Guidelines for Revising ESA 2010 Data.”</span> Manuals and Guidelines. Manuals and Guidelines. Eurostat.
+</div>
+</div>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./1-Introduction.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./3-Uncond-properties.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Unconditional properties of final revisions</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
