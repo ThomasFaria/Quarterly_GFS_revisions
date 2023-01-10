@@ -230,7 +230,7 @@ div.csl-indent {
 <p><span class="math display">\[
    \textrm{Complete model: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m}
                                         + \sum_{j=1}^{4} \gamma_{j}Q_{t}^{j}
-                                        + \omega\mathds{1}_{\left[t\geq2014Q2\right]}
+                                        + \omega 1_{\left[t\geq2014Q2\right]}
                                         + \delta x_{t,m}^{1}
                                         + \sum_{i=1}^{S} \rho_{i}\left(x_{t-i,m}^{i+1}-x_{t-i,m}^{1}\right)
                                         + \epsilon_{t,m}
@@ -246,14 +246,14 @@ div.csl-indent {
 <p><span class="math display">\[
   \textrm{Interm. model 1: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m}
                                        + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j}
-                                       + \omega\mathds{1}_{\left[t\geq2014Q2\right]}
+                                       + \omega 1_{\left[t\geq2014Q2\right]}
                                        + \delta x_{t,m}^{1}
                                        + \epsilon_{t,m}
 \]</span></p>
 <p><span class="math display">\[
   \textrm{Interm. model 2: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m}
                                        + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j}
-                                       + \omega\mathds{1}_{\left[t\geq2014Q2\right]}
+                                       + \omega 1_{\left[t\geq2014Q2\right]}
                                        + \epsilon_{t,m}
 \]</span></p>
 <p><span class="math display">\[
@@ -292,7 +292,7 @@ div.csl-indent {
   <tr grouplength="4"><td colspan="9" style="border-bottom: 1px solid;"><strong>Revenue</strong></td></tr>
 <tr>
    <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Total revenue </td>
-   <td style="text-align:left;"> $\mathds{1}_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}$ </td>
+   <td style="text-align:left;"> $1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}$ </td>
    <td style="text-align:right;"> 384 </td>
    <td style="text-align:left;"> 0.01 </td>
    <td style="text-align:right;"> 0.99 </td>
@@ -314,7 +314,7 @@ div.csl-indent {
   </tr>
   <tr>
    <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Indirect taxes </td>
-   <td style="text-align:left;"> $\mathds{1}_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}+R_{t-4,m}$ </td>
+   <td style="text-align:left;"> $1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}+R_{t-4,m}$ </td>
    <td style="text-align:right;"> 402 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:right;"> 0.98 </td>
@@ -348,7 +348,7 @@ div.csl-indent {
   </tr>
   <tr>
    <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Social transfers </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+\mathds{1}_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}$ </td>
+   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}$ </td>
    <td style="text-align:right;"> 402 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:right;"> 0.91 </td>
@@ -359,7 +359,7 @@ div.csl-indent {
   </tr>
   <tr>
    <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Purchases </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+\mathds{1}_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}+R_{t-4,m}$ </td>
+   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}+R_{t-4,m}$ </td>
    <td style="text-align:right;"> 384 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:right;"> 0.84 </td>
@@ -381,7 +381,7 @@ div.csl-indent {
   </tr>
   <tr>
    <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Gov. investment </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+\mathds{1}_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-1,m}+R_{t-5,m}$ </td>
+   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-1,m}+R_{t-5,m}$ </td>
    <td style="text-align:right;"> 384 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:right;"> 0.94 </td>
@@ -393,7 +393,7 @@ div.csl-indent {
   <tr grouplength="6"><td colspan="9" style="border-bottom: 1px solid;"><strong>Macro</strong></td></tr>
 <tr>
    <td style="text-align:left;padding-left: 2em;" indentlevel="1"> GDP </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+\mathds{1}_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+\sum\limits_{i=1}^{4}R_{t-i,m}$ </td>
+   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+\sum\limits_{i=1}^{4}R_{t-i,m}$ </td>
    <td style="text-align:right;"> 444 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:right;"> 0.95 </td>
@@ -404,7 +404,7 @@ div.csl-indent {
   </tr>
   <tr>
    <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Private consumption </td>
-   <td style="text-align:left;"> $\mathds{1}_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}$ </td>
+   <td style="text-align:left;"> $1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}$ </td>
    <td style="text-align:right;"> 442 </td>
    <td style="text-align:left;"> 0.01 </td>
    <td style="text-align:right;"> 0.99 </td>
@@ -415,7 +415,7 @@ div.csl-indent {
   </tr>
   <tr>
    <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Total investment </td>
-   <td style="text-align:left;"> $\mathds{1}_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+\sum\limits_{i=2}^{5}R_{t-i,m}$ </td>
+   <td style="text-align:left;"> $1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+\sum\limits_{i=2}^{5}R_{t-i,m}$ </td>
    <td style="text-align:right;"> 443 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:right;"> 0.94 </td>
@@ -448,7 +448,7 @@ div.csl-indent {
   </tr>
   <tr>
    <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Wages and salaries </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+\mathds{1}_{\left[t\geq2014Q2\right]}+R_{t-1,m}+R_{t-2,m}$ </td>
+   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+R_{t-1,m}+R_{t-2,m}$ </td>
    <td style="text-align:right;"> 420 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:right;"> 0.91 </td>
