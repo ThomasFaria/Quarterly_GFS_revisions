@@ -12,8 +12,7 @@ In addition, the dataset is supplemented with a limited set of variables from Ma
 ## Structure of the real-time dataset {#sec-Structure-of-the-real-time-dataset}
 
 The structure of our real-time dataset follows a typical set-up, as presented in @diebold_rudebusch and as embedded in ECB's Statistical Data Warehouse (SDW) (see a demonstration in Table \ref{chron}). Each column represents a data release, which in the case of GFS data takes place four times per year (in January, April, July and October).^[The data for a given quarter are compiled for the first time 90 days after the end of the quarter and are published after validation around 110 days after the end of the quarter.] Each row, in turn, represents a quarter for which the economic activity is measured. Data releases for a given quarter can be traced from left to right within the corresponding row. Differences between releases constitute intermediate revisions, which then make up final revisions (i.e. a difference between the final release and the first release).
-<!-- 
-<!-- \caption{Timing of the revisions and underlying releases \label{chron}} -->
+
 ```{=latex}
  \begin{table}[H]
  \centering{}\caption{Timing of the revisions and underlying releases \label{chron}}
@@ -66,7 +65,7 @@ The structure of our real-time dataset follows a typical set-up, as presented in
  \end{minipage}
  \end{table}
 ```
- -->
+
  
 To define revisions it is necessary to take a stance which release constitutes a final value for a certain quarter. Treating the most recent available observations as final releases may be suboptimal because of benchmark revisions, which take place every several years and lead to revisions of not only the most recent quarters but also remote ones.^[Statistical agencies occasionally adjust their methodologies, which leads to revisions of entire time series --- the so-called benchmark revisions. In the European Union a harmonised European revision policy was put in place to ensure coordinated and consistent revisions (see @ec_revision_guidelines). According to this policy, benchmark revisions should take place each five years, with implementation years ending with '4' and '9'. Consequently, benchmark revisions for ESA 2010, which govern both GFS and MNA, were supposed to be implemented in 2014 (at the time of the ESA 2010 introduction) and 5 years later in 2019. In practice, however, not all countries  followed the recommendations. Some Member States carried out benchmark revisions outside the benchmark years --- before, after or even each year including during the benchmark years. The lack of regularity makes controlling for benchmark revisions in practice extremely challenging.] Against this background, the selection of a final value becomes a delicate balancing act between two objectives. On the one hand, there is a desire to incorporate as many releases as possible to reflect any new incoming information since the moment of the initial release. On the other hand, one should limit the number of releases to avoid as much as possible the undesirable contamination of the dataset with benchmark revisions. The notion of a final value in this situation becomes necessarily arbitrary. In addition, it should be recognised that fiscal data even though reported at quarterly frequency carry some characteristics of annual data, which reflects the annual nature of budgeting and reporting in the public sector.
 
@@ -95,6 +94,17 @@ $$
 where $x_{t}^{i}$ is an *i*-th release for quarter *t*. 
 
 The sum of intermediate revisions to a given quarterly value amounts to a final revision (see Table \ref{chron} and the right-hand-side chart of @fig-dataoverview1 for illustration). In this context, intermediate revisions can be used to decompose final revisions --- the aspect we explore in @sec-Intermediate-revisions. The varying distance between final and initial releases results in a different number of intermediate revisions depending on a quarter (see again Table \ref{chron} for illustration).
+
+```{r}
+#| label: fig-dataoverview1
+#| fig-cap: Revisions to the growth rate of gov. compensation in the Netherlands
+#| fig-width: 6.3
+#| fig-height: 3.5
+#| fig-align: center
+
+targets::tar_read(plot_total_revision)
+
+```
 
 ## Data scope
 
@@ -125,16 +135,43 @@ The dataset is supplemented with the selected following items from the MNA datas
 
 We regard this set of variables as a reliable benchmark for assessing fiscal revisions. Similarly to the fiscal variables, the series keys needed for data retrieval are specified in the online appendix in Table [D.3](@tab-Code_series_macro).
 
+```{r}
+#| label: fig-revisions_across_variables
+#| fig-cap: Final revisions across fiscal and macro variables
+#| fig-width: 6.3
+#| fig-height: 8
+#| fig-align: center
 
+targets::tar_read(plot_revisions_across_variables)
+
+```
 
 Regarding the country coverage, the dataset underlying the paper includes all 19 countries comprising currently the EMU, as well as the euro
 area aggregate.^[With the intention of saving space the following country abbreviations are used throughout the paper: BE (Belgium), DE (Germany), EE (Estonia), IE (Ireland), GR (Greece), ES (Spain), FR (France), IT (Italy), CY (Cyprus), LV (Latvia), LT (Lithuania), LU (Luxembourg), MT (Malta), NL (the Netherlands), AT (Austria), PT (Portugal), SI (Slovenia), SK (Slovakia), FI (Finland) and EA (the euro area).] For the purpose of our analysis, however, we consider individually only 9 biggest (in terms government size as measured by total expenditure) countries. The remaining 10 countries account for only around 5.5% of the euro area government expenditure (see Figure [B.23](@fig-share-TOE)) but exhibit extraordinarily high revisions (see @fig-revisions_across_countries). Moreover, as can be seen in the single-variable revision plots (Figures [A.1](@fig_app-total_revenue) - [A.12](@fig_app-Other-spending)), there are instances when fiscal data for some of these small countries are not subject to any revisions. Zero revisions in these cases should not support a view about high data accuracy but rather raise concerns regarding the data quality. 
 
 Giving the small and volatile countries a prominent role in forming conclusions on the euro area fiscal data would be misleading. The volatility and incompleteness exhibited by these countries does not influence the big picture on fiscal policy in the euro area simply because of the small size. For this reason we group the small volatile 10 countries into one geographical unit --- the rest of the euro area (REA). By doing so we reduce the weight of these countries in the analysis even though we still cover them. In addition, we occasionally look at the euro area aggregate, especially with a view to putting the country fiscal data into perspective.
 
+```{r}
+#| label: fig-revisions_across_countries
+#| fig-cap: Final revisions across countries
+#| fig-width: 6.3
+#| fig-height: 8
+#| fig-align: center
 
+targets::tar_read(plot_revisions_across_countries)
+
+```
 
 Our dataset consists of 59 quarterly GFS vintages taking place since January 2007 to July 2021. The selection of the first vintage is dictated by the moment in which quarterly GFS data started being stored in an organised and complete manner.^[The development work on Government Finance Statistics took place since 2002. Only in 2007 the data were considered to be of sufficient quality and complete enough to be used in economic analysis at the ECB.] Admittedly, it took until October 2014 before the reporting of the GFS data became compulsory and complete. Notwithstanding this, even well before October 2014 the GFS data were published regularly by most of the euro area countries on voluntary basis.^[Our fiscal real-time dataset contains some missing values due to data unavailability before October 2014. Most notably, Germany and France published the GFS data only in October once per year rather than on quarterly basis.] The last vintage is simply the release containing final values for 2019, which is the last year unaffected by the COVID-19 crisis.
 
+```{r}
+#| label: fig-revisions_over_time
+#| fig-cap: Final revisions across time
+#| fig-width: 6.3
+#| fig-height: 8
+#| fig-align: center
+
+targets::tar_read(plot_revisions_across_time)
+```
 
 A look at the data over time reveals that the dispersion of the fiscal revisions dropped significantly in 2014. @fig-revisions_over_time illustrates that the 5-95% interval calculated for each year narrows down noticeably in 2014 for total revenue and total expenditure. The shrinkage clearly stands out when the two fiscal variables are compared to GDP. The width of the interval for the latter stays remarkably constant over the entire period 2007-19 except for 2015 influenced by the extraordinarily high revisions to Irish GDP. By contrast, the width of the interval for the fiscal series has been exceeding the one of GDP by a wide margin only until 2014. After 2014, however, the bands of the fiscal series become much more aligned compared to  GDP. The change could be related to the introduction of ESA 2010 in October 2014 and to the fact that the reporting of the quarterly fiscal data became compulsory  at the time. While determining the exact reason is outside the scope of our paper we will bear this fact in mind when analysing the data.

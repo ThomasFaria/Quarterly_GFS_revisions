@@ -4,6 +4,16 @@ Intermediate revisions are changes that take place between subsequent releases, 
 
 Intuitively, each release should bring the data closer to its final value as gradually with time more information becomes available to data compilers (see the right-hand-side chart in @fig-dataoverview1 where most of the intermediate revisions go in the direction of the final revisions). In practice, however, it occurs that some releases go into the opposite direction and increase the distance to the final value compared to a previous release. @fig-single_rev_example provides an example of a data point where the initial release was closer to the final value than subsequent releases (see the case of Austria). If such cases are frequent our findings based on final revisions may considerably change (as demonstrated with a single calculation on @fig-single_rev_example), which we verify in this section.^[If all intermediate revisions went towards a final value (i.e. are of the same sign as a final revision) intermediate revisions would not bring any additional information to the summary statistics calculated based on final revisions. MAR, for instance, would be just lower by a certain factor because final revisions could be divided into smaller pieces constituting intermediate revisions.]
 
+```{r}
+#| label: fig-single_rev_example
+#| fig-cap: Revisions to the growth rate of 2016Q3 social contributions
+#| fig-width: 6.3
+#| fig-height: 2.75
+#| fig-align: center
+
+targets::tar_read(plot_single_rev_example)
+```
+
 Another aspect that can be revealed by analysis of intermediate revisions is the timing of the revisions. In this context, the analysis should inform us whether the revisions mostly take place shortly after an initial release or maybe closer to the publication of a final value. In the same vein, it will be possible to identify releases within a year (i.e. Jan, Apr, Jul or Oct) when the data are subject to particular revisions, if this is the case.
 
 ## Unconditional properties
@@ -17,6 +27,20 @@ Regarding the dispersion of intermediate revisions, even though they bring new i
 
 Notwithstanding these undesirable releases, intermediate revisions point to the same conclusions on the dispersion of the revisions like the final ones. In the pre-2014Q2 subsample fiscal revisions are approximately twice as dispersed as macro revisions, as judged by the MAR measure for the biggest and most stable categories. In the post-2014Q2 subsample the MAR measure for both types of variables fiscal and macro are not far away from each other. Volatile categories, in particular government and total investment, are associated with exceptionally high values of the statistics measuring dispersion, especially in the second subsample.
 
+```{r}
+#| label: fig-inRevGItems_prepost2014
+#| fig-cap: Summary statistics of intermediate revisions in the two subsamples
+#| fig-subcap: 
+#|   - pre-2014Q2
+#|   - post-2014Q2
+#| fig-width: 8
+#| fig-height: 5
+#| layout-nrow: 2
+
+targets::tar_read(plot_statistics_interm_pre2014)
+targets::tar_read(plot_statistics_interm_post2014)
+```
+
 ## Dynamics of data releases {#sec-revisions_timing}
 
 Another aspect on which intermediate revisions can shed light is the evolution of releases from the initial one to the final one. This will inform us about the path that intermediate data releases undertake when they converge to the final value. Such analysis should also confirm one of the findings from the previous subsection, namely the existence of incidents when intermediate releases take data away from final values compared to figures already published. Given that the number of intermediate revisions differs depending on a quarter (i.e. Q1 observations have 5 intermediate revisions while Q4 observations only 2 intermediate revisions) we look at Q1-Q4 observations separately (see @fig-Single_Rev_Path).
@@ -27,3 +51,13 @@ Looking at the shapes of the lines in @fig-Single_Rev_Path it becomes clear that
 
 Even by looking at the aggregated data single instances of lines trending
 upwards are visible (see @fig-Single_Rev_Path). This only re-affirms that  cases where single releases takes us away from final values compared to a preceding release exist in the dataset. Naturally, in such cases the subsequent revisions need to be particularly large as they need to make up for any move in the 'wrong' direction.  
+
+```{r}
+#| label: fig-Single_Rev_Path
+#| fig-cap: Revision paths across variables
+#| fig-width: 6.3
+#| fig-height: 5.75
+#| fig-align: center
+
+targets::tar_read(plot_revision_paths)
+```

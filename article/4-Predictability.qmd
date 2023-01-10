@@ -64,4 +64,31 @@ The inclusion of the intermediate models in the analysis enables us to determine
 
 To sum up, the results reveal that fiscal revisions in general are to some degree predictable. This is just another characteristic besides the positive bias and the large dispersion that speaks in favour of treating fiscal revisions as badly-behaved. Considering the predictability dimension fiscal revisions are quite similar to macro variables and they do not appear to be particularly 'misbehaved'.
 
+```{r}
+#| label: tbl-forecastability_AIC
+#| tbl-cap: Predictability of the revisions based on AIC
+#| tbl-width: 8
+#| tbl-height: 4.75
+
+table <- targets::tar_read(table_AIC)
+kableExtra::kbl(table,
+              col.names = c("",
+                           "Expl. variable",
+                           "N",
+                           "F-value",
+                           "Compl/Naive",
+                           "Intrm1/Naive",
+                           "Intrm2/Naive",
+                           "Intrm3/Naive",
+                           "Intrm4/Naive"),
+              escape = FALSE,
+              booktabs = TRUE) |>
+  kableExtra::pack_rows("Revenue", 1, 4) |>
+  kableExtra::pack_rows("Expenditure", 5, 9) |>
+  kableExtra::pack_rows("Macro", 10, 15) |>
+  kableExtra::footnote(general = "$R_{t-i,m}$ in the specification of explanatory variables are past revisions defined by $R_{t-i,m}=\\\\left(x_{t-i,m}^{i+1}-x_{t-i,m}^{1}\\\\right)$, as introduced in the equation of the complete model.", escape=FALSE) |>
+  kableExtra::kable_styling(latex_options = c("striped", "scale_down"))
+  
+```
+
 As we rely only on AIC a question may arise whether the findings are robust to other information criteria. Given the general conclusion on the presence of predictability, the question, however, is not very relevant for our application. In our exercise it is sufficient to find one model for which we reject the joint significance hypothesis or which is superior in terms of predictive power to the naive model. Other selection criteria that are more restrictive than AIC, for instance Schwartz Information Criterion (SIC), could prevent us from finding such a model and point towards no predictability in the revisions. In fact, this is what happens when the predictability exercise is recalculated with SIC (see Table [C.1](@tbl-forecastability_SIC) in the online appendix). Given the AIC-based results pointing to predictability, any findings based on a more restrictive criterion would not change our conclusions. On the other hand, findings based on a looser criterion than AIC, which would allow even more information to enter the complete model, could only validate, or even strengthen, our conclusions.

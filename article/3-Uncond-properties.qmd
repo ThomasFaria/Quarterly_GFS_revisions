@@ -13,6 +13,16 @@ The MR statistic will help us assess whether revisions are biased. Other metrics
 
 ## Entire sample 2006Q3-2019Q4
 
+```{r}
+#| label: fig-FinRevGItems
+#| fig-cap: Summary statistics of final revisions in the entire sample
+#| fig-width: 6.3
+#| fig-height: 4.75
+#| fig-align: center
+
+targets::tar_read(plot_statistics_full_sample)
+```
+
 The first column of @fig-FinRevGItems reports the mean
 revision (MR), which is informative about the bias. The results point
 to a positive MR for all fiscal variables except for government investment.
@@ -74,6 +84,20 @@ that certain variables tend to be more volatile than others the variation across
 ## Pre and post-2014Q2 subsamples
 
 The analysis presented above indicated that fiscal revisions exhibit considerably bigger dispersion than macro revisions (i.e. approximately twice as big when measured by MAR). This is in line with the existing literature, which states that fiscal variables are subject to particularly sizeable revisions (see, for instance, @Cimadomo_2016_jes). This widely held view casts severe doubts on the quality of fiscal data in real time. Having in mind the illustration in @fig-revisions_over_time indicating that fiscal revisions in the euro area dropped significantly over time we re-evaluate the existing belief. To this end, we split the sample in 2014Q2, which is the quarter for which the initial release was reported according to ESA 2010 for the first time. Also, 2014 is the point at which the reporting of Government Finance Statistics became obligatory, even though countries had been reporting them on voluntary basis before. Having split the sample, coincidentally into two roughly equal parts, we recalculate the summary statistics for the two subsamples.
+
+```{r}
+#| label: fig-RevGItems_prepost2014
+#| fig-cap: Summary statistics of final revisions in the two subsamples
+#| fig-subcap: 
+#|   - pre-2014Q2
+#|   - post-2014Q2
+#| fig-width: 8
+#| fig-height: 5
+#| layout-nrow: 2
+
+targets::tar_read(plot_statistics_pre2014)
+targets::tar_read(plot_statistics_post2014)
+```
 
 A close look at @fig-RevGItems_prepost2014 reveals that summary statistics in the two periods differ considerably for fiscal variables. While the MR metric points to a positive bias of a comparable magnitude in the both subsamples the differences for statistics representing dispersion are stark. Just to start with, the MIN-MAX interval reported in the second and third column of @fig-RevGItems_prepost2014 shrinks significantly for fiscal variables in the post 2014Q2 subsample. In the same vein, the variables in the second subsample are associated with considerably lower (i.e. around half for most of the items) MAR compared to the first subsample. As easy to anticipate, the same applies to the RMSR measure. 
 
