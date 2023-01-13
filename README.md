@@ -15,7 +15,7 @@ The repository is accompanied by its [docker image](https://hub.docker.com/r/tho
 If you are familiar with docker you can directly pull the image using the following command in your terminal:
 
 ```
-docker pull thomasfaria/quarterly_gfs_revisions
+docker pull thomasfaria/quarterly_gfs_revisions:latest
 ```
 
 However, we recommend using [Onyxia](https://github.com/InseeFrLab/onyxia-web), a datalab developed by the French National institute of statistics and economic studies ([INSEE](https://www.insee.fr/fr/accueil)).
