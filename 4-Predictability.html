@@ -79,9 +79,6 @@ div.csl-indent {
   }
 }</script>
 
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
@@ -227,6 +224,7 @@ div.csl-indent {
 
 <div class="page-columns page-full"><p>After verifying the bias and the dispersion of the revisions we check in this section whether revisions are predictable. Our approach in this regard follows the methodology applied in <span class="citation" data-cites="aruoba2006ijcb">Aruoba (<a href="references.html#ref-aruoba2006ijcb" role="doc-biblioref">2008</a>)</span>. Similarly, we estimate variable-specific models to verify whether the conditional mean of final revisions with respect to the information available at the time of the initial release equals zero. The condition, formally expressed as <span class="math inline">\(E\left(r_{t,m}^f\middle|I_{t+2}\right)=0\)</span>, implies the lack of predictability.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Given that our analysis cover multiple countries, differently from <span class="citation" data-cites="aruoba2006ijcb">Aruoba (<a href="references.html#ref-aruoba2006ijcb" role="doc-biblioref">2008</a>)</span>, we opt for panel regressions. This allows us to overcome the short length of the sample and still to obtain statistically meaningful results.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;The information set <span class="math inline">\(I_{t+2}\)</span> consists of all information available at the time of the initial release. Since fiscal data for quarter <em>t</em> are published more than 90 days (around 110 days) after the end of quarter <em>t</em> we use <span class="math inline">\(t+2\)</span> time index for the timing of the release consistently across the paper.</p></li></div></div>
 <p>To this end, we estimate the models of the following form:</p>
+<div>
 <p><span class="math display">\[
    \textrm{Complete model: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m}
                                         + \sum_{j=1}^{4} \gamma_{j}Q_{t}^{j}
@@ -235,6 +233,7 @@ div.csl-indent {
                                         + \sum_{i=1}^{S} \rho_{i}\left(x_{t-i,m}^{i+1}-x_{t-i,m}^{1}\right)
                                         + \epsilon_{t,m}
 \]</span></p>
+</div>
 <div class="page-columns page-full"><p>with the dependent variable <span class="math inline">\(r_{t,m}^{f}\)</span> being the final revision as defined in <a href="2-Data.html#sec-Structure-of-the-real-time-dataset">Subsection&nbsp;<span>2.1</span></a>. The explanatory variables are: country-specific dummy variables <span class="math inline">\(C_{m}\)</span>, quarterly dummy variables <span class="math inline">\(Q_{t}^{j}\)</span>, a dummy variable for ESA 2010 (i.e.&nbsp;from 2014Q2 onwards, which are the quarters for which the initial releases followed ESA 2010), the initial release <span class="math inline">\(x_{t,m}^{1}\)</span> and the past final revisions <span class="math inline">\(\left(x_{t-i}^{i+1}-x_{t-i}^{1}\right)\)</span>. We include country-specific dummy variables (i.e.&nbsp;country fixed effects) to account for the fact that euro area countries carry different characteristics that do not change over time. In the same vein, we use quarterly dummy variables on account of potential seasonality in the revisions. The ESA 2010 dummy should account for a difference existing between the two subsamples described in <a href="3-Uncond-properties.html"><span>Chapter&nbsp;3</span></a> without a necessity to split the sample. We also include the initial release as revisions can be preceded by unusual values published initially. Moreover, we introduce the past revisions to verify whether there is a persistency in revisions. We limit these revisions only to those available at the time of the initial release.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> By ensuring that all explanatory variables in the model are known at the time of the initial release we make the prediction a valid forecasting exercise.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;At the time of the initial release of data for quarter <em>t</em> only the first revision of data for quarter <span class="math inline">\(t-1\)</span>, the second revision of data for quarter <span class="math inline">\(t-2\)</span> and so on are available.</p></li><li id="fn3"><p><sup>3</sup>&nbsp;Strictly speaking, an entirely complete forecasting exercise in real time requires that not only the predictors are these available at the time the forecast is performed but also the forecasting model is estimated in real time. <span class="citation" data-cites="aruoba2006ijcb">Aruoba (<a href="references.html#ref-aruoba2006ijcb" role="doc-biblioref">2008</a>)</span> supplements his main analysis with a strictly real-time exercise only to confirm validity of the predictability property in macroeconomic revisions.</p></li></div></div>
 <div class="page-columns page-full"><p>To select the exact specification of the complete model we rely on the Akaike Information Criterion (AIC). In this context, we estimate all combinations of regressors specified in the equation for the complete model (511 combinations).<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Finally, we pick specifications with the lowest AIC score. Like in <span class="citation" data-cites="aruoba2006ijcb">Aruoba (<a href="references.html#ref-aruoba2006ijcb" role="doc-biblioref">2008</a>)</span> our objective is not to find the best model explaining the revisions. The aim of the exercise is to verify whether any information available at the time of the initial release has predictive power. If confirmed we will be able to claim that revisions are predictable.</p><div class="no-row-height column-margin column-container"><li id="fn4"><p><sup>4</sup>&nbsp;Since we consider the inclusion of 9 regressors (i.e.&nbsp;country dummy, quarter dummy, ESA 2010 dummy, initial announcement and 5 past revisions the exact number of combinations equals to <span class="math inline">\(2^9-1\)</span>.)</p></li></div></div>
 <p>Having selected the models, to assess predictability we conduct two tests. First, we test for a joint significance of all coefficients in the complete model. The null hypothesis is that all coefficients equal zero, which in turn implies zero conditional mean of final revisions and the lack of predictability. By the same token, a rejection of the hypothesis would point to predictability. Second, we assess the predictive power of the complete model by comparing it to the naive model, as specified below.</p>
@@ -243,6 +242,7 @@ div.csl-indent {
 \]</span></p>
 <p>The naive model gives the revision forecast of <span class="math inline">\(\hat{r}_{t,m}^{f} = 0\)</span>, which is consistent with no predictability of revisions (i.e.&nbsp;zero conditional mean). We check whether and to which extent the complete model outperforms the naive model by looking at the ratio of the root-mean-square errors (RMSE) associated with the two models. If revisions are not predictable adding additional predictors to the naive model will bring no benefit in terms of RMSE reduction, thereby leaving the ratio at unity.</p>
 <p>Furthermore, to see the contribution of single regressors to potential predictive power we construct a set of intermediate models spanning the range between the complete model and the naive model. Concretely, we downsize the complete model by gradually removing predictors until the point when we reach the naive model. If an explanatory variable does not enter the complete model based on the selection criterion the elimination step does not change the regression specification. To this end, we take out from the complete model past revisions (which brings us to Interm. model 1), the value of the initial release (which brings us to Interm. model 2), a dummy for the post-2014Q2 period (which brings us to Interm. model 3) and quarterly dummies (which brings us to Interm. model 4). With the elimination of country-specific dummies we reach the naive model. The below equations characterise the specification of all intermediate models.</p>
+<div>
 <p><span class="math display">\[
   \textrm{Interm. model 1: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m}
                                        + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j}
@@ -250,12 +250,15 @@ div.csl-indent {
                                        + \delta x_{t,m}^{1}
                                        + \epsilon_{t,m}
 \]</span></p>
+</div>
+<div>
 <p><span class="math display">\[
   \textrm{Interm. model 2: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m}
                                        + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j}
                                        + \omega 1_{\left[t\geq2014Q2\right]}
                                        + \epsilon_{t,m}
 \]</span></p>
+</div>
 <p><span class="math display">\[
    \textrm{Interm. model 3: } r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m}
                                         + \sum_{j=1}^{4}\gamma_{j}Q_{t}^{j}
@@ -270,205 +273,207 @@ div.csl-indent {
 <p>The following columns report RMSEs ratios, where, as a reference in the denominator, we always take the naive model. The nominators instead are RMSE statistics corresponding to a particular model that is richer in predictors than the naive model. A reduction in RMSE for the complete model can be observed for all variables, although the magnitude for the three variables identified by the joint significance test is very small. For the majority of variables, however, the relative RMSE ratio equals to 0.95 or less. This points to material predictive power of information available at the time of the initial release, thereby contradicting the no-predictability hypothesis. Also, looking at the figures, both for the joint significance test and for the projection error reduction, fiscal variables do not appear to differ from macro variables in terms of predictability. Both are to a smaller or bigger degree predictable and badly-behaved in this sense.</p>
 <p>The inclusion of the intermediate models in the analysis enables us to determine the contribution of particular regressors to RMSE reductions. The decomposition demonstrates that the predictive information is spread across different predictors. Among dummy variables, country dummies bring the largest benefit in terms of predictability, which is particularly the case for macro variables. The regressor that comes with a sizeable prediction improvement among all variables is the initial announcement. Finally, past revisions further reduce RMSE, albeit by less than the initial announcement.</p>
 <p>To sum up, the results reveal that fiscal revisions in general are to some degree predictable. This is just another characteristic besides the positive bias and the large dispersion that speaks in favour of treating fiscal revisions as badly-behaved. Considering the predictability dimension fiscal revisions are quite similar to macro variables and they do not appear to be particularly ‘misbehaved’.</p>
-<div class="cell" data-tbl-width="8" data-tbl-height="4.75" data-hash="4-Predictability_cache/html/tbl-forecastability_AIC_e1a990a58485ab32b55bed491c61d26e">
+<div class="cell" data-tbl-width="8" data-tbl-height="4.75" data-hash="4-Predictability_cache/html/tbl-forecastability_AIC_49dc3cd355e724f051263f0cbc6b25a0">
 <div class="cell-output-display">
 <div id="tbl-forecastability_AIC" class="anchored">
-
-<table style="NAborder-bottom: 0; margin-left: auto; margin-right: auto;" class="table"><caption>Table&nbsp;4.1:  Predictability of the revisions based on AIC </caption>
- <thead>
-  <tr>
-   <th style="text-align:left;">  </th>
-   <th style="text-align:left;"> Expl. variable </th>
-   <th style="text-align:right;"> N </th>
-   <th style="text-align:left;"> F-value </th>
-   <th style="text-align:right;"> Compl/Naive </th>
-   <th style="text-align:right;"> Intrm1/Naive </th>
-   <th style="text-align:right;"> Intrm2/Naive </th>
-   <th style="text-align:right;"> Intrm3/Naive </th>
-   <th style="text-align:right;"> Intrm4/Naive </th>
-  </tr>
- </thead>
+<table class="table table-sm table-striped">
+<caption>Table&nbsp;4.1: Predictability of the revisions based on AIC</caption>
+<colgroup>
+<col style="width: 10%">
+<col style="width: 51%">
+<col style="width: 2%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Expl. variable</th>
+<th style="text-align: left;">N</th>
+<th style="text-align: left;">F-value</th>
+<th style="text-align: left;">Compl/Naive</th>
+<th style="text-align: left;">Intrm1/Naive</th>
+<th style="text-align: left;">Intrm2/Naive</th>
+<th style="text-align: left;">Intrm3/Naive</th>
+<th style="text-align: left;">Intrm4/Naive</th>
+</tr>
+</thead>
 <tbody>
-  <tr grouplength="4"><td colspan="9" style="border-bottom: 1px solid;"><strong>Revenue</strong></td></tr>
-<tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Total revenue </td>
-   <td style="text-align:left;"> $1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}$ </td>
-   <td style="text-align:right;"> 384 </td>
-   <td style="text-align:left;"> 0.01 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Direct taxes </td>
-   <td style="text-align:left;"> $\sum\limits_{j=1}^{4}Q_{t}^{j}+x_{t,m}^{1}+R_{t-2,m}$ </td>
-   <td style="text-align:right;"> 402 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.97 </td>
-   <td style="text-align:right;"> 0.98 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Indirect taxes </td>
-   <td style="text-align:left;"> $1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}+R_{t-4,m}$ </td>
-   <td style="text-align:right;"> 402 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.98 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Social contributions </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+x_{t,m}^{1}+R_{t-1,m}$ </td>
-   <td style="text-align:right;"> 384 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.96 </td>
-   <td style="text-align:right;"> 0.98 </td>
-   <td style="text-align:right;"> 0.98 </td>
-   <td style="text-align:right;"> 0.98 </td>
-  </tr>
-  <tr grouplength="5"><td colspan="9" style="border-bottom: 1px solid;"><strong>Expenditure</strong></td></tr>
-<tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Total expenditure </td>
-   <td style="text-align:left;"> $\sum\limits_{j=1}^{4}Q_{t}^{j}+x_{t,m}^{1}+R_{t-1,m}+R_{t-5,m}$ </td>
-   <td style="text-align:right;"> 384 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.96 </td>
-   <td style="text-align:right;"> 0.97 </td>
-   <td style="text-align:right;"> 0.98 </td>
-   <td style="text-align:right;"> 0.98 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Social transfers </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}$ </td>
-   <td style="text-align:right;"> 402 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.91 </td>
-   <td style="text-align:right;"> 0.92 </td>
-   <td style="text-align:right;"> 0.96 </td>
-   <td style="text-align:right;"> 0.96 </td>
-   <td style="text-align:right;"> 0.96 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Purchases </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}+R_{t-4,m}$ </td>
-   <td style="text-align:right;"> 384 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.84 </td>
-   <td style="text-align:right;"> 0.85 </td>
-   <td style="text-align:right;"> 0.97 </td>
-   <td style="text-align:right;"> 0.97 </td>
-   <td style="text-align:right;"> 0.97 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Gov. compensation </td>
-   <td style="text-align:left;"> $\sum\limits_{j=1}^{4}Q_{t}^{j}+x_{t,m}^{1}+R_{t-4,m}+R_{t-5,m}$ </td>
-   <td style="text-align:right;"> 384 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.96 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Gov. investment </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-1,m}+R_{t-5,m}$ </td>
-   <td style="text-align:right;"> 384 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.94 </td>
-   <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.96 </td>
-   <td style="text-align:right;"> 0.96 </td>
-   <td style="text-align:right;"> 0.96 </td>
-  </tr>
-  <tr grouplength="6"><td colspan="9" style="border-bottom: 1px solid;"><strong>Macro</strong></td></tr>
-<tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> GDP </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+\sum\limits_{i=1}^{4}R_{t-i,m}$ </td>
-   <td style="text-align:right;"> 444 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.95 </td>
-   <td style="text-align:right;"> 0.96 </td>
-   <td style="text-align:right;"> 0.96 </td>
-   <td style="text-align:right;"> 0.97 </td>
-   <td style="text-align:right;"> 0.97 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Private consumption </td>
-   <td style="text-align:left;"> $1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}$ </td>
-   <td style="text-align:right;"> 442 </td>
-   <td style="text-align:left;"> 0.01 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Total investment </td>
-   <td style="text-align:left;"> $1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+\sum\limits_{i=2}^{5}R_{t-i,m}$ </td>
-   <td style="text-align:right;"> 443 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.94 </td>
-   <td style="text-align:right;"> 0.97 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Exports </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+R_{t-2,m}+R_{t-4,m}$ </td>
-   <td style="text-align:right;"> 437 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.87 </td>
-   <td style="text-align:right;"> 0.89 </td>
-   <td style="text-align:right;"> 0.89 </td>
-   <td style="text-align:right;"> 0.89 </td>
-   <td style="text-align:right;"> 0.89 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Gov. consumption </td>
-   <td style="text-align:left;"> $x_{t,m}^{1}+R_{t-4,m}$ </td>
-   <td style="text-align:right;"> 428 </td>
-   <td style="text-align:left;"> 0.03 </td>
-   <td style="text-align:right;"> 0.99 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-   <td style="text-align:right;"> 1.00 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;padding-left: 2em;" indentlevel="1"> Wages and salaries </td>
-   <td style="text-align:left;"> $\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+R_{t-1,m}+R_{t-2,m}$ </td>
-   <td style="text-align:right;"> 420 </td>
-   <td style="text-align:left;"> 0 </td>
-   <td style="text-align:right;"> 0.91 </td>
-   <td style="text-align:right;"> 0.92 </td>
-   <td style="text-align:right;"> 0.92 </td>
-   <td style="text-align:right;"> 0.92 </td>
-   <td style="text-align:right;"> 0.92 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">Total revenue</td>
+<td style="text-align: left;"><span class="math inline">\(1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}\)</span></td>
+<td style="text-align: left;">384</td>
+<td style="text-align: left;">0.01</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Direct taxes</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{j=1}^{4}Q_{t}^{j}+x_{t,m}^{1}+R_{t-2,m}\)</span></td>
+<td style="text-align: left;">402</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.97</td>
+<td style="text-align: left;">0.98</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indirect taxes</td>
+<td style="text-align: left;"><span class="math inline">\(1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}+R_{t-4,m}\)</span></td>
+<td style="text-align: left;">402</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.98</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Social contributions</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{m=1}^{10}C_{m}+x_{t,m}^{1}+R_{t-1,m}\)</span></td>
+<td style="text-align: left;">384</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.95</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.98</td>
+<td style="text-align: left;">0.98</td>
+<td style="text-align: left;">0.98</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total expenditure</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{j=1}^{4}Q_{t}^{j}+x_{t,m}^{1}+R_{t-1,m}+R_{t-5,m}\)</span></td>
+<td style="text-align: left;">384</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.97</td>
+<td style="text-align: left;">0.98</td>
+<td style="text-align: left;">0.98</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Social transfers</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}\)</span></td>
+<td style="text-align: left;">402</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.91</td>
+<td style="text-align: left;">0.92</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.96</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Purchases</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-2,m}+R_{t-4,m}\)</span></td>
+<td style="text-align: left;">384</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.84</td>
+<td style="text-align: left;">0.85</td>
+<td style="text-align: left;">0.97</td>
+<td style="text-align: left;">0.97</td>
+<td style="text-align: left;">0.97</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gov.&nbsp;compensation</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{j=1}^{4}Q_{t}^{j}+x_{t,m}^{1}+R_{t-4,m}+R_{t-5,m}\)</span></td>
+<td style="text-align: left;">384</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.95</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gov.&nbsp;investment</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+R_{t-1,m}+R_{t-5,m}\)</span></td>
+<td style="text-align: left;">384</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.94</td>
+<td style="text-align: left;">0.95</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.96</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GDP</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+\sum\limits_{i=1}^{4}R_{t-i,m}\)</span></td>
+<td style="text-align: left;">444</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.95</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">0.97</td>
+<td style="text-align: left;">0.97</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Private consumption</td>
+<td style="text-align: left;"><span class="math inline">\(1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}\)</span></td>
+<td style="text-align: left;">442</td>
+<td style="text-align: left;">0.01</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Total investment</td>
+<td style="text-align: left;"><span class="math inline">\(1_{\left[t\geq2014Q2\right]}+x_{t,m}^{1}+\sum\limits_{i=2}^{5}R_{t-i,m}\)</span></td>
+<td style="text-align: left;">443</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.94</td>
+<td style="text-align: left;">0.97</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Exports</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{m=1}^{10}C_{m}+R_{t-2,m}+R_{t-4,m}\)</span></td>
+<td style="text-align: left;">437</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.87</td>
+<td style="text-align: left;">0.89</td>
+<td style="text-align: left;">0.89</td>
+<td style="text-align: left;">0.89</td>
+<td style="text-align: left;">0.89</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gov.&nbsp;consumption</td>
+<td style="text-align: left;"><span class="math inline">\(x_{t,m}^{1}+R_{t-4,m}\)</span></td>
+<td style="text-align: left;">428</td>
+<td style="text-align: left;">0.03</td>
+<td style="text-align: left;">0.99</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wages and salaries</td>
+<td style="text-align: left;"><span class="math inline">\(\sum\limits_{m=1}^{10}C_{m}+1_{\left[t\geq2014Q2\right]}+R_{t-1,m}+R_{t-2,m}\)</span></td>
+<td style="text-align: left;">420</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.91</td>
+<td style="text-align: left;">0.92</td>
+<td style="text-align: left;">0.92</td>
+<td style="text-align: left;">0.92</td>
+<td style="text-align: left;">0.92</td>
+</tr>
 </tbody>
-<tfoot>
-<tr><td style="padding: 0; " colspan="100%"><span style="font-style: italic;">Note: </span></td></tr>
-<tr><td style="padding: 0; " colspan="100%">
-<sup></sup> $R_{t-i,m}$ in the specification of explanatory variables are past revisions defined by $R_{t-i,m}=\\left(x_{t-i,m}^{i+1}-x_{t-i,m}^{1}\\right)$, as introduced in the equation of the complete model.</td></tr>
-</tfoot>
 </table>
-
 </div>
 </div>
 </div>
-<p>As we rely only on AIC a question may arise whether the findings are robust to other information criteria. Given the general conclusion on the presence of predictability, the question, however, is not very relevant for our application. In our exercise it is sufficient to find one model for which we reject the joint significance hypothesis or which is superior in terms of predictive power to the naive model. Other selection criteria that are more restrictive than AIC, for instance Schwartz Information Criterion (SIC), could prevent us from finding such a model and point towards no predictability in the revisions. In fact, this is what happens when the predictability exercise is recalculated with SIC (see Table <a href="@tbl-forecastability_SIC">C.1</a> in the online appendix). Given the AIC-based results pointing to predictability, any findings based on a more restrictive criterion would not change our conclusions. On the other hand, findings based on a looser criterion than AIC, which would allow even more information to enter the complete model, could only validate, or even strengthen, our conclusions.</p>
+<p>As we rely only on AIC a question may arise whether the findings are robust to other information criteria. Given the general conclusion on the presence of predictability, the question, however, is not very relevant for our application. In our exercise it is sufficient to find one model for which we reject the joint significance hypothesis or which is superior in terms of predictive power to the naive model. Other selection criteria that are more restrictive than AIC, for instance Schwartz Information Criterion (SIC), could prevent us from finding such a model and point towards no predictability in the revisions. In fact, this is what happens when the predictability exercise is recalculated with SIC (see <a href="C-Complementary-results.html#tbl-forecastability_SIC">Table&nbsp;<span>C.1</span></a> in the online appendix). Given the AIC-based results pointing to predictability, any findings based on a more restrictive criterion would not change our conclusions. On the other hand, findings based on a looser criterion than AIC, which would allow even more information to enter the complete model, could only validate, or even strengthen, our conclusions.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
