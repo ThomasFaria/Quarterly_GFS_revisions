@@ -174,7 +174,7 @@ rename_to_latex <- function(table) {
   table[, `Expl. variable` := stringr::str_replace_all(
     `Expl. variable`,
     c(
-      "ESA2010" = "1_{\\\\left[t\\\\geq2014Q2\\\\right]}",
+      "ESA2010" = "\\\\mathds{1}_{\\\\left[t\\\\geq2014Q2\\\\right]}",
       "Country" = "\\\\sum\\\\limits_{m=1}^{10}C_{m}",
       "\\bQ\\b" = "\\\\sum\\\\limits_{j=1}^{4}Q_{t}^{j}",
       "x1" = "x_{t,m}^{1}",

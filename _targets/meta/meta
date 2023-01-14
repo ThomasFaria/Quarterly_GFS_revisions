@@ -101,8 +101,8 @@ Subplot_all_revision|function|90e0ea70c59fe59c|||||||||||||||
 SubPlot_Mean_SD|function|042e07d43cb7ac44|||||||||||||||
 Subplot_PATHS|function|aa58ce24651966b6|||||||||||||||
 SubPlot_STATISTICS|function|0ad90fe89f5bfbb4|||||||||||||||
-table_AIC|stem|8759f0925cde2531|09aa7485e51e386f|b46b4d9c7a698ecb|-1575614368||t19367.782697302s|949a4711c5bccece|6252|parquet|local|vector|||0.031||
-table_BIC|stem|cf3ab2a3dd18ce48|c669bbd5ce6f1358|b46b4d9c7a698ecb|-15087655||t19367.7827005095s|ee140ed3bb20ecbb|5873|parquet|local|vector|||0.039||
+table_AIC|stem|8759f0925cde2531|09aa7485e51e386f|b46b4d9c7a698ecb|-1575614368||t19370.9287419798s|949a4711c5bccece|6252|parquet|local|vector|||0.154||
+table_BIC|stem|cf3ab2a3dd18ce48|c669bbd5ce6f1358|b46b4d9c7a698ecb|-15087655||t19370.92874514s|ee140ed3bb20ecbb|5873|parquet|local|vector|||0.037||
 temp_col|object|7bd7d0481f0e2444|||||||||||||||
 theme_ECB|function|cebe997ee7c7b493|||||||||||||||
 Var_Expenditure|object|4db90a897daa681c|||||||||||||||
