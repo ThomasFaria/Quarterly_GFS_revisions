@@ -1,6 +1,6 @@
 # Graphical illustration of the revisions {#appendix-Revisions-illustration}
 
-All final revisions to variables considered (but not necessarily included) in the analysis are illustrated in this appendix section with the twofold objective. First, the graphs are useful for illustrating the magnitude of the revisions across variables and countries. Second, the plots are indispensable to potentially identify any issues with the dataset that could impair our analysis (e.g. excessive values or lack of revisions). @sec-code-retrieval of the online appendix provides statistical codes used to retrieve the data.
+All final revisions to variables considered (but not necessarily included) in the analysis are illustrated in this appendix section with the twofold objective. First, the graphs are useful for illustrating the magnitude of the revisions across variables and countries. Second, the plots are indispensable to potentially identify any issues with the dataset that could impair our analysis (e.g. excessive values or lack of revisions). @appendix-code-retrieval of the online appendix provides statistical codes used to retrieve the data.
 
 ## Fiscal revenue variables
 ```{r}
@@ -8,6 +8,7 @@ All final revisions to variables considered (but not necessarily included) in th
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-TOR
 
 targets::tar_read(plot_revision_TOR)
 ```
@@ -18,6 +19,7 @@ targets::tar_read(plot_revision_TOR)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-DTX
 
 targets::tar_read(plot_revision_DTX)
 ```
@@ -28,6 +30,8 @@ targets::tar_read(plot_revision_DTX)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-TIN
+
 
 targets::tar_read(plot_revision_TIN)
 ```
@@ -38,6 +42,7 @@ targets::tar_read(plot_revision_TIN)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-SCT
 
 targets::tar_read(plot_revision_SCT)
 ```
@@ -48,6 +53,7 @@ targets::tar_read(plot_revision_SCT)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-OCR
 
 targets::tar_read(plot_revision_OCR)
 ```
@@ -58,6 +64,7 @@ targets::tar_read(plot_revision_OCR)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-KTR
 
 targets::tar_read(plot_revision_KTR)
 ```
@@ -69,6 +76,7 @@ targets::tar_read(plot_revision_KTR)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-TOE
 
 targets::tar_read(plot_revision_TOE)
 ```
@@ -79,6 +87,7 @@ targets::tar_read(plot_revision_TOE)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-THN
 
 targets::tar_read(plot_revision_THN)
 ```
@@ -88,6 +97,7 @@ targets::tar_read(plot_revision_THN)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-PUR
 
 targets::tar_read(plot_revision_PUR)
 ```
@@ -98,6 +108,7 @@ targets::tar_read(plot_revision_PUR)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-INP
 
 targets::tar_read(plot_revision_INP)
 ```
@@ -108,6 +119,7 @@ targets::tar_read(plot_revision_INP)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-COE
 
 targets::tar_read(plot_revision_COE)
 ```
@@ -118,6 +130,7 @@ targets::tar_read(plot_revision_COE)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-OCE
 
 targets::tar_read(plot_revision_OCE)
 ```
@@ -128,6 +141,7 @@ targets::tar_read(plot_revision_OCE)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-GIN
 
 targets::tar_read(plot_revision_GIN)
 ```
@@ -138,6 +152,7 @@ targets::tar_read(plot_revision_GIN)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-OKE
 
 targets::tar_read(plot_revision_OKE)
 ```
@@ -149,6 +164,7 @@ targets::tar_read(plot_revision_OKE)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-YEN
 
 targets::tar_read(plot_revision_YEN)
 ```
@@ -159,6 +175,7 @@ targets::tar_read(plot_revision_YEN)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-PCN
 
 targets::tar_read(plot_revision_PCN)
 ```
@@ -169,6 +186,7 @@ targets::tar_read(plot_revision_PCN)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-ITN
 
 targets::tar_read(plot_revision_ITN)
 ```
@@ -179,6 +197,7 @@ targets::tar_read(plot_revision_ITN)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-EXN
 
 targets::tar_read(plot_revision_EXN)
 ```
@@ -189,6 +208,7 @@ targets::tar_read(plot_revision_EXN)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-GCN
 
 targets::tar_read(plot_revision_GCN)
 ```
@@ -199,6 +219,7 @@ targets::tar_read(plot_revision_GCN)
 #| fig-width: 6.3
 #| fig-height: 8
 #| fig-align: center
+#| label: fig-WGS
 
 targets::tar_read(plot_revision_WGS)
 ```
