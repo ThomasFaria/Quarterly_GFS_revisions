@@ -61,9 +61,9 @@ format:
     theme: cosmo
     reference-location: margin
     
-  pdf:
     documentclass: scrreprt
     shift-heading-level-by: 1
+  elsevier-pdf:
     keep-tex: false
     journal:
       name: International Journal of Central Banking
