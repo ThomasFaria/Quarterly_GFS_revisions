@@ -60,7 +60,6 @@ The sum of intermediate revisions to a given quarterly value amounts to a final 
 #| fig-cap: Revisions to the growth rate of gov. compensation in the Netherlands
 #| fig-width: 6.3
 #| fig-height: 3.5
-#| fig-align: center
 
 targets::tar_read(plot_total_revision)
 
@@ -100,7 +99,6 @@ We regard this set of variables as a reliable benchmark for assessing fiscal rev
 #| fig-cap: Final revisions across fiscal and macro variables
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 
 targets::tar_read(plot_revisions_across_variables)
 
@@ -116,7 +114,6 @@ Giving the small and volatile countries a prominent role in forming conclusions 
 #| fig-cap: Final revisions across countries
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 
 targets::tar_read(plot_revisions_across_countries)
 
@@ -129,7 +126,6 @@ Our dataset consists of 59 quarterly GFS vintages taking place since January 200
 #| fig-cap: Final revisions across time
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 
 targets::tar_read(plot_revisions_across_time)
 ```

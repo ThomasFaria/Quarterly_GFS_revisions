@@ -59,7 +59,6 @@ kableExtra::kbl(table,
 #| fig-cap: Revision paths across variables in the pre-2014Q2 subsample
 #| fig-width: 6.3
 #| fig-height: 5.75
-#| fig-align: center
 
 targets::tar_read(plot_revision_paths_pre2014)
 ```
@@ -69,7 +68,6 @@ targets::tar_read(plot_revision_paths_pre2014)
 #| fig-cap: Revision paths across variables in the post-2014Q2 subsample
 #| fig-width: 6.3
 #| fig-height: 5.75
-#| fig-align: center
 
 targets::tar_read(plot_revision_paths_post2014)
 ```

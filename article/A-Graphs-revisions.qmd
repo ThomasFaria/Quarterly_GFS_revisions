@@ -8,7 +8,6 @@ All final revisions to variables considered (but not necessarily included) in th
 #| fig-cap: Final revisions to total revenue
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-TOR
 
 targets::tar_read(plot_revision_TOR)
@@ -22,7 +21,6 @@ targets::tar_read(plot_revision_TOR)
 #| fig-cap: Final revisions to direct taxes
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-DTX
 
 targets::tar_read(plot_revision_DTX)
@@ -36,7 +34,6 @@ targets::tar_read(plot_revision_DTX)
 #| fig-cap: Final revisions to indirect taxes
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-TIN
 
 
@@ -51,7 +48,6 @@ targets::tar_read(plot_revision_TIN)
 #| fig-cap: Final revisions to social contributions
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-SCT
 
 targets::tar_read(plot_revision_SCT)
@@ -65,7 +61,6 @@ targets::tar_read(plot_revision_SCT)
 #| fig-cap: Final revisions to other current revenue
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-OCR
 
 targets::tar_read(plot_revision_OCR)
@@ -79,7 +74,6 @@ targets::tar_read(plot_revision_OCR)
 #| fig-cap: Final revisions to capital revenue
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-KTR
 
 targets::tar_read(plot_revision_KTR)
@@ -91,7 +85,6 @@ targets::tar_read(plot_revision_KTR)
 #| fig-cap: Final revisions to total expenditure
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-TOE
 
 targets::tar_read(plot_revision_TOE)
@@ -105,7 +98,6 @@ targets::tar_read(plot_revision_TOE)
 #| fig-cap: Final revisions to social transfers
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-THN
 
 targets::tar_read(plot_revision_THN)
@@ -119,7 +111,6 @@ targets::tar_read(plot_revision_THN)
 #| fig-cap: Final revisions to purchases
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-PUR
 
 targets::tar_read(plot_revision_PUR)
@@ -133,7 +124,6 @@ targets::tar_read(plot_revision_PUR)
 #| fig-cap: Final revisions to interest payments
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-INP
 
 targets::tar_read(plot_revision_INP)
@@ -147,7 +137,6 @@ targets::tar_read(plot_revision_INP)
 #| fig-cap: Final revisions to gov. compensation
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-COE
 
 targets::tar_read(plot_revision_COE)
@@ -161,7 +150,6 @@ targets::tar_read(plot_revision_COE)
 #| fig-cap: Final revisions to other current expenditure
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-OCE
 
 targets::tar_read(plot_revision_OCE)
@@ -175,7 +163,6 @@ targets::tar_read(plot_revision_OCE)
 #| fig-cap: Final revisions to gov. investment
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-GIN
 
 targets::tar_read(plot_revision_GIN)
@@ -189,7 +176,6 @@ targets::tar_read(plot_revision_GIN)
 #| fig-cap: Final revisions to other capital expenditure
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-OKE
 
 targets::tar_read(plot_revision_OKE)
@@ -201,7 +187,6 @@ targets::tar_read(plot_revision_OKE)
 #| fig-cap: Final revisions to GDP
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-YEN
 
 targets::tar_read(plot_revision_YEN)
@@ -215,7 +200,6 @@ targets::tar_read(plot_revision_YEN)
 #| fig-cap: Final revisions to private consumption
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-PCN
 
 targets::tar_read(plot_revision_PCN)
@@ -229,7 +213,6 @@ targets::tar_read(plot_revision_PCN)
 #| fig-cap: Final revisions to total investment
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-ITN
 
 targets::tar_read(plot_revision_ITN)
@@ -243,7 +226,6 @@ targets::tar_read(plot_revision_ITN)
 #| fig-cap: Final revisions to exports
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-EXN
 
 targets::tar_read(plot_revision_EXN)
@@ -257,7 +239,6 @@ targets::tar_read(plot_revision_EXN)
 #| fig-cap: Final revisions to gov. consumption
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-GCN
 
 targets::tar_read(plot_revision_GCN)
@@ -271,7 +252,6 @@ targets::tar_read(plot_revision_GCN)
 #| fig-cap: Final revisions to wages and salaries
 #| fig-width: 6.3
 #| fig-height: 8
-#| fig-align: center
 #| label: fig-WGS
 
 targets::tar_read(plot_revision_WGS)

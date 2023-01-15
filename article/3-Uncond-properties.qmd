@@ -18,7 +18,6 @@ The MR statistic will help us assess whether revisions are biased. Other metrics
 #| fig-cap: Summary statistics of final revisions in the entire sample
 #| fig-width: 6.3
 #| fig-height: 4.75
-#| fig-align: center
 
 targets::tar_read(plot_statistics_full_sample)
 ```

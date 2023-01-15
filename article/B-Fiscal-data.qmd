@@ -4,7 +4,6 @@
 #| fig-cap: Average percentage GDP shares across variables
 #| fig-width: 6.3
 #| fig-height: 3.75
-#| fig-align: center
 #| label: fig-ItemShareGDP
 
 targets::tar_read(plot_share_GDP)
@@ -14,7 +13,6 @@ targets::tar_read(plot_share_GDP)
 #| fig-cap: Mean and standard deviation of growth rates across variables
 #| fig-width: 6.3
 #| fig-height: 4.75
-#| fig-align: center
 #| label: fig-mean-standard-deviation-values
 
 targets::tar_read(plot_mean_sd)
@@ -24,7 +22,6 @@ targets::tar_read(plot_mean_sd)
 #| fig-cap: Average percentage shares of total expenditure in the euro area
 #| fig-width: 6.3
 #| fig-height: 3.75
-#| fig-align: center
 #| label: fig-share-TOE
 
 targets::tar_read(plot_share_TOE)
