@@ -51,7 +51,7 @@ book:
     tools:
           - icon: save
             menu:
-              - text: Data CSV
+              - text: Fiscal Real Time Database CSV
                 url:  "https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv"
     
 bibliography: bibliography.bib
@@ -60,9 +60,7 @@ format:
   html:
     theme: cosmo
     reference-location: margin
-    
-    documentclass: scrreprt
-    shift-heading-level-by: 1
+
   elsevier-pdf:
     keep-tex: false
     journal:
