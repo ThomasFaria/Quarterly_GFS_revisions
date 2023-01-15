@@ -1,4 +1,4 @@
-# Data codes for retrieval {#appendix-code-retrieval}
+# Data codes for retrieval {#sec-code-retrieval}
 ```{r}
 #| label: tbl-Code-series-fiscal
 #| tbl-cap: ECB's SDW codes for data retrieval (fiscal series)

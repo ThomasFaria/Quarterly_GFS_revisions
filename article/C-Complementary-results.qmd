@@ -1,4 +1,4 @@
-# Complementing results {#appendix-complementing-results}
+# Complementing results {#sec-complementing-results}
 
 ::: {.content-visible when-format="pdf"}
 \floatplacement{table}{!htbp}

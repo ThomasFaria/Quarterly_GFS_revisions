@@ -1,4 +1,4 @@
-# Selected data characteristics {#appendix-fiscal-data-characteristics}
+# Selected data characteristics {#sec-fiscal-data-characteristics}
 
 ```{r}
 #| fig-cap: Average percentage GDP shares across variables
