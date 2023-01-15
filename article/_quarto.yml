@@ -74,6 +74,9 @@ format:
     toc-title: Contents
     include-in-header:
       - packages.tex
+    include-after-body:
+      text: |
+        \printindex
     abstract: |
       We investigate the properties of fiscal revisions in the euro area by contrasting them with macro revisions. To this end, we construct a fiscal real-time dataset containing quarterly releases of Government Finance Statistics, which is supplemented by macro variables from Main National Accounts. Fiscal revisions, like macro revisions, do not satisfy desirable properties expected from well-behaved revisions. In particular, they tend to have positive mean, are non-negligible in size and are predictable. With our investigation we contradict the often heard view that fiscal data are subject to extraordinarily sizeable revisions. While it was the case some years ago since 2014 the revisions for the main fiscal categories are in the same ballpark as the revisions for the main macroeconomic series. In general, properties of fiscal and macro revisions are quite similar since the introduction of ESA 2010 in 2014.
     fig-pos: 'H'
