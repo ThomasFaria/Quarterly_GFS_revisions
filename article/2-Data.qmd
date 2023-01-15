@@ -13,62 +13,6 @@ In addition, the dataset is supplemented with a limited set of variables from Ma
 
 The structure of our real-time dataset follows a typical set-up, as presented in @diebold_rudebusch and as embedded in ECB's Statistical Data Warehouse (SDW) (see a demonstration in @tbl-rev-chron). Each column represents a data release, which in the case of GFS data takes place four times per year (in January, April, July and October).^[The data for a given quarter are compiled for the first time 90 days after the end of the quarter and are published after validation around 110 days after the end of the quarter.] Each row, in turn, represents a quarter for which the economic activity is measured. Data releases for a given quarter can be traced from left to right within the corresponding row. Differences between releases constitute intermediate revisions, which then make up final revisions (i.e. a difference between the final release and the first release).
 
-::: {.content-visible when-format="pdf"}
-```{=latex}
- \begin{table}[H]
- \centering{}\caption{Timing of the revisions and underlying releases \label{rev-chron}}
- \noindent\begin{minipage}[t]{1\columnwidth}%
- \begin{center}
- \begin{tabular}{|c|c|c|c|c|c|c|c|}
- \hline 
- \multicolumn{1}{|c}{\multirow{2}{*}{}} & \multirow{2}{*}{} & \multicolumn{6}{c|}{\textbf{\small{}Release time}}\tabularnewline
- \cline{3-8} \cline{4-8} \cline{5-8} \cline{6-8} \cline{7-8} \cline{8-8} 
-  &  & \multirow{3}{*}{{\small{}Jul (T)}} & \multirow{3}{*}{{\small{}Oct (T)}} & \multirow{3}{*}{{\small{}Jan (T+1)}} & {\small{}Apr (T+1)} & \multirow{3}{*}{{\small{}Jul (T+1)}} & {\small{}Oct (T+1)}\tabularnewline
- \multicolumn{1}{|c}{} &  &  &  &  & {\small{}(1st annual } &  & {\small{}(2nd annual }\tabularnewline
- \multicolumn{1}{|c}{} &  &  &  &  & {\small{}release)} &  & {\small{}release)}\tabularnewline
- \hline 
- \multirow{20}{*}{\begin{turn}{90}
- \textbf{\small{}Observation quarter}
- \end{turn}} & \multirow{5}{*}{{\small{}Q1(T)}} & \multirow{2}{*}{{\small{}1st release}} & \multirow{2}{*}{{\small{}2nd release}} & \multirow{2}{*}{{\small{}3rd release}} & \multirow{2}{*}{{\small{}4th release}} & \multirow{2}{*}{{\small{}5th release}} & {\small{}6th release }\tabularnewline
-  &  &  &  &  &  &  & \textbf{\small{}(final)}\tabularnewline
- \cline{3-8} \cline{4-8} \cline{5-8} \cline{6-8} \cline{7-8} \cline{8-8} 
-  &  & \multirow{3}{*}{} & \textcolor{magenta}{\small{}1st }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}2nd }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}3rd }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}4th }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}5th }\textcolor{magenta}{\emph{\small{}interm.}}\tabularnewline
-  &  &  & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision}\tabularnewline
- \cline{4-8} \cline{5-8} \cline{6-8} \cline{7-8} \cline{8-8} 
-  &  &  & \multicolumn{5}{c|}{\emph{final} revision}\tabularnewline
- \cline{2-8} \cline{3-8} \cline{4-8} \cline{5-8} \cline{6-8} \cline{7-8} \cline{8-8} 
-  & \multirow{5}{*}{{\small{}Q2(T)}} & \multirow{5}{*}{} & \multirow{2}{*}{{\small{}1st release}} & \multirow{2}{*}{{\small{}2nd release}} & \multirow{2}{*}{{\small{}3rd release}} & \multirow{2}{*}{{\small{}4th release}} & {\small{}5th release }\tabularnewline
-  &  &  &  &  &  &  & \textbf{\small{}(final)}\tabularnewline
- \cline{4-8} \cline{5-8} \cline{6-8} \cline{7-8} \cline{8-8} 
-  &  &  & \multirow{3}{*}{} & \textcolor{magenta}{\small{}1st }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}2nd }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}3rd }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}4th }\textcolor{magenta}{\emph{\small{}interm.}}\tabularnewline
-  &  &  &  & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision}\tabularnewline
- \cline{5-8} \cline{6-8} \cline{7-8} \cline{8-8} 
-  &  &  &  & \multicolumn{4}{c|}{\emph{final} revision}\tabularnewline
- \cline{2-8} \cline{3-8} \cline{4-8} \cline{5-8} \cline{6-8} \cline{7-8} \cline{8-8} 
-  & \multirow{5}{*}{{\small{}Q3(T)}} & \multirow{5}{*}{} & \multirow{5}{*}{} & \multirow{2}{*}{{\small{}1st release}} & \multirow{2}{*}{{\small{}2nd release}} & \multirow{2}{*}{{\small{}3rd release}} & {\small{}4th release }\tabularnewline
-  &  &  &  &  &  &  & \textbf{\small{}(final)}\tabularnewline
- \cline{5-8} \cline{6-8} \cline{7-8} \cline{8-8} 
-  &  &  &  & \multirow{3}{*}{} & \textcolor{magenta}{\small{}1st }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}2nd }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}3rd }\textcolor{magenta}{\emph{\small{}interm.}}\tabularnewline
-  &  &  &  &  & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision}\tabularnewline
- \cline{6-8} \cline{7-8} \cline{8-8} 
-  &  &  &  &  & \multicolumn{3}{c|}{\emph{final} revision}\tabularnewline
- \cline{2-8} \cline{3-8} \cline{4-8} \cline{5-8} \cline{6-8} \cline{7-8} \cline{8-8} 
-  & \multirow{5}{*}{{\small{}Q4(T)}} & \multirow{5}{*}{} & \multirow{5}{*}{} & \multirow{5}{*}{} & \multirow{2}{*}{{\small{}1st release}} & \multirow{2}{*}{{\small{}2nd release}} & {\small{}3rd release }\tabularnewline
-  &  &  &  &  &  &  & \textbf{\small{}(final)}\tabularnewline
- \cline{6-8} \cline{7-8} \cline{8-8} 
-  &  &  &  &  & \multirow{3}{*}{} & \textcolor{magenta}{\small{}1st }\textcolor{magenta}{\emph{\small{}interm.}} & \textcolor{magenta}{\small{}2nd }\textcolor{magenta}{\emph{\small{}interm.}}\tabularnewline
-  &  &  &  &  &  & \textcolor{magenta}{\small{}revision} & \textcolor{magenta}{\small{}revision}\tabularnewline
- \cline{7-8} \cline{8-8} 
-  &  &  &  &  &  & \multicolumn{2}{c|}{\emph{final} revision}\tabularnewline
- \hline 
- \end{tabular}
- \par\end{center}%
- \end{minipage}
- \end{table}
-```
-:::
-
-::: {.content-visible when-format="html"}
 ```{r}
 #| label: tbl-rev-chron
 #| tbl-cap: Timing of the revisions and underlying releases
@@ -81,7 +25,7 @@ tbl_img |>
   kableExtra::kable_paper(full_width = F) |>
   kableExtra::column_spec(1, image = "rev-chron.png") 
 ```
-:::
+
  
 To define revisions it is necessary to take a stance which release constitutes a final value for a certain quarter. Treating the most recent available observations as final releases may be suboptimal because of benchmark revisions, which take place every several years and lead to revisions of not only the most recent quarters but also remote ones.^[Statistical agencies occasionally adjust their methodologies, which leads to revisions of entire time series --- the so-called benchmark revisions. In the European Union a harmonised European revision policy was put in place to ensure coordinated and consistent revisions (see @ec_revision_guidelines). According to this policy, benchmark revisions should take place each five years, with implementation years ending with '4' and '9'. Consequently, benchmark revisions for ESA 2010, which govern both GFS and MNA, were supposed to be implemented in 2014 (at the time of the ESA 2010 introduction) and 5 years later in 2019. In practice, however, not all countries  followed the recommendations. Some Member States carried out benchmark revisions outside the benchmark years --- before, after or even each year including during the benchmark years. The lack of regularity makes controlling for benchmark revisions in practice extremely challenging.] Against this background, the selection of a final value becomes a delicate balancing act between two objectives. On the one hand, there is a desire to incorporate as many releases as possible to reflect any new incoming information since the moment of the initial release. On the other hand, one should limit the number of releases to avoid as much as possible the undesirable contamination of the dataset with benchmark revisions. The notion of a final value in this situation becomes necessarily arbitrary. In addition, it should be recognised that fiscal data even though reported at quarterly frequency carry some characteristics of annual data, which reflects the annual nature of budgeting and reporting in the public sector.
 
