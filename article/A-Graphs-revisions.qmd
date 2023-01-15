@@ -13,7 +13,10 @@ All final revisions to variables considered (but not necessarily included) in th
 
 targets::tar_read(plot_revision_TOR)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to direct taxes
@@ -24,7 +27,10 @@ targets::tar_read(plot_revision_TOR)
 
 targets::tar_read(plot_revision_DTX)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to indirect taxes
@@ -36,7 +42,10 @@ targets::tar_read(plot_revision_DTX)
 
 targets::tar_read(plot_revision_TIN)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to social contributions
@@ -47,7 +56,10 @@ targets::tar_read(plot_revision_TIN)
 
 targets::tar_read(plot_revision_SCT)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to other current revenue
@@ -58,7 +70,10 @@ targets::tar_read(plot_revision_SCT)
 
 targets::tar_read(plot_revision_OCR)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to capital revenue
@@ -81,7 +96,10 @@ targets::tar_read(plot_revision_KTR)
 
 targets::tar_read(plot_revision_TOE)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to social transfers
@@ -93,6 +111,10 @@ targets::tar_read(plot_revision_TOE)
 targets::tar_read(plot_revision_THN)
 ```
 
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
 ```{r}
 #| fig-cap: Final revisions to purchases
 #| fig-width: 6.3
@@ -102,7 +124,10 @@ targets::tar_read(plot_revision_THN)
 
 targets::tar_read(plot_revision_PUR)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to interest payments
@@ -113,7 +138,10 @@ targets::tar_read(plot_revision_PUR)
 
 targets::tar_read(plot_revision_INP)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to gov. compensation
@@ -124,7 +152,10 @@ targets::tar_read(plot_revision_INP)
 
 targets::tar_read(plot_revision_COE)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to other current expenditure
@@ -135,7 +166,10 @@ targets::tar_read(plot_revision_COE)
 
 targets::tar_read(plot_revision_OCE)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to gov. investment
@@ -146,7 +180,10 @@ targets::tar_read(plot_revision_OCE)
 
 targets::tar_read(plot_revision_GIN)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to other capital expenditure
@@ -169,7 +206,10 @@ targets::tar_read(plot_revision_OKE)
 
 targets::tar_read(plot_revision_YEN)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to private consumption
@@ -180,7 +220,10 @@ targets::tar_read(plot_revision_YEN)
 
 targets::tar_read(plot_revision_PCN)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to total investment
@@ -191,7 +234,10 @@ targets::tar_read(plot_revision_PCN)
 
 targets::tar_read(plot_revision_ITN)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to exports
@@ -202,7 +248,10 @@ targets::tar_read(plot_revision_ITN)
 
 targets::tar_read(plot_revision_EXN)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to gov. consumption
@@ -213,7 +262,10 @@ targets::tar_read(plot_revision_EXN)
 
 targets::tar_read(plot_revision_GCN)
 ```
+
+::: {.content-visible when-format="pdf"}
 \pagebreak
+:::
 
 ```{r}
 #| fig-cap: Final revisions to wages and salaries
