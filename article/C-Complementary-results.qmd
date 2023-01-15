@@ -73,12 +73,3 @@ targets::tar_read(plot_revision_paths_pre2014)
 
 targets::tar_read(plot_revision_paths_post2014)
 ```
-
-
-```{r UNESCAPED}
-data.frame(Function = "$$",
-           Formula = "$\\leftarrow$",
-           Break = "$R_{t-4,m}$",
-           Link = "[Google](www.google.com)") |>
-  kableExtra::kbl(format = "markdown") 
-```
