@@ -16,8 +16,8 @@ preprocess_revision_db <- function(data) {
     Group %in% c("Macro"), "Macro",
     !(Group %in% c("Macro", "Revenue", "Expenditure")), "Others"
   ))][, IsREA := .(fcase(
-    Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 1,
-    !(Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT")), 0
+    Country_code %in% c("EL", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 1,
+    !(Country_code %in% c("EL", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT")), 0
   ))][, IsEA := .(fcase(
     Country_code %in% c("EA"), 1,
     !(Country_code %in% c("EA")), 0
