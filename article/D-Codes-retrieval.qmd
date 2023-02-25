@@ -1,4 +1,6 @@
 # Data codes for retrieval {#sec-code-retrieval}
+
+## Test
 ```{r}
 #| label: tbl-Code-series-fiscal
 #| tbl-cap: ECB's SDW codes for data retrieval (fiscal series)
@@ -55,6 +57,7 @@ kableExtra::kbl(text_tbl, col.names = c("Name", "Retrieval code")) |>
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
  
+## Test 2
 ```{r}
 #| label: tbl-Code-series-macro
 #| tbl-cap: ECB's SDW codes for data retrieval (macro series)

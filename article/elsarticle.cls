@@ -107,9 +107,9 @@
 \DeclareOption{doubleblind}{\doubleblindtrue}
 
 \ExecuteOptions{a4paper,10pt,oneside,onecolumn,number,preprint,centertitle}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
 \ProcessOptions
-\LoadClass{report}
+\LoadClass{scrartcl}
 \RequirePackage{graphicx}
 \let\comma\@empty
 \let\tnotesep\@empty

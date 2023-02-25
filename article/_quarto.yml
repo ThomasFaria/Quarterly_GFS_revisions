@@ -35,7 +35,6 @@ book:
     - 1-Introduction.qmd
     - 2-Data.qmd
     - 3-Uncond-properties.qmd
-    - 4-Predictability.qmd
     - 5-Intermediate-revisions.qmd
     - 6-Conclusion.qmd
     - text: "---"
@@ -43,7 +42,6 @@ book:
   appendices: 
     - A-Graphs-revisions.qmd
     - B-Fiscal-data.qmd
-    - C-Complementary-results.qmd
     - D-Codes-retrieval.qmd
   downloads: [pdf]
   sidebar:
