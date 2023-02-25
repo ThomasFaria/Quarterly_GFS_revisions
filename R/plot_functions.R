@@ -979,7 +979,7 @@ Data_Ranking <- function(data, Items, Vintages, ObsYear) {
     by = .(Country_code)
   ][
     , Share := Value / max(Value)
-  ][!(Country_code %in% c("EA", "I8"))][
+  ][!(Country_code %in% c("EA", "EA19"))][
     , Country_code := factor(Country_code, levels = c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "EL", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"))
   ][, Group := .(fcase(
     Country_code %in% c("EL", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), "Others",

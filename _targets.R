@@ -13,8 +13,8 @@ options(timeout = 5*60)
 list(
   tarchetypes::tar_download(
     name = file,
-    urls = c("https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv"),
-    paths = "data/RealTimeDatabase.csv"
+    urls = c("https://minio.lab.sspcloud.fr/tfaria/public/real-time-fiscal-database.parquet"),
+    paths = "data/RealTimeDatabase.parquet"
   ),
   tar_target(
     name = RTDB,
