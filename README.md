@@ -54,7 +54,7 @@ Interest (**Interest payments**) | GFS.Q.N.cc.W0.S13.S1.C.D.D41._Z._Z._T.XDC._Z.
 |**Total investment**| MNA.Q.N.cc.W0.S1.S1.D.P5.N1G._T._Z.EUR.V.N|
 |**Exports** |MNA.Q.N.cc.W1.S1.S1.D.P6._Z._Z._Z.EUR.V.N|
 |**Gov. consumption**| MNA.Q.N.cc.W0.S13.S1.D.P3._Z._Z._T.EUR.V.N|
-|**Wages and salaries** |MNA.Q.N.cc.W2.S1.S1.D.D1._Z._T._Z.EUR.V.N|
+|**Compensation of employees** |MNA.Q.N.cc.W2.S1.S1.D.D1._Z._T._Z.EUR.V.N|
 
 [^1]: The dataset will be automatically updated with future releases.
 

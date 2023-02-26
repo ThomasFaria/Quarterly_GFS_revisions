@@ -423,7 +423,7 @@ SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y) {
     factor(Variable_long, levels = c(
       "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
       "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
-      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Compensation of employees"
     )),
     factor(Group, levels = c("Revenue", "Expenditure", "Macro")),
     factor(Statistic, levels = c("N", "MR", "MIN", "MAX", "MAR", "RMSR", "N2S"))
@@ -828,7 +828,7 @@ Plot_Share_GDP <- function(sample) {
     factor(Variable_long, levels = c(
       "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
       "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
-      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Compensation of employees"
     )), 
     factor(Group2, levels = c(
     "Revenue",
@@ -880,7 +880,7 @@ SubPlot_Mean_SD <- function(sample, Statistics, Legend, Ylabs, scales_y) {
   sample[, c("Variable_long", "Group2", "Statistic") := list(factor(Variable_long, levels = c(
     "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
     "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
-    "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+    "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Compensation of employees"
   )),
                                                              factor(Group2, levels = c("Revenue", "Expenditure", "Macro", "Others")),
                                                              Statistic = factor(Statistic, levels = c("Mean", "SD", "Share"))

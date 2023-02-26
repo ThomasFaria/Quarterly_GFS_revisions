@@ -90,7 +90,7 @@ Name & Retrieval code\tabularnewline
 \hline 
 {\footnotesize{}Gov. consumption} & \texttt{\footnotesize{}MNA.Q.N.cc.W0.S13.S1.D.P3.\_Z.\_Z.\_T.EUR.V.N}\tabularnewline
 \hline 
-{\footnotesize{}Wages and salaries} & \texttt{\footnotesize{}MNA.Q.N.cc.W2.S1.S1.D.D1.\_Z.\_T.\_Z.EUR.V.N}\tabularnewline
+{\footnotesize{}Compensation of employees} & \texttt{\footnotesize{}MNA.Q.N.cc.W2.S1.S1.D.D1.\_Z.\_T.\_Z.EUR.V.N}\tabularnewline
 \hline 
 \end{tabular}
 \end{table}
