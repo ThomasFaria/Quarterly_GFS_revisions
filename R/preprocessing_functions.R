@@ -53,6 +53,12 @@ preprocess_raw_db <- function(data) {
                            "TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE",
                            "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "FALSE"
     ))
+  ][
+    ,
+    Variable_long := .(fcase(
+      Variable_code == "WGS", "Comp. of employees",
+      Variable_code != "WGS", Variable_long
+    ))
   ]
   return(data)
 }
