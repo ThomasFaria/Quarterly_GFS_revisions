@@ -1,5 +1,5 @@
 get_RTDB <- function(file) {
-  data <- data.table(arrow::read_csv_arrow(file))
+  data <- arrow::read_parquet(file)
   return(preprocess_raw_db(data))
 }
 

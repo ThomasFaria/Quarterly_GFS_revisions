@@ -423,7 +423,7 @@ SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y) {
     factor(Variable_long, levels = c(
       "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
       "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
-      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Comp. of employees"
     )),
     factor(Group, levels = c("Revenue", "Expenditure", "Macro")),
     factor(Statistic, levels = c("N", "MR", "MIN", "MAX", "MAR", "RMSR", "N2S"))
@@ -828,7 +828,7 @@ Plot_Share_GDP <- function(sample) {
     factor(Variable_long, levels = c(
       "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
       "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
-      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Comp. of employees"
     )), 
     factor(Group2, levels = c(
     "Revenue",
@@ -880,7 +880,7 @@ SubPlot_Mean_SD <- function(sample, Statistics, Legend, Ylabs, scales_y) {
   sample[, c("Variable_long", "Group2", "Statistic") := list(factor(Variable_long, levels = c(
     "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
     "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
-    "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"
+    "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Comp. of employees"
   )),
                                                              factor(Group2, levels = c("Revenue", "Expenditure", "Macro", "Others")),
                                                              Statistic = factor(Statistic, levels = c("Mean", "SD", "Share"))
@@ -979,10 +979,10 @@ Data_Ranking <- function(data, Items, Vintages, ObsYear) {
     by = .(Country_code)
   ][
     , Share := Value / max(Value)
-  ][!(Country_code %in% c("EA", "I8"))][
-    , Country_code := factor(Country_code, levels = c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"))
+  ][!(Country_code %in% c("EA", "EA19"))][
+    , Country_code := factor(Country_code, levels = c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT", "REA", "EL", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"))
   ][, Group := .(fcase(
-    Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), "Others",
+    Country_code %in% c("EL", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), "Others",
     Country_code %in% c("DE", "FR", "IT", "ES", "NL", "BE", "AT", "FI", "PT"), "Big 9",
     Country_code %in% ("REA"), "Rest of EA"
   ))]

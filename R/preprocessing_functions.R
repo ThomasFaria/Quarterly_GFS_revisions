@@ -16,8 +16,8 @@ preprocess_revision_db <- function(data) {
     Group %in% c("Macro"), "Macro",
     !(Group %in% c("Macro", "Revenue", "Expenditure")), "Others"
   ))][, IsREA := .(fcase(
-    Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 1,
-    !(Country_code %in% c("GR", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT")), 0
+    Country_code %in% c("EL", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT"), 1,
+    !(Country_code %in% c("EL", "IE", "SK", "LU", "SI", "LT", "LV", "EE", "CY", "MT")), 0
   ))][, IsEA := .(fcase(
     Country_code %in% c("EA"), 1,
     !(Country_code %in% c("EA")), 0
@@ -52,6 +52,12 @@ preprocess_raw_db <- function(data) {
       Variable_code %in% c("TOR", "DTX", "TIN", "SCT", "OCR", "KTR",
                            "TOE", "THN", "PUR", "INP", "COE", "OCE", "GIN", "OKE",
                            "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"), "FALSE"
+    ))
+  ][
+    ,
+    Variable_long := .(fcase(
+      Variable_code == "WGS", "Comp. of employees",
+      Variable_code != "WGS", Variable_long
     ))
   ]
   return(data)

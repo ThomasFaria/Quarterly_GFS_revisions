@@ -42,7 +42,7 @@ variables.
 The next two columns present the MIN-MAX range of revisions. The intervals are relatively wide, 
 and in some cases extremely wide (see, for instance, government investment with the range from $-102$ to $+83$ percentage points). Even the fiscal variables with the most contained ranges, like social transfers, are associated
 with a wider interval than the usually stable macro categories (i.e.
-output, private consumption or wages and salaries). The MIN-MAX interval is a
+output, private consumption or compensation of employees). The MIN-MAX interval is a
 first indication that the revisions to fiscal variables may be larger than
 these associated with the macro data.
 
@@ -57,7 +57,7 @@ them tends to remain below 1 percentage point. The values are significantly
 higher than for MR and should be regarded as relatively sizeable
 given the average growth of these variables in the sample (around 4%). MAR values for these fiscal variables are approximately
 double of the corresponding statistics for the stable macroeconomic
-variables (i.e. output, private consumption and wages and salaries) amounting to
+variables (i.e. output, private consumption and compensation of employees) amounting to
 around 0.5 percentage points, which are by no means small. MAR statistics
 for the remaining fiscal variables are even higher with government
 investment being characterised by the largest figure (almost 5 percentage
