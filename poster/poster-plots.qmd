@@ -1,0 +1,334 @@
+---
+title: "Poster plots : How bad are fiscal revisions in the euro area?"
+author:
+  - name: Krzysztof Bankowski
+    email: krzysztof.bankowski@europa.ecb.eu
+    affiliations: 
+        - id: ECB
+          name: European Central Bank
+          department: Fiscal Policies Division
+          # address:  Sonnemannstrasse 20
+          city: Frankfurt
+          postal-code: 60314
+    # attributes:
+    #     corresponding: true
+    # note: This is the first author footnote.
+  - name: Thomas Faria
+    email: thomas.faria@insee.fr
+    affiliations:
+        - id: Insee
+          name: Institut national de la statistique et des études économiques
+          department: SSP Lab
+          # address: 88, avenue Verdier
+          city: Montrouge
+          postal-code: 92541
+  - name: Robert Schall
+    email: robert.schall@eui.eu
+    affiliations:
+        - id: EUI
+          name: European University Institute
+          city: Fiesole
+          postal-code: 50014
+
+date: last-modified
+
+format:
+  pdf:
+    toc: false
+
+execute:
+  warning: false
+  echo: false
+knitr:
+  opts_knit:
+    root.dir: "../"
+  opts_chunk:    
+    cache: true
+
+---
+
+\newpage{}
+
+```{r}
+targets::tar_load_globals()
+targets::tar_load(RevisionDB)
+targets::tar_load(Final_values)
+```
+```{r}
+#| label: fig-dataoverview1
+#| fig-cap: Revisions to the growth rate of gov. compensation in the Netherlands
+#| fig-width: 6.3
+#| fig-height: 3
+
+targets::tar_read(plot_total_revision)
+
+```
+
+```{r}
+#| label: fig-revisions_over_time
+#| fig-cap: Final revisions across time
+#| fig-width: 6.3
+#| fig-height: 3
+
+Plot_revisions_across_time <- function(sample) {
+  Bound <- sample[, .(
+    q5 = quantile(Value, c(.05), na.rm = TRUE),
+    q95 = quantile(Value, c(.95), na.rm = TRUE)
+  ),
+  by = .(Variable_long, ObsY)
+  ][, ObsY := as.Date(paste0(ObsY, "-07-01"))]
+  
+  plot <- ggplot() +
+    ggtitle("") +
+    geom_ribbon(data = Bound, aes(ymin = q5, ymax = q95, x = ObsY, fill = Variable_long), alpha = 0.3) +
+    geom_point(data = sample, aes(x = Date, y = Value, color = Variable_long), size = 1, shape = 16, alpha = 0.75) +
+    geom_vline(xintercept = as.Date("2014-04-01"))+
+    annotate("text", x = as.Date("2013-04-01"), y=22, label = "2014Q2")+
+    theme_ECB() +
+    scale_color_manual(values = ECB_col) +
+    scale_fill_manual(values = ECB_col, guide = "none") +
+    scale_x_date(date_breaks = "2 years", date_labels = "%Y")
+  
+  return(plot)
+}
+Plot_revisions_across_time(Data_revisions_across_time(
+  RevisionDB,
+  c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
+  c("YEN", "TOE", "TOR"),
+  "Final", 1, "GRate"
+))
+```
+
+```{r}
+#| label: fig-RevGItems_post2014
+#| fig-cap: Summary statistics of final revisions in the post-2014 sample
+#| fig-width: 6.3
+#| fig-height: 3
+
+
+
+SubPlot_STATISTICS <- function(sample, Statistics, Legend, Ylabs, scales_y) {
+  sample <- sample[, c("Variable_long", "Group", "Statistic") := list(
+    factor(Variable_long, levels = c(
+      "Total revenue", "Direct taxes", "Indirect taxes", "Social contributions", "Other current revenue", "Capital revenue",
+      "Total expenditure", "Social transfers", "Purchases", "Interest payments", "Gov. compensation", "Other current expenditure", "Gov. investment", "Other capital expenditure",
+      "GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Comp. of employees"
+    )),
+    factor(Group, levels = c("Revenue", "Expenditure", "Macro")),
+    factor(Statistic, levels = c("N", "MR", "MIN", "MAX", "MAR", "RMSR", "N2S"))
+  )][, Variable_long := forcats::fct_rev(Variable_long)]
+  
+  # temp <- sample[(Statistic == "N")][order(Variable_long)]
+  # 
+  # NewTitle <- paste0(temp$Variable_long, "\n(", temp$Value, ")")
+  # names(NewTitle) <- temp$Variable_long
+  # 
+  # sample <- sample[(Statistic != "N")][, Variable_long := factor(dplyr::recode(Variable_long, !!!NewTitle), levels = NewTitle)]
+  # 
+  plot <- ggplot(data = subset(sample, Statistic == Statistics)) +
+    ggtitle(Statistics) +
+    
+    # makes the bar and format
+    geom_bar(aes(x = Variable_long, y = Value, fill = Group), stat = "identity", position = "dodge", width = 0.8) +
+    geom_hline(yintercept = 0) +
+    coord_flip() +
+    
+    # Add labels
+    geom_text(aes(x = Variable_long, y = Value, hjust = ifelse(Value > 0, -0.2, 1.15), label = round(Value, 2)), size = 2.5) +
+    
+    # set general theme
+    theme_ECB() +
+    theme(
+      plot.title = element_text(size = 7, face = "plain", colour = "black"),
+      axis.text.y = element_text(hjust = 0.5, size = 8),
+      legend.text = element_text(size = 8),
+      axis.text.x = element_text(size = 8)
+    ) +
+    {
+      if (rlang::is_empty(scales_y)) {
+        scale_y_continuous(expand = c(1, 0))
+      }
+    } +
+    {
+      if (!rlang::is_empty(scales_y$Scale)) {
+        scales_y$Scale[[Statistics]]
+      }
+    } +
+    {
+      if (!rlang::is_empty(scales_y$Expand)) {
+        scales_y$Expand[[Statistics]]
+      }
+    } +
+    {
+      if (!Legend) {
+        theme(legend.position = "none")
+      }
+    } +
+    {
+      if (!Ylabs) {
+        theme(
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank()
+        )
+      }
+    } +
+    # set colors and name of data
+    scale_fill_manual("", values = ECB_col)
+  
+  return(plot)
+}
+
+scales_final_rev <- list(
+  "Scale" =
+    list(
+      "MR" = ggplot2::scale_y_continuous(breaks = seq(-0.8, 0.8, 0.8)),
+      "MIN" = ggplot2::scale_y_continuous(limits = c(NA, 0), breaks = seq(-80, 0, 40)),
+      "MAX" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 50, 25)),
+      "MAR" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 4, 2)),
+      "RMSR" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 8, 4)),
+      "N2S" = ggplot2::scale_y_continuous(limits = c(0, NA), breaks = seq(0, 1.5, 0.5))
+    ),
+  "Expand" =
+    list(
+      "MR" = ggplot2::expand_limits(y = c(-1, 1)),
+      "MIN" = ggplot2::expand_limits(y = -90),
+      "MAX" = ggplot2::expand_limits(y = 50),
+      "MAR" = ggplot2::expand_limits(y = 5.5),
+      "RMSR" = ggplot2::expand_limits(y = 10),
+      "N2S" = ggplot2::expand_limits(y = 1.1)
+    )
+)
+
+Plot_STATISTICS <- function(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate, scales_y) {
+  data <- Data_STATISTICS(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate)
+  Plot1 <- SubPlot_STATISTICS(data, "MR", F, T, scales_y)
+  Plot2 <- SubPlot_STATISTICS(data, "MIN", F, F, scales_y)
+  Plot3 <- SubPlot_STATISTICS(data, "MAX", F, F, scales_y)
+  Plot4 <- SubPlot_STATISTICS(data, "MAR", F, F, scales_y)
+  Plot5 <- SubPlot_STATISTICS(data, "RMSR", F, F, scales_y)
+  Plot6 <- SubPlot_STATISTICS(data, "N2S", F, F, scales_y)
+  
+  
+  legend <- cowplot::get_legend(
+    # create some space to the left of the legend
+    SubPlot_STATISTICS(Data_STATISTICS(sample, Finalvalues, Countries, Items, TypeOfRevision, MeasureUsed, RevisionNumber, UpDate, LowDate), "MR", T, F, scales_y)
+    + theme(legend.box.margin = margin(-10, 0, 0, 0))
+  )
+  
+  prow <- cowplot::plot_grid(Plot1 + theme(plot.margin = unit(c(0, -2.5, 0, 0.2), "cm")),
+                             Plot2 + theme(plot.margin = unit(c(0, -2, 0, 2.5), "cm")),
+                             Plot3 + theme(plot.margin = unit(c(0, -1.5, 0, 2), "cm")),
+                             Plot4 + theme(plot.margin = unit(c(0, -1, 0, 1.5), "cm")),
+                             Plot5 + theme(plot.margin = unit(c(0, -0.5, 0, 1), "cm")),
+                             Plot6 + theme(plot.margin = unit(c(0, 0, 0, 0.5), "cm")),
+                             align = "h", ncol = 6, vjust = 0
+  )
+  
+  plot <- cowplot::plot_grid(legend,
+                             prow + theme(plot.margin = unit(c(-0.25, 0, 0, 0), "cm")),
+                             ncol = 1, rel_heights = c(0.1, 1)
+  )
+  
+  return(plot)
+}
+
+
+Plot_STATISTICS(
+  RevisionDB, Final_values,
+  c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT", "REA"),
+  c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
+  "Final", "GRate", c(1),
+  as.Date("2020-01-01"), as.Date("2014-03-01"), scales_final_rev
+)
+
+```
+
+```{r}
+#| label: fig-Single_Rev_Path
+#| fig-cap: Revision paths across variables
+#| fig-width: 6.3
+#| fig-height: 3
+
+
+Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
+  if (Typevalue == "Raw") {
+    colnames(sample) <- c("Item", "ObsQ", "Group", "Revision", "value", "Normalised", "NotSelected")
+  } else {
+    colnames(sample) <- c("Item", "ObsQ", "Group", "Revision", "Raw", "value", "NotSelected")
+  }
+  
+  sample <- sample[(ObsQ == Q)][
+    ,
+    Revision := factor(Revision, levels = c("Jul (T)", "Oct (T)", "Jan (T+1)", "Apr (T+1)", "Jul (T+1)", "Oct (T+1)"))
+  ][
+    ,
+    Group := factor(Group, levels = c("Revenue", "Expenditure", "Macro", "Others"))
+  ]
+  
+  plot <- ggplot(data = sample, aes(x = Revision, y = value, color = Group, group = Item)) +
+
+    ggtitle(Typevalue)+
+    geom_line(stat = "summary", fun = sum) +
+    stat_summary(fun = sum, geom = "line") +
+    theme_ECB() +
+    theme(
+      axis.text.x = element_text(size = 6),
+      plot.title = element_text(size = 7, face = "plain", colour = "black"),
+      axis.title.y = element_blank(),
+      axis.text.y = element_text(size = 8),
+      legend.text = element_text(size = 8),
+    ) +
+    {
+      if (Typevalue == "Normalised") {
+        if (Q == 1 | Q == 3) {
+          scale_y_continuous(Typevalue, labels = scales::percent)
+        } else {
+          scale_y_continuous("", labels = scales::percent)
+        }
+      }
+    } +
+    {
+      if (!Legend) {
+        theme(legend.position = "none")
+      }
+    } +
+    {
+      if (Legend) {
+        guides(color = guide_legend(nrow = 1))
+      }
+    } +
+    
+    scale_color_manual("", values = ECB_col)
+  
+  return(plot)
+}
+
+Plot_PATHS <- function(sample) {
+  plotQ1B <- Subplot_PATHS(sample, "Normalised", F, 2)
+  plotQ1A <- Subplot_PATHS(sample, "Raw", F, 2)
+
+  
+  prow <- cowplot::plot_grid(plotQ1A + theme(plot.margin = unit(c(0, 0, 0.05, 0), "cm")),
+                             plotQ1B + theme(plot.margin = unit(c(-0.15, 0, 0, 0), "cm")),
+                             align = "v", ncol = 2, vjust = 0
+  )
+  
+  legend <- cowplot::get_legend(
+    # create some space to the left of the legend
+    Subplot_PATHS(sample, "Normalised", T, 1) + theme(legend.box.margin = margin(-5, 0, 0, 0))
+  )
+  
+  plot <- cowplot::plot_grid(legend,
+                             prow + theme(plot.margin = unit(c(-0, 0, 0, 0), "cm")),
+                             ncol = 1, rel_heights = c(.1, 1)
+  )
+  return(plot)
+}
+
+Plot_PATHS(Data_PATHS(
+  RevisionDB,
+  c("DE", "ES", "FR", "IT", "NL", "BE", "AT", "FI", "PT"),
+  c("TOR", "DTX", "TIN", "SCT", "TOE", "THN", "PUR", "COE", "GIN", "YEN", "PCN", "ITN", "EXN", "GCN", "WGS"),
+  "Final", "GRate", as.Date("2020-01-01"), as.Date("2006-01-01")
+))
+```
