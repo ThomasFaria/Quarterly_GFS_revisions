@@ -61,9 +61,9 @@
 
 % use this to include logos on the left and/or right side of the header:
 \logoright{
-  \includegraphics[width=4.5cm, height=4.5cm]{Logo_Insee.png}
+  \includegraphics{Logo_Insee.png}
   \hspace*{0.75cm}
-  \includegraphics[width=4.5cm, height=4.5cm]{Logo_European_Central_Bank.png}}
+  \includegraphics{Logo_European_Central_Bank_resized.png}}
 \logoleft{\includegraphics[width=0.3\linewidth]{QRCODE.pdf}}
 
 % ====================
@@ -118,10 +118,10 @@
       \item All revisions are based on \textbf{annual growth differences}.
       \item Our dataset relies on quarterly \textbf{GFS} supplemented with \textbf{MNA}.
   \end{itemize}
-  \end{block}
-
+  
   \includegraphics[width=1\linewidth]{poster-plots_files/figure-pdf/fig-dataoverview1-1.pdf} 
 
+  \end{block}
 \end{column}
 
 \separatorcolumn
@@ -200,6 +200,12 @@
   \end{block}
 
   \begin{block}{Intermediate revisions}
+
+    \begin{itemize}
+      \item Intermediate revisions do not provide additional information about the unconditional properties of revisions compared to final revisions.
+      \item Fiscal series undergo more significant revisions during EDP notifications (April and October), whereas macro series are subject to continuous revisions regardless of the quarter
+    \end{itemize} 
+
     \includegraphics[width=1\linewidth]{poster-plots_files/figure-pdf/fig-Single_Rev_Path-1.pdf} 
 
   \end{block}

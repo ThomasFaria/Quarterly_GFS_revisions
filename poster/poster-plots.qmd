@@ -83,7 +83,7 @@ Plot_revisions_across_time <- function(sample) {
     geom_ribbon(data = Bound, aes(ymin = q5, ymax = q95, x = ObsY, fill = Variable_long), alpha = 0.3) +
     geom_point(data = sample, aes(x = Date, y = Value, color = Variable_long), size = 1, shape = 16, alpha = 0.75) +
     geom_vline(xintercept = as.Date("2014-04-01"))+
-    annotate("text", x = as.Date("2013-04-01"), y=22, label = "2014Q2")+
+    annotate("text", x = as.Date("2013-04-01"), y=22, label = "2014Q2", size=3)+
     theme_ECB() +
     scale_color_manual(values = ECB_col) +
     scale_fill_manual(values = ECB_col, guide = "none") +
@@ -103,7 +103,7 @@ Plot_revisions_across_time(Data_revisions_across_time(
 #| label: fig-RevGItems_post2014
 #| fig-cap: Summary statistics of final revisions in the post-2014 sample
 #| fig-width: 6.3
-#| fig-height: 3
+#| fig-height: 3.1
 
 
 
@@ -247,7 +247,7 @@ Plot_STATISTICS(
 #| label: fig-Single_Rev_Path
 #| fig-cap: Revision paths across variables
 #| fig-width: 6.3
-#| fig-height: 3
+#| fig-height: 2.6
 
 
 Subplot_PATHS <- function(sample, Typevalue, Legend, Q) {
