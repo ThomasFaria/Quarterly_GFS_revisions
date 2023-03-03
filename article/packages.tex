@@ -5,24 +5,7 @@
 \usepackage{hyperref}
 \usepackage[capitalise,noabbrev]{cleveref}
 \usepackage{float}
-% \usepackage{makeidx}
-% \makeindex
+
 \newcommand{\source}[1]{\vspace{-10pt} \caption*{\footnotesize{\emph{Sources: }{#1}}}}
 \newcommand{\desc}[1]{\vspace{-10pt} \caption*{\footnotesize{\emph{Notes: }{#1}}}}
 
-\renewcommand*\thesection{\arabic{section}}
-\renewcommand*\thesubsection{\arabic{section}.\arabic{subsection}}
-
-\makeatletter
-\renewcommand\chapter{\@startsection {section}{1}{\z@}%
-                       {-3.5ex \@plus -1ex \@minus -.2ex}%
-                       {2.3ex \@plus.2ex}%
-                       {\normalfont\Large\bfseries}}
-\makeatother
-
-\makeatletter
-\renewcommand\section{\@startsection {subsection}{1}{\z@}%
-                        {-3.25ex\@plus -1ex \@minus -.2ex}%
-                        {1.5ex \@plus .2ex}%
-                        {\normalfont\large\bfseries}}
-\makeatother
