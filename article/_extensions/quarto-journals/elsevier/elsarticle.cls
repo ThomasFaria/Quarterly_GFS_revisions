@@ -1327,6 +1327,7 @@ headheight=50pt,
  \@addtoreset{equation}{chapter}%
  \gdef\theequation{\@Alph\c@chapter.\arabic{equation}}%
  \addtocontents{toc}{\string\let\string\numberline\string\tmptocnumberline}{}{}
+ \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 }
 
 %%%% \numberline width calculation for appendix.
