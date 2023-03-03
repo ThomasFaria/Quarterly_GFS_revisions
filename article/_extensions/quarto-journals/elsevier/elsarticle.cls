@@ -1023,15 +1023,15 @@
 \def\@seccntDot{.}
 \def\@seccntformat#1{\csname the#1\endcsname\@seccntDot\hskip 0.5em}
 
-\renewcommand\section{\@startsection {section}{1}{\z@}%
+\renewcommand\chapter{\@startsection {chapter}{1}{\z@}%
           {18\p@ \@plus 6\p@ \@minus 3\p@}%
           {9\p@ \@plus 6\p@ \@minus 3\p@}%
           {\normalsize\bfseries\boldmath}}
-\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+\renewcommand\section{\@startsection{section}{2}{\z@}%
           {12\p@ \@plus 6\p@ \@minus 3\p@}%
           {3\p@ \@plus 6\p@ \@minus 3\p@}%
           {\normalfont\normalsize\itshape}}
-\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+\renewcommand\subsection{\@startsection{subsection}{3}{\z@}%
           {12\p@ \@plus 6\p@ \@minus 3\p@}%
           {\p@}%
           {\normalfont\normalsize\itshape}}
@@ -1317,14 +1317,15 @@ headheight=50pt,
 %%
 \def\appendixname{Appendix }
 \renewcommand\appendix{\par
+ \setcounter{chapter}{0}%
  \setcounter{section}{0}%
  \setcounter{subsection}{0}%
  \setcounter{equation}{0}
- \gdef\thefigure{\@Alph\c@section.\arabic{figure}}%
- \gdef\thetable{\@Alph\c@section.\arabic{table}}%
- \gdef\thesection{\appendixname~\@Alph\c@section}%
- \@addtoreset{equation}{section}%
- \gdef\theequation{\@Alph\c@section.\arabic{equation}}%
+ \gdef\thefigure{\@Alph\c@chapter.\arabic{figure}}%
+ \gdef\thetable{\@Alph\c@chapter.\arabic{table}}%
+ \gdef\thesection{\appendixname~\@Alph\c@chapter}%
+ \@addtoreset{equation}{chapter}%
+ \gdef\theequation{\@Alph\c@chapter.\arabic{equation}}%
  \addtocontents{toc}{\string\let\string\numberline\string\tmptocnumberline}{}{}
 }
 
