@@ -60,7 +60,7 @@ kableExtra::kbl(text_tbl, col.names = c("Name", "Retrieval code")) |>
 #| tbl-cap: ECB's SDW codes for data retrieval (macro series)
 
 text_tbl <- data.frame(
-  Name = c("GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Wages and salaries"),
+  Name = c("GDP", "Private consumption", "Total investment", "Exports", "Gov. consumption", "Compensation of employees"),
   `Code` = c(
     "MNA.Q.N.cc.W2.S1.S1.B.B1GQ._Z._Z._Z.EUR.V.N",
     "MNA.Q.N.cc.W0.S1M.S1.D.P31._Z._Z._T.EUR.V.N", 

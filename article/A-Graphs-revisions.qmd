@@ -249,7 +249,7 @@ targets::tar_read(plot_revision_GCN)
 :::
 
 ```{r}
-#| fig-cap: Final revisions to wages and salaries
+#| fig-cap: Final revisions to compensation of employees
 #| fig-width: 6.3
 #| fig-height: 8
 #| label: fig-WGS

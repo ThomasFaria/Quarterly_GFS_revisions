@@ -79,7 +79,7 @@ The dataset is supplemented with the selected following items from the MNA datas
 - Total investment
 - Export
 - Gov. consumption
-- Wages and salaries
+- Compensation of employees
 
 We regard this set of variables as a reliable benchmark for assessing fiscal revisions. Similarly to the fiscal variables, the series keys needed for data retrieval are specified in the online appendix in @tbl-Code-series-macro.
 
