@@ -51,8 +51,10 @@ book:
     tools:
           - icon: save
             menu:
-              - text: Fiscal Real Time Database CSV
-                url:  "https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv"
+              - text: Data in parquet format
+                url:  "https://minio.lab.sspcloud.fr/tfaria/public/real-time-fiscal-database.parquet"
+              - text: Data in CSV format
+                url:  "https://minio.lab.sspcloud.fr/tfaria/public/real-time-fiscal-database.csv"
     
 bibliography: bibliography.bib
 
