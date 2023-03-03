@@ -1,0 +1,94 @@
+project:
+  type: book
+
+book:
+  repo-subdir: article
+  repo-url: https://github.com/ThomasFaria/Quarterly_GFS_revisions
+  title: How bad are fiscal revisions in the euro area?
+  author:
+  - name: Krzysztof Bankowski
+    email: krzysztof.bankowski@europa.ecb.eu
+    affiliations: 
+        - id: ECB
+          name: European Central Bank
+          department: Fiscal Policies Division
+          city: Frankfurt
+          postal-code: 60314
+  - name: Thomas Faria
+    email: thomas.faria@insee.fr
+    affiliations:
+        - id: Insee
+          name: National Institute of Statistics and Economic Studies
+          department: SSP Lab
+          city: Montrouge
+          postal-code: 92541
+  - name: Robert Schall
+    email: robert.schall@eui.eu
+    affiliations:
+        - id: EUI
+          name: European University Institute
+          city: Fiesole
+          postal-code: 50014
+  date: last-modified
+  chapters:
+    - index.qmd
+    - 1-Introduction.qmd
+    - 2-Data.qmd
+    - 3-Uncond-properties.qmd
+    - 4-Predictability.qmd
+    - 5-Intermediate-revisions.qmd
+    - 6-Conclusion.qmd
+    - text: "---"
+    - references.qmd
+  appendices: 
+    - A-Graphs-revisions.qmd
+    - B-Fiscal-data.qmd
+    - C-Complementary-results.qmd
+    - D-Codes-retrieval.qmd
+  downloads: [pdf]
+  sidebar:
+    pinned: true
+    tools:
+          - icon: save
+            menu:
+              - text: Data in parquet format
+                url:  "https://minio.lab.sspcloud.fr/tfaria/public/real-time-fiscal-database.parquet"
+              - text: Data in CSV format
+                url:  "https://minio.lab.sspcloud.fr/tfaria/public/real-time-fiscal-database.csv"
+    
+bibliography: bibliography.bib
+
+format:
+  html:
+    theme: cosmo
+    reference-location: margin
+    fig-align: center
+
+  elsevier-pdf:
+    keep-tex: true
+    journal:
+      name: International Journal of Central Banking
+      formatting: preprint
+      model: 3p
+      cite-style: authoryear
+    toc: true
+    toc-title: Contents
+    include-in-header:
+      - packages.tex
+    abstract: |
+      We investigate the properties of fiscal revisions in the euro area by contrasting them with macro revisions. To this end, we construct a fiscal real-time dataset containing quarterly releases of Government Finance Statistics, which is supplemented by macro variables from Main National Accounts. Fiscal revisions, like macro revisions, do not satisfy desirable properties expected from well-behaved revisions. In particular, they tend to have positive mean, are non-negligible in size and are predictable. With our investigation we contradict the often heard view that fiscal data are subject to extraordinarily sizeable revisions. While it was the case some years ago since 2014 the revisions for the main fiscal categories are in the same ballpark as the revisions for the main macroeconomic series. In general, properties of fiscal and macro revisions are quite similar since the introduction of ESA 2010 in 2014.
+    fig-pos: 'H'
+    fig-align: center
+
+
+editor: visual
+
+knitr:
+  opts_knit:
+    root.dir: "../"
+  opts_chunk:    
+    cache: true
+
+execute:
+  warning: false
+  echo: false

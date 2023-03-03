@@ -1,0 +1,28 @@
+# Selected data characteristics {#sec-fiscal-data-characteristics}
+
+```{r}
+#| fig-cap: Average percentage GDP shares across variables
+#| fig-width: 6.3
+#| fig-height: 3.75
+#| label: fig-ItemShareGDP
+
+targets::tar_read(plot_share_GDP)
+```
+
+```{r}
+#| fig-cap: Mean and standard deviation of growth rates across variables
+#| fig-width: 6.3
+#| fig-height: 4.75
+#| label: fig-mean-standard-deviation-values
+
+targets::tar_read(plot_mean_sd)
+```
+
+```{r}
+#| fig-cap: Average percentage shares of total expenditure in the euro area
+#| fig-width: 6.3
+#| fig-height: 3.75
+#| label: fig-share-TOE
+
+targets::tar_read(plot_share_TOE)
+```

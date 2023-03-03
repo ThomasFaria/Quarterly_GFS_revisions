@@ -1,0 +1,258 @@
+# Graphical illustration of the revisions {#sec-Revisions-illustration}
+
+All final revisions to variables considered (but not necessarily included) in the analysis are illustrated in this appendix section with the twofold objective. First, the graphs are useful for illustrating the magnitude of the revisions across variables and countries. Second, the plots are indispensable to potentially identify any issues with the dataset that could impair our analysis (e.g. excessive values or lack of revisions). @sec-code-retrieval of the online appendix provides statistical codes used to retrieve the data.
+<!-- APPENDIX BUG CROSS REF : https://github.com/quarto-dev/quarto-cli/issues/3234 -->
+
+## Fiscal revenue variables
+```{r}
+#| fig-cap: Final revisions to total revenue
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-TOR
+
+targets::tar_read(plot_revision_TOR)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to direct taxes
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-DTX
+
+targets::tar_read(plot_revision_DTX)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to indirect taxes
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-TIN
+
+
+targets::tar_read(plot_revision_TIN)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to social contributions
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-SCT
+
+targets::tar_read(plot_revision_SCT)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to other current revenue
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-OCR
+
+targets::tar_read(plot_revision_OCR)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to capital revenue
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-KTR
+
+targets::tar_read(plot_revision_KTR)
+```
+
+## Fiscal spending variables
+
+```{r}
+#| fig-cap: Final revisions to total expenditure
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-TOE
+
+targets::tar_read(plot_revision_TOE)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to social transfers
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-THN
+
+targets::tar_read(plot_revision_THN)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to purchases
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-PUR
+
+targets::tar_read(plot_revision_PUR)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to interest payments
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-INP
+
+targets::tar_read(plot_revision_INP)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to gov. compensation
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-COE
+
+targets::tar_read(plot_revision_COE)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to other current expenditure
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-OCE
+
+targets::tar_read(plot_revision_OCE)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to gov. investment
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-GIN
+
+targets::tar_read(plot_revision_GIN)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to other capital expenditure
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-OKE
+
+targets::tar_read(plot_revision_OKE)
+```
+
+## Macro variables
+
+```{r}
+#| fig-cap: Final revisions to GDP
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-YEN
+
+targets::tar_read(plot_revision_YEN)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to private consumption
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-PCN
+
+targets::tar_read(plot_revision_PCN)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to total investment
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-ITN
+
+targets::tar_read(plot_revision_ITN)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to exports
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-EXN
+
+targets::tar_read(plot_revision_EXN)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to gov. consumption
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-GCN
+
+targets::tar_read(plot_revision_GCN)
+```
+
+::: {.content-visible when-format="pdf"}
+\pagebreak
+:::
+
+```{r}
+#| fig-cap: Final revisions to compensation of employees
+#| fig-width: 6.3
+#| fig-height: 8
+#| label: fig-WGS
+
+targets::tar_read(plot_revision_WGS)
+```
