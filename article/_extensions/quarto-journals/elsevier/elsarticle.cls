@@ -107,9 +107,9 @@
 \DeclareOption{doubleblind}{\doubleblindtrue}
 
 \ExecuteOptions{a4paper,10pt,oneside,onecolumn,number,preprint,centertitle}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrreprt}}
 \ProcessOptions
-\LoadClass{article}
+\LoadClass{scrreprt}
 \RequirePackage{graphicx}
 \let\comma\@empty
 \let\tnotesep\@empty
