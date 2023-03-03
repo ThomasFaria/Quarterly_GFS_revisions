@@ -1,0 +1,23 @@
+\contentsline {chapter}{Abstract}{2}{section*.2}%
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Real-time quarterly fiscal dataset}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Structure of the real-time dataset}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Final and intermediate revisions}{7}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Data scope}{8}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Unconditional properties of final revisions}{15}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Entire sample 2006Q3-2019Q4}{16}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Pre and post-2014Q2 subsamples}{17}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Properties of intermediate revisions}{18}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Unconditional properties}{20}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Dynamics of data releases}{21}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Conclusions}{24}{chapter.5}%
+\contentsline {chapter}{References}{25}{section*.13}%
+\contentsline {part}{Appendices}{26}{section*.14}%
+\let \numberline \tmptocnumberline 
+\contentsline {chapter}{\numberline {Appendix \nobreakspace {}A}Graphical illustration of the revisions}{26}{appendix.A}%
+\contentsline {section}{\numberline {Appendix \nobreakspace {}A.1}Fiscal revenue variables}{27}{section.A.1}%
+\contentsline {section}{\numberline {Appendix \nobreakspace {}A.2}Fiscal spending variables}{33}{section.A.2}%
+\contentsline {section}{\numberline {Appendix \nobreakspace {}A.3}Macro variables}{41}{section.A.3}%
+\contentsline {chapter}{\numberline {Appendix \nobreakspace {}B}Selected data characteristics}{47}{appendix.B}%
+\contentsline {chapter}{\numberline {Appendix \nobreakspace {}C}Data codes for retrieval}{49}{appendix.C}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
