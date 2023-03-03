@@ -1323,7 +1323,7 @@ headheight=50pt,
  \setcounter{equation}{0}
  \gdef\thefigure{\@Alph\c@chapter.\arabic{figure}}%
  \gdef\thetable{\@Alph\c@chapter.\arabic{table}}%
- \gdef\thesection{\appendixname~\@Alph\c@chapter}%
+ \gdef\thechapter{\appendixname~\@Alph\c@chapter}%
  \@addtoreset{equation}{chapter}%
  \gdef\theequation{\@Alph\c@chapter.\arabic{equation}}%
  \addtocontents{toc}{\string\let\string\numberline\string\tmptocnumberline}{}{}
