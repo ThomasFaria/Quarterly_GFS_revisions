@@ -107,9 +107,9 @@
 \DeclareOption{doubleblind}{\doubleblindtrue}
 
 \ExecuteOptions{a4paper,10pt,oneside,onecolumn,number,preprint,centertitle}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{scrartcl}}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 \ProcessOptions
-\LoadClass{scrartcl}
+\LoadClass{report}
 \RequirePackage{graphicx}
 \let\comma\@empty
 \let\tnotesep\@empty
@@ -1315,27 +1315,27 @@
 \@makeother\=
 }{}}
 %%
-% \def\appendixname{Appendix }
-% \renewcommand\appendix{\par
-%   \setcounter{section}{0}%
-%   \setcounter{subsection}{0}%
-%   \setcounter{equation}{0}
-%   \gdef\thefigure{\@Alph\c@section.\arabic{figure}}%
-%   \gdef\thetable{\@Alph\c@section.\arabic{table}}%
-%   \gdef\thesection{\appendixname~\@Alph\c@section}%
-%   \@addtoreset{equation}{section}%
-%   \gdef\theequation{\@Alph\c@section.\arabic{equation}}%
-%   \addtocontents{toc}{\string\let\string\numberline\string\tmptocnumberline}{}{}
-% }
+\def\appendixname{Appendix }
+\renewcommand\appendix{\par
+  \setcounter{section}{0}%
+  \setcounter{subsection}{0}%
+  \setcounter{equation}{0}
+  \gdef\thefigure{\@Alph\c@section.\arabic{figure}}%
+  \gdef\thetable{\@Alph\c@section.\arabic{table}}%
+  \gdef\thesection{\appendixname~\@Alph\c@section}%
+  \@addtoreset{equation}{section}%
+  \gdef\theequation{\@Alph\c@section.\arabic{equation}}%
+  \addtocontents{toc}{\string\let\string\numberline\string\tmptocnumberline}{}{}
+}
 
-% %%%% \numberline width calculation for appendix.
-% \newdimen\appnamewidth
-% \def\tmptocnumberline#1{%
-%    \setbox0=\hbox{\appendixname}
-%    \appnamewidth=\wd0
-%    \addtolength\appnamewidth{2.5pc}
-%    \hb@xt@\appnamewidth{#1\hfill}
-% }
+%%%% \numberline width calculation for appendix.
+\newdimen\appnamewidth
+\def\tmptocnumberline#1{%
+   \setbox0=\hbox{\appendixname}
+   \appnamewidth=\wd0
+   \addtolength\appnamewidth{2.5pc}
+   \hb@xt@\appnamewidth{#1\hfill}
+}
 
 %% Added for work with amsrefs.sty
 
