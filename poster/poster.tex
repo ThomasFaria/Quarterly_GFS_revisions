@@ -82,15 +82,19 @@
   \begin{alertblock}{Summary}
     \textbf{Objective:}
     \begin{itemize}
-      \item Determine how well-behaved fiscal revisions are, especially by contrasting them with macro revisions.
+      \item Determine how well-behaved \textbf{fiscal revisions} are and contrast them with macro revisions.
     \end{itemize}
+
+    \textbf{Methodology:}
+    \begin{itemize}
+        \item Creation a \textbf{real-time} fiscal quarterly dataset for the euro area countries.
+        \item Deriving a broad set of statistics that allow us to assess the properties of the revisions.
+      \end{itemize}
 
     \textbf{Results:}
     \begin{itemize}
-      \item Creation a real-time fiscal quarterly dataset for the euro area countries.
-      \item We derive a broad set of statistics that allow us to assess the properties of the revisions.
-      \item Fiscal revisions, like macro revisions, DO NOT satisfy desirable properties expected from well-behaved revisions.
-      \item When contrasted with macro revisions, fiscal revisions are quite comparable (most notably after 2014).
+      \item Fiscal revisions, like macro revisions, \textbf{DO NOT} satisfy desirable properties expected from well-behaved revisions.
+      \item When contrasted with macro revisions, fiscal revisions are \textbf{quite comparable} (most notably after 2014).
     \end{itemize}
 
   \end{alertblock}
@@ -101,23 +105,22 @@
       \item Most macroeconomic data are subject to \textbf{revisions}.
       \item Researchers and policy-makers have no choice rather than \textbf{recognising and understanding} data revisions.
       \item \textbf{Often heard view} is that fiscal revisions are particularly bad.
-      \item Well-behaved revisions ought to carry certain \textbf{characteristics}, according to the relevant literature:
+      \item Well-behaved revisions ought to carry certain \textbf{characteristics}, according to the literature:
       \begin{itemize}
         \item zero bias
         \item little dispersion 
         \item no predictability in real time
       \end{itemize}
-      \item (Our study is a comprehensive analysis of revisions to \textbf{quarterly fiscal data in the euro area}.)
+      \item Our study is a comprehensive analysis of revisions to \textbf{quarterly fiscal data in the euro area}.
     \end{itemize}
   \end{block}
 
   \begin{block}{Definitions}
     \begin{itemize}
       \item \textbf{Final revision} for a quarter $t$: $r_t^f =. x_t^f - x_t^1$
-      \item Final value $x_t^f$ and we define it as October T+1 release.
+      \item Final value $x_t^f$ and we define it as the October T+1 release.
       \item \textbf{Intermediate revisions} $r_t^i = x_t^{i+1} - x_t^i$ make up for final revisions.
       \item All revisions are based on \textbf{annual growth differences}.
-      \item Our dataset relies on quarterly \textbf{GFS} supplemented with \textbf{MNA}.
   \end{itemize}
 
   \includegraphics[width=1\linewidth]{poster-plots_files/figure-pdf/fig-dataoverview1-1.pdf} 
@@ -134,7 +137,7 @@
       \item Our dataset relies on quarterly \textbf{GFS} (Government Finance Statistics) supplemented with \textbf{MNA} (Main National Accounts).
       \item It includes 15 \textit{fiscal} series and 6 \textit{macroeconomic} series. 
       \item Our dataset consists of 65 quarterly vintages taking place since January 2007 to February 2023. We restricted our analysis to pre-covid period (i.e. final values for 2019).
-      \item We are committed to open science and have made both the dataset and the replicatory files are \textbf{open source}. Scan the QR code to access them!
+      \item We are committed to open science and have made both the dataset and the replicatory files \textbf{open source}. Scan the QR code to access them!
     \end{itemize}
 
     \includegraphics[width=1\linewidth]{poster-plots_files/figure-pdf/fig-revisions_over_time-1.pdf} 
@@ -165,12 +168,12 @@
 
     \textbf{Key question}: is the complete model better than the naive model? In other words, does any information available at the time of the initial release have predictive power?
 
-    \textbf{Naive model}: 
+    \textbf{\textit{Naive model}}: 
     \[
     r_{t,m}^{f} = \epsilon_{t,m}
     \]
     %\bigskip{}
-    \textbf{Complete model}: 
+    \textbf{\textit{Complete model}}: 
     \[
       r_{t,m}^{f} = \sum_{m=1}^{9}\beta_{m}C_{m} 
     + \sum_{j=1}^{4} \gamma_{j}Q_{t}^{j} 
