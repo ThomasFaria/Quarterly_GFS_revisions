@@ -6,32 +6,32 @@
 )](https://hub.docker.com/repository/docker/thomasfaria/quarterly_gfs_revisions)
 [![Publish](https://img.shields.io/github/actions/workflow/status/ThomasFaria/Quarterly_GFS_revisions/publish.yaml?label=Paper&style=flat)](https://thomasfaria.github.io/Quarterly_GFS_revisions/)
 
-
-Repository replicating the results presented in our paper [Krzysztof Bańkowski](https://www.ecb.europa.eu/pub/research/authors/profiles/krzysztof-bankowski.fr.html), [Thomas Faria](https://www.ecb.europa.eu/pub/research/authors/profiles/thomas-faria.fr.html), [Robert Schall](https://www.ecb.europa.eu/pub/research/authors/profiles/robert-schall.fr.html) (2022) ["How well-behaved are revisions to quarterly fiscal data in the euro area?"](https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp2676~65f27f7ac1.fr.pdf?7f2b353ebef0e876f2feb488dbea1079).
+Replication of the research paper ["How well-behaved are revisions to quarterly fiscal data in the euro area?"](https://thomasfaria.github.io/Quarterly_GFS_revisions/) by [Krzysztof Bańkowski](https://www.ecb.europa.eu/pub/research/authors/profiles/krzysztof-bankowski.fr.html), [Thomas Faria](https://www.ecb.europa.eu/pub/research/authors/profiles/thomas-faria.fr.html), [Robert Schall](https://www.ecb.europa.eu/pub/research/authors/profiles/robert-schall.fr.html) (2022).
 
 ## Getting Started
 
-The repository is accompanied by its [docker image](https://hub.docker.com/r/thomasfaria/quarterly_gfs_revisions) to ensure full reproducibility of the results.
-If you are familiar with docker you can directly pull the image using the following command in your terminal:
+To ensure full reproducibility of the results, the project is accompanied by a [Docker image](https://hub.docker.com/r/thomasfaria/quarterly_gfs_revisions) that contains all the necessary packages and dependencies. You can pull the Docker image using the following command in your terminal:
 
 ```
 docker pull thomasfaria/quarterly_gfs_revisions:latest
 ```
 
-However, we recommend using [Onyxia](https://github.com/InseeFrLab/onyxia-web), a datalab developed by the French National institute of statistics and economic studies ([INSEE](https://www.insee.fr/fr/accueil)).
+Alternatively, you can use the [Onyxia instance SSPCloud](https://github.com/InseeFrLab/onyxia-web), a datalab developed by the French National Institute of Statistics and Economic Studies ([INSEE](https://www.insee.fr/fr/accueil)) that provides an easy-to-use interface for running the Docker image.
+
+To get started with SSPCloud:
 
 - Step 0: Go to [https://datalab.sspcloud.fr/home](https://datalab.sspcloud.fr/home). Click on **Sign In** and then **create an account** with your academic or institutional email address.
 - Step 1: Click [here](https://datalab.sspcloud.fr/launcher/ide/rstudio?autoLaunch=true&service.image.pullPolicy=«Always»&service.image.custom.enabled=true&service.image.custom.version=«thomasfaria%2Fquarterly_gfs_revisions%3Alatest»&security.allowlist.enabled=false&onyxia.friendlyName=«QGFS») or on the orange badge on top of the page.
-- Step 2: **Open** the service and follow the instruction concerning *username* and *credentials*.
-- Step 3: **Open a new project** and **clone** this repository.
-
-All necessary packages have been already installed in the docker image and dependencies are managed by the [renv](https://rstudio.github.io/renv/index.html) package. You only need to call ```renv::restore()``` to reinstall all the packages, as declared in the *lockfile*, in your service.
+- Step 2: **Open** the service and follow the instructions concerning *username* and *credentials*.
+- Step 3: **Open a new project** by opening the following file : `~/Quarterly_GFS_revisions/Quarterly_GFS_revisions.Rproj`.
+- Step 4: Ensure all necessary packages are installed by executing the ```renv::restore()``` command in the console. You should get the following message: `The library is already synchronized with the lockfile.`
 
 ## Database
 
-One major contribution of our paper is the construction of a **real-time fiscal dataset** for the euro area. The dataset is stored on MinIO, and is made available via this [url](https://minio.lab.sspcloud.fr/tfaria/public/RealTimeDatabase.csv).
+One of the main contributions of the paper is the construction of a **real-time fiscal quarterly dataset** for the euro area. The dataset contains published releases from 2006Q3 to 2022Q3[^1] and is stored in both Parquet and CSV formats. This dataset contains both fiscal and macroeconomic variables used for this project and is available via the following URLs:
 
-The dataset contains published releases from 2006Q3 to 2022Q3[^1] for several fiscal and macroeconomic series as specified in the following table:
+- parquet format: https://minio.lab.sspcloud.fr/tfaria/public/real-time-fiscal-database.parquet
+- CSV format: https://minio.lab.sspcloud.fr/tfaria/public/real-time-fiscal-database.csv
 
 | Name      | Retrieval code |
 | ----------- | ----------- |
@@ -60,11 +60,9 @@ The asterisk refers to the ISO-2 country code position (i.e. "DE", "FR", "IT"...
 
 [^1]: The dataset will be automatically updated with future releases.
 
-<!-- TODO: describe the variables in the database -->
-
 ## Codes
 
-The project is based on the [target package](https://books.ropensci.org/targets/), which is a tool for creating and running reproducible pipelines in R. target is particularly useful for managing large or complex data sets, as it allows you to define each task in a pipeline as a separate function, and then run the pipeline by calling the ```target()``` function. This ensures that tasks are run in the correct order, and can save time by only running tasks that are out of date or have not been run before.
+The project is deeply relying on the [target package](https://books.ropensci.org/targets/), which is a tool for creating and running reproducible pipelines in R. target is particularly useful for managing large or complex data sets, as it allows you to define each task in a pipeline as a separate function, and then run the pipeline by calling the ```target()``` function. This ensures that tasks are run in the correct order, and can save time by only running tasks that are out of date or have not been run before.
 
 To reproduce the results of the paper, simply run the ```run.R``` script at the root of the project. This will retrieve the real-time fiscal database and produce the necessary computations following the pipeline defined in the ```_targets.R``` file.
 
