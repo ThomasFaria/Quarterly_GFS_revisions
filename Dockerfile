@@ -1,6 +1,9 @@
-FROM inseefrlab/onyxia-rstudio:latest
+FROM inseefrlab/onyxia-rstudio:ds-r4.2.3
 
-ARG QUARTO_VERSION="1.3.56"
+WORKDIR ${HOME}/Quarterly_GFS_revisions
+COPY . .
+
+ARG QUARTO_VERSION="1.3.107"
 ARG QUARTO_DL_URL="https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb"
 
 RUN quarto install tool tinytex && \
@@ -8,8 +11,9 @@ RUN quarto install tool tinytex && \
     sudo dpkg -i quarto.deb && \
     quarto check install && \
     rm quarto.deb && \
-    git clone https://github.com/ThomasFaria/Quarterly_GFS_revisions.git && \
-    cd Quarterly_GFS_revisions && \
-    install2.r renv && \
+    # Configure renv to use RSPM to download packages by default
+    echo 'options(renv.config.repos.override = getOption("repos"))' >> ${R_HOME}/etc/Rprofile.site && \
+    # Install R packages
     Rscript -e "renv::restore()" && \
+    # Fix permissions
     chown -R ${USERNAME}:${GROUPNAME} ${HOME}
